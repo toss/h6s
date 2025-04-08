@@ -10794,7 +10794,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.10"],\
           ["@types/react-dom", null],\
           ["escape-html", "npm:1.0.3"],\
-          ["estree-util-value-to-estree", "npm:3.0.1"],\
+          ["estree-util-value-to-estree", "npm:3.3.3"],\
           ["file-loader", "virtual:4ff38ae51089a6813f618b1618f70b7e02d7da60ad9e24225f09efa13b82b38e3d22b75e0cf6c3a23fff9f13d8ddbc3226c5c60a47a088e41edcc2c0b07024a4#npm:6.2.0"],\
           ["fs-extra", "npm:11.2.0"],\
           ["image-size", "npm:1.0.2"],\
@@ -22818,12 +22818,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["estree-util-value-to-estree", [\
-      ["npm:3.0.1", {\
-        "packageLocation": "./.yarn/cache/estree-util-value-to-estree-npm-3.0.1-b303d5375a-f78ea726a3.zip/node_modules/estree-util-value-to-estree/",\
+      ["npm:3.3.3", {\
+        "packageLocation": "./.yarn/cache/estree-util-value-to-estree-npm-3.3.3-7433c3820f-68c42de34b.zip/node_modules/estree-util-value-to-estree/",\
         "packageDependencies": [\
-          ["estree-util-value-to-estree", "npm:3.0.1"],\
-          ["@types/estree", "npm:1.0.5"],\
-          ["is-plain-obj", "npm:4.1.0"]\
+          ["estree-util-value-to-estree", "npm:3.3.3"],\
+          ["@types/estree", "npm:1.0.5"]\
         ],\
         "linkType": "HARD"\
       }]\
