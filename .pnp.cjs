@@ -71,7 +71,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
           ["@types/testing-library__jest-dom", "npm:6.0.0"],\
-          ["acorn", "npm:8.12.1"],\
+          ["acorn", "npm:8.15.0"],\
           ["all-contributors-cli", "npm:6.26.1"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
           ["date-fns", "npm:2.30.0"],\
@@ -18371,10 +18371,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:8.12.1", {\
-        "packageLocation": "./.yarn/cache/acorn-npm-8.12.1-610871d57c-d08c2d122b.zip/node_modules/acorn/",\
+      ["npm:8.15.0", {\
+        "packageLocation": "./.yarn/cache/acorn-npm-8.15.0-0764cf600e-77f2de5051.zip/node_modules/acorn/",\
         "packageDependencies": [\
-          ["acorn", "npm:8.12.1"]\
+          ["acorn", "npm:8.15.0"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -24391,7 +24391,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
           ["@types/testing-library__jest-dom", "npm:6.0.0"],\
-          ["acorn", "npm:8.12.1"],\
+          ["acorn", "npm:8.15.0"],\
           ["all-contributors-cli", "npm:6.26.1"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
           ["date-fns", "npm:2.30.0"],\

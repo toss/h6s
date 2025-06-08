@@ -55,7 +55,7 @@
     "@types/node": "^22.5.2",
     "@types/react": "^18.3.5",
     "@types/testing-library__jest-dom": "6.0.0",
-    "acorn": "8.12.1",
+    "acorn": "8.15.0",
     "all-contributors-cli": "6.26.1",
     "cz-conventional-changelog": "3.3.0",
     "date-fns": "2.30.0",
