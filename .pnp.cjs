@@ -79,7 +79,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:7.0.4"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
           ["lint-staged", "npm:12.1.4"],\
-          ["prettier", "npm:3.1.1"],\
+          ["prettier", "npm:3.6.2"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:18.3.1"],\
           ["storybook", "npm:7.6.6"],\
@@ -24399,7 +24399,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:7.0.4"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
           ["lint-staged", "npm:12.1.4"],\
-          ["prettier", "npm:3.1.1"],\
+          ["prettier", "npm:3.6.2"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:18.3.1"],\
           ["storybook", "npm:7.6.6"],\
@@ -30552,10 +30552,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:3.1.1", {\
-        "packageLocation": "./.yarn/unplugged/prettier-npm-3.1.1-072c31ec21/node_modules/prettier/",\
+      ["npm:3.6.2", {\
+        "packageLocation": "./.yarn/unplugged/prettier-npm-3.6.2-2668152203/node_modules/prettier/",\
         "packageDependencies": [\
-          ["prettier", "npm:3.1.1"]\
+          ["prettier", "npm:3.6.2"]\
         ],\
         "linkType": "HARD"\
       }]\
