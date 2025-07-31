@@ -25208,7 +25208,7 @@ __metadata:
     prism-react-renderer: "npm:2.3.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.9.2"
   languageName: unknown
   linkType: soft
 
