@@ -30,7 +30,7 @@
     "@docusaurus/theme-classic": "3.0.1",
     "@docusaurus/types": "3.0.1",
     "@tsconfig/docusaurus": "2.0.2",
-    "@types/react": "18.3.10",
+    "@types/react": "18.3.24",
     "typescript": "5.3.3"
   },
   "browserslist": {
