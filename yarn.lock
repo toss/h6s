@@ -15570,7 +15570,7 @@ __metadata:
     ts-node: "npm:10.9.2"
     tsup: "npm:^8.2.4"
     typescript: "npm:^5.5.4"
-    vite: "npm:^5.4.6"
+    vite: "npm:^5.4.20"
     vitest: "npm:^2.0.5"
   languageName: unknown
   linkType: soft
