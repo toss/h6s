@@ -16,3 +16,4 @@ lerna-debug.log
 website/.yarn/.cache/**/*
 playwright-report
 coverage
+.DS_Store

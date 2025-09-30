@@ -2,7 +2,7 @@
 
 ## Reporting Issues
 
-If you have found what you think is a bug, please [file an issue](https://github.com/h6s-dev/h6s/issues/new) `Bug_Report` type.
+If you have found what you think is a bug, please [file an issue](https://github.com/toss/h6s/issues/new) `Bug_Report` type.
 
 ## Suggesting new features
 

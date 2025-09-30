@@ -99,7 +99,7 @@ const config = {
             items: [
               {
                 label: 'MIT',
-                href: 'https://github.com/h6s-dev/h6s/blob/main/LICENSE',
+                href: 'https://github.com/toss/h6s/blob/main/LICENSE',
               },
             ],
           },
