@@ -18,7 +18,7 @@
   "organization": "toss",
   "repository": {
     "type": "git",
-    "url": "https://github.com/toss/h6s"
+    "url": "git+https://github.com/toss/h6s.git"
   },
   "homepage": "https://h6s.dev",
   "license": "MIT",

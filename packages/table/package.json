@@ -4,6 +4,11 @@
   "sideEffects": false,
   "main": "src/index.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toss/h6s.git",
+    "directory": "packages/table"
+  },
   "publishConfig": {
     "access": "public",
     "main": "dist/index.cjs",
