@@ -95,6 +95,8 @@
   ],
   "scripts": {
     "check": "yarn typecheck && yarn lint && yarn test",
+    "changeset:version": "yarn changeset version",
+    "changeset:publish": "yarn changeset publish",
     "lint": "yarn workspaces foreach -ptR --from '@h6s/*' run lint",
     "test": "yarn workspaces foreach -ptR --from '@h6s/*' run test",
     "typecheck": "yarn workspaces foreach -ptR --from '@h6s/*' run typecheck",
