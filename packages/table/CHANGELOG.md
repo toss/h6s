@@ -1,5 +1,11 @@
 # @h6s/table
 
+## 2.0.3
+
+### Patch Changes
+
+- 96d248e: ci: oidc
+
 ## 2.0.2
 
 ### Patch Changes
