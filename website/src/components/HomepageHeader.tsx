@@ -34,7 +34,7 @@ export function HomepageHeader() {
             </Link>
             <a
               className="button button--primary button--outline button--lg"
-              href="https://github.com/h6s-dev/h6s" target="_blank" rel="noreferrer">
+              href="https://github.com/toss/h6s" target="_blank" rel="noreferrer">
               GitHub
             </a>
           </div>

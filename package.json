@@ -15,10 +15,10 @@
     "react-table"
   ],
   "author": "JaeYeopHan(Jbee)",
-  "organization": "h6s-dev",
+  "organization": "toss",
   "repository": {
     "type": "git",
-    "url": "https://github.com/h6s-dev/h6s"
+    "url": "https://github.com/toss/h6s"
   },
   "homepage": "https://h6s.dev",
   "license": "MIT",

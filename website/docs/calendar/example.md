@@ -3,7 +3,7 @@ sidebar_position: 2
 title: Example
 ---
 
-[View Source on GitHub](https://github.com/h6s-dev/h6s/blob/main/examples/react/src/pages/calendar/index.tsx)
+[View Source on GitHub](https://github.com/toss/h6s/blob/main/examples/react/src/pages/calendar/index.tsx)
 
 ```tsx
 import { useCalendar } from '@h6s/calendar'
