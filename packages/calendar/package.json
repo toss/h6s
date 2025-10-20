@@ -51,7 +51,7 @@
     "@types/react": "*",
     "date-fns": "2.30.0",
     "jsdom": "*",
-    "playwright": "1.17.1",
+    "playwright": "1.55.1",
     "react": "*",
     "react-dom": "*",
     "react-test-renderer": "*",

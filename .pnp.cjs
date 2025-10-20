@@ -12788,7 +12788,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react-native", null],\
           ["date-fns", "npm:2.30.0"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
-          ["playwright", "npm:1.17.1"],\
+          ["playwright", "npm:1.55.1"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:18.3.1"],\
           ["react-native", null],\
@@ -12822,7 +12822,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.10"],\
           ["date-fns", "npm:2.30.0"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
-          ["playwright", "npm:1.17.1"],\
+          ["playwright", "npm:1.55.1"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:18.3.1"],\
           ["react-test-renderer", "virtual:abe90f875b5beef0e38403a8454ea0eefda549e95aac1ad297da0ed29b55095ad3cd9f38a14e4c3a5db914b694221e8d36299db8cd6f79f3c9dd1443e69fb6a3#npm:18.3.1"],\
@@ -29510,11 +29510,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["playwright", [\
-      ["npm:1.17.1", {\
-        "packageLocation": "./.yarn/unplugged/playwright-npm-1.17.1-3ca8c42c9b/node_modules/playwright/",\
+      ["npm:1.55.1", {\
+        "packageLocation": "./.yarn/cache/playwright-npm-1.55.1-8b5d08a45d-5dcf9ce564.zip/node_modules/playwright/",\
         "packageDependencies": [\
-          ["playwright", "npm:1.17.1"],\
-          ["playwright-core", "npm:1.17.1"]\
+          ["playwright", "npm:1.55.1"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
+          ["playwright-core", "npm:1.55.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -29540,6 +29541,13 @@ const RAW_RUNTIME_STATE =
           ["ws", "virtual:c9342e8b04abd1be8370bacd15a6ed8ed6b64b59f4764c77a86b444e9fa154abd21c8a0b81e412307abcfb177cff28bd5dd8a0108159465adbd31ef7601bd643#npm:7.5.6"],\
           ["yauzl", "npm:2.10.0"],\
           ["yazl", "npm:2.5.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.55.1", {\
+        "packageLocation": "./.yarn/cache/playwright-core-npm-1.55.1-1fbca4286d-953a43039d.zip/node_modules/playwright-core/",\
+        "packageDependencies": [\
+          ["playwright-core", "npm:1.55.1"]\
         ],\
         "linkType": "HARD"\
       }]\
