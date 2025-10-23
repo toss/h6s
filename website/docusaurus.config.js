@@ -1,6 +1,10 @@
 const packageJson = require('../package.json')
 const { themes } = require('prism-react-renderer');
 
+const getHttpsRepoUrl = (repoUrl) => {
+  return repoUrl.replace('git+', '').replace(/\.git$/, '');
+};
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
   title: packageJson.name,
@@ -20,7 +24,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: `${packageJson.repository.url}/edit/main/website/`,
+          editUrl: `${getHttpsRepoUrl(packageJson.repository.url)}/edit/main/website/`,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -55,7 +59,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: packageJson.repository.url,
+            href: getHttpsRepoUrl(packageJson.repository.url),
             label: 'GitHub',
             position: 'right',
           },
@@ -82,7 +86,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: packageJson.repository.url,
+                href: getHttpsRepoUrl(packageJson.repository.url),
               },
               {
                 label: 'NPM',
