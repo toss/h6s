@@ -2,7 +2,7 @@
   "name": "@h6s/table",
   "version": "2.0.3",
   "sideEffects": false,
-  "main": "src/index.ts",
+  "main": "dist/index.cjs",
   "type": "module",
   "repository": {
     "type": "git",
