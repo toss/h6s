@@ -1,5 +1,11 @@
 # @h6s/table
 
+## 2.0.4
+
+### Patch Changes
+
+- a185823: fix: update main field to point to built files in package.json
+
 ## 2.0.3
 
 ### Patch Changes
