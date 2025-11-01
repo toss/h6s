@@ -3,9 +3,9 @@
 import { useCalendar } from "@h6s/calendar";
 import { format, isSameDay } from "date-fns";
 import { useState } from "react";
-import "./DatePickerVanilla.css";
+import "./DatePicker.css";
 
-export function DatePickerVanilla() {
+export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 

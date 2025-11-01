@@ -1,19 +1,19 @@
-import { DatePickerVanilla } from '../DatePickerVanilla';
+import { DatePicker } from './DatePicker';
 
-# DatePicker - Vanilla CSS
+# Vanilla CSS
 
-A complete DatePicker implementation using @h6s/calendar with plain CSS (no framework required).
+DatePicker built with @h6s/calendar and plain CSS.
 
 ## Live Demo
 
-<DatePickerVanilla />
+<DatePicker />
 
 ## Features
 
 - Single date selection
 - Month/year navigation
 - Today button
-- Pure CSS with BEM methodology
+- Component-scoped CSS classes
 - Dark mode support with `@media (prefers-color-scheme: dark)`
 
 ## Code
@@ -26,9 +26,9 @@ A complete DatePicker implementation using @h6s/calendar with plain CSS (no fram
 import { useCalendar } from '@h6s/calendar';
 import { format, isSameDay } from 'date-fns';
 import { useState } from 'react';
-import './DatePickerVanilla.css';
+import './DatePicker.css';
 
-export function DatePickerVanilla() {
+export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -133,7 +133,7 @@ export function DatePickerVanilla() {
 }
 ```
 
-### Styles (DatePickerVanilla.css)
+### Styles (DatePicker.css)
 
 ```css copy
 .datepicker-container {
@@ -345,14 +345,6 @@ export function DatePickerVanilla() {
 
 ## Key Implementation Details
 
-### BEM Methodology
-
-This implementation follows the BEM (Block Element Modifier) naming convention:
-
-- **Block**: `datepicker` - The component itself
-- **Elements**: `datepicker-trigger`, `datepicker-dropdown`, etc.
-- **Modifiers**: `datepicker-day--selected`, `datepicker-day--today`, etc.
-
 ### Dark Mode Support
 
 Dark mode is handled using CSS media queries:
@@ -374,13 +366,12 @@ This implementation requires:
 
 ## Customization
 
-You can easily customize this DatePicker by modifying the CSS variables:
+You can customize this picker by updating the CSS:
 
 - **Colors**: Change hex color values in the CSS
 - **Spacing**: Adjust padding and margin values
 - **Sizing**: Modify width/height values
 - **Transitions**: Change transition duration and timing
-- **BEM Naming**: Rename classes to match your project's convention
 
 ## See Also
 
