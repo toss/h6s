@@ -1,0 +1,53 @@
+import { DatePickerPreview } from './DatePickerPreview';
+import { CodeFromFile } from '../../../../components/CodeFromFile';
+
+# Bootstrap 5
+
+DatePicker built with @h6s/calendar and Bootstrap 5 components.
+
+## Live Demo
+
+<DatePickerPreview />
+
+## Features
+
+- Single date selection
+- Month/year navigation
+- Today shortcut
+- Uses Bootstrap 5 utility classes
+- Automatic CDN stylesheet loading for the example
+
+## Code
+
+<CodeFromFile
+  file="app/examples/date-picker/bootstrap/DatePicker.tsx"
+  lang="tsx"
+  filename="DatePicker.tsx"
+/>
+
+## Key Implementation Details
+
+### Loading Bootstrap Styles
+
+The live demo wraps `DatePicker` with a shadow-root helper that injects the Bootstrap CDN stylesheet so the docs theme stays intact. In your app, import Bootstrap once globally (for example `import 'bootstrap/dist/css/bootstrap.min.css';` in `layout.tsx`) and render `<DatePicker />` directly.
+
+### Button States
+
+- Selected date uses `btn-primary`
+- Today's date gets an outline highlight
+- Disabled month days fade using `text-muted`
+
+## Customization
+
+You can adapt the component by tweaking Bootstrap classes:
+
+- Swap `btn-primary` with your theme color
+- Adjust spacing utilities (`mb-3`, `py-1`, etc.)
+- Configure typography with `fw-semibold`, `h6`, or custom classes
+- Add icons from Bootstrap Icons for navigation arrows
+
+## See Also
+
+- [Tailwind CSS Example](/examples/date-picker/tailwind)
+- [Vanilla CSS Example](/examples/date-picker/vanilla)
+- [API Reference](/api-reference)

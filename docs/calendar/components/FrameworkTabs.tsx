@@ -1,36 +1,38 @@
 "use client";
 
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
-type Framework = "tailwind" | "vanilla";
+type Framework = "tailwind" | "bootstrap" | "vanilla";
 
 interface FrameworkTabsProps {
-  children: {
-    tailwind: ReactNode;
-    vanilla: ReactNode;
-  };
+  children: Record<Framework, ReactNode>;
 }
 
 export function FrameworkTabs({ children }: FrameworkTabsProps) {
+  const tabs: Array<{ key: Framework; label: string }> = useMemo(
+    () => [
+      { key: "tailwind", label: "Tailwind CSS" },
+      { key: "bootstrap", label: "Bootstrap 5" },
+      { key: "vanilla", label: "Vanilla CSS" },
+    ],
+    []
+  );
+
   const [activeFramework, setActiveFramework] = useState<Framework>("tailwind");
 
   return (
     <div className="framework-tabs">
       <div className="framework-tabs-header">
-        <button
-          type="button"
-          onClick={() => setActiveFramework("tailwind")}
-          className={`framework-tab ${activeFramework === "tailwind" ? "framework-tab--active" : ""}`}
-        >
-          Tailwind CSS
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveFramework("vanilla")}
-          className={`framework-tab ${activeFramework === "vanilla" ? "framework-tab--active" : ""}`}
-        >
-          Vanilla CSS
-        </button>
+        {tabs.map(({ key, label }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setActiveFramework(key)}
+            className={`framework-tab ${activeFramework === key ? "framework-tab--active" : ""}`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <div className="framework-tabs-content">{children[activeFramework]}</div>
     </div>

@@ -4,6 +4,9 @@ const meta: MetaRecord = {
   index: {
     title: "Overview",
   },
+  bootstrap: {
+    title: "Bootstrap 5",
+  },
   vanilla: {
     title: "Vanilla CSS",
   },
