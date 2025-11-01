@@ -17,3 +17,7 @@ website/.yarn/.cache/**/*
 playwright-report
 coverage
 .DS_Store
+
+# AI context files
+CLAUDE.md
+.ai/
