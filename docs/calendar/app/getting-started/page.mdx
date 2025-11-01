@@ -1,0 +1,88 @@
+# Getting Started
+
+Get started with @h6s/calendar in your React application.
+
+## Installation
+
+Install the package along with its peer dependency `date-fns`:
+
+```bash npm2yarn
+npm install @h6s/calendar date-fns
+```
+
+### Peer Dependencies
+
+- `react` >= 18
+- `date-fns` >= 2
+
+## Quick Start
+
+Here's a simple example to get you started with a basic calendar:
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
+
+function MyCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+
+  return (
+    <div>
+      <div>
+        <button onClick={navigation.toPrev}>Previous</button>
+        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <button onClick={navigation.toNext}>Next</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            {headers.weekdays.map(({ key, value }) => (
+              <th key={key}>{format(value, 'EEEEEE')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.value.map(({ key, value: days }) => (
+            <tr key={key}>
+              {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
+                <td
+                  key={key}
+                  style={{
+                    opacity: isCurrentMonth ? 1 : 0.4,
+                    fontWeight: isCurrentDate ? 'bold' : 'normal',
+                  }}
+                >
+                  {format(value, 'd')}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+## What's Next?
+
+- Learn about all available options in the [API Reference](/api-reference)
+- See practical examples with different styling solutions
+- Build a [DatePicker](/examples/datepicker) or [DateRangePicker](/examples/daterangepicker)
+
+## Key Concepts
+
+### Headless Design
+
+@h6s/calendar is completely headless - it provides the calendar logic and state management without any styling or markup. This means:
+
+- **Full styling control**: Use any CSS framework or styling solution
+- **Flexible markup**: Build any calendar UI pattern you need
+- **Framework agnostic**: Works with React Server Components, Next.js, and any React setup
+
+### Minimal Dependencies
+
+@h6s/calendar depends only on React and date-fns, keeping your bundle size small. The library uses date-fns internally for date calculations, ensuring reliable and well-tested date handling.
+
+While date-fns is required, you're free to use it or any other date library for formatting and displaying dates in your UI. The hook returns native Date objects, giving you complete flexibility in how you present calendar data.
