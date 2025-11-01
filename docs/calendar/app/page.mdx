@@ -1,0 +1,65 @@
+# @h6s/calendar
+
+## Logic-first Calendar Hook for React
+
+**Your calendar, your way.**
+
+@h6s/calendar is a headless calendar library that provides pure logic without any UI. Build any calendar interface you want with complete styling freedom.
+
+## Key Features
+
+### 🧠 Pure Logic
+Only one hook, `useCalendar()`, controls everything. No UI constraints, just clean calendar state management.
+
+### 🔌 Integrate Anything
+Works seamlessly with any design system:
+- Tailwind CSS
+- Chakra UI
+- shadcn/ui
+- Vanilla Extract
+- CSS-in-JS (Emotion/styled-components)
+
+### 🪨 Stable Core
+UI changes don't affect the logic. Zero UI dependencies means a stable, maintainable core.
+
+## Quick Start
+
+```bash
+npm install @h6s/calendar
+# or
+yarn add @h6s/calendar
+# or
+pnpm add @h6s/calendar
+```
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+
+function MyCalendar() {
+  const { headers, body, navigation, view } = useCalendar();
+
+  return (
+    <div>
+      {/* Your custom UI here */}
+    </div>
+  );
+}
+```
+
+## What Can You Build?
+
+- **DatePicker** - Single date selection with 5 CSS framework examples
+- **DateRangePicker** - Date range selection with 5 CSS framework examples
+
+Each example shows how to integrate @h6s/calendar with popular styling solutions.
+
+## Why Headless?
+
+Headless components separate logic from presentation, giving you:
+
+- **Complete Design Freedom** - Style it exactly how you want
+- **Framework Agnostic** - Works with any CSS solution
+- **Smaller Bundle Size** - No unnecessary UI code
+- **Better Maintainability** - Logic and UI evolve independently
+
+[Get Started](/docs/getting-started) | [View Examples](/docs/examples/datepicker)

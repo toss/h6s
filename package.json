@@ -91,7 +91,8 @@
   "workspaces": [
     "packages/*",
     "examples/*",
-    "website"
+    "website",
+    "docs/*"
   ],
   "scripts": {
     "check": "yarn typecheck && yarn lint && yarn test",
