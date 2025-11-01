@@ -30,7 +30,6 @@ import './DatePicker.css';
 
 export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const { headers, body, navigation, cursorDate } = useCalendar({
     defaultDate: selectedDate ?? new Date(),
@@ -38,96 +37,90 @@ export function DatePicker() {
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
-    setIsOpen(false);
   };
 
   return (
-    <div className="datepicker-container">
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="datepicker-trigger"
-      >
-        {selectedDate ? format(selectedDate, 'PPP') : 'Select a date'}
-      </button>
-
-      {isOpen && (
-        <div className="datepicker-dropdown">
-          <div className="datepicker-header">
-            <button
-              type="button"
-              onClick={navigation.toPrev}
-              className="datepicker-nav-button"
-              aria-label="Previous month"
-            >
-              ←
-            </button>
-            <h2 className="datepicker-title">
-              {format(cursorDate, 'MMMM yyyy')}
-            </h2>
-            <button
-              type="button"
-              onClick={navigation.toNext}
-              className="datepicker-nav-button"
-              aria-label="Next month"
-            >
-              →
-            </button>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              navigation.setToday();
-              setSelectedDate(new Date());
-              setIsOpen(false);
-            }}
-            className="datepicker-today-button"
-          >
-            Today
-          </button>
-
-          <table className="datepicker-calendar">
-            <thead>
-              <tr>
-                {headers.weekdays.map(({ key, value }) => (
-                  <th key={key} className="datepicker-weekday">
-                    {format(value, 'EEEEEE')}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {body.value.map(({ key, value: days }) => (
-                <tr key={key}>
-                  {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                    const isSelected = selectedDate && isSameDay(value, selectedDate);
-                    const classNames = [
-                      'datepicker-day',
-                      !isCurrentMonth && 'datepicker-day--outside',
-                      isCurrentMonth && 'datepicker-day--current-month',
-                      isCurrentDate && 'datepicker-day--today',
-                      isSelected && 'datepicker-day--selected',
-                    ].filter(Boolean).join(' ');
-
-                    return (
-                      <td key={key}>
-                        <button
-                          type="button"
-                          onClick={() => handleDateSelect(value)}
-                          className={classNames}
-                        >
-                          {format(value, 'd')}
-                        </button>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="datepicker">
+      <div className="datepicker-selection">
+        <div>
+          <p className="datepicker-selection-label">Selected date</p>
+          <p className="datepicker-selection-value">
+            {selectedDate ? format(selectedDate, 'PPP') : 'Pick a date'}
+          </p>
         </div>
-      )}
+        <button
+          type="button"
+          onClick={() => {
+            navigation.setToday();
+            setSelectedDate(new Date());
+          }}
+          className="datepicker-today-button"
+        >
+          Today
+        </button>
+      </div>
+
+      <div className="datepicker-header">
+        <button
+          type="button"
+          onClick={navigation.toPrev}
+          className="datepicker-nav-button"
+          aria-label="Previous month"
+        >
+          ←
+        </button>
+        <h2 className="datepicker-title">
+          {format(cursorDate, 'MMMM yyyy')}
+        </h2>
+        <button
+          type="button"
+          onClick={navigation.toNext}
+          className="datepicker-nav-button"
+          aria-label="Next month"
+        >
+          →
+        </button>
+      </div>
+
+      <table className="datepicker-calendar">
+        <thead>
+          <tr>
+            {headers.weekdays.map(({ key, value }) => (
+              <th key={key} className="datepicker-weekday">
+                {format(value, 'EEEEEE')}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.value.map(({ key, value: days }) => (
+            <tr key={key}>
+              {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
+                const isSelected = selectedDate && isSameDay(value, selectedDate);
+                const classNames = [
+                  'datepicker-day',
+                  !isCurrentMonth && 'datepicker-day--outside',
+                  isCurrentMonth && 'datepicker-day--current-month',
+                  isCurrentDate && 'datepicker-day--today',
+                  isSelected && 'datepicker-day--selected',
+                ].filter(Boolean).join(' ');
+
+                return (
+                  <td key={key}>
+                    <button
+                      type="button"
+                      onClick={() => handleDateSelect(value)}
+                      className={classNames}
+                    >
+                      {format(value, 'd')}
+                    </button>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -136,58 +129,67 @@ export function DatePicker() {
 ### Styles (DatePicker.css)
 
 ```css copy
-.datepicker-container {
-  position: relative;
-  display: inline-block;
+.datepicker {
   margin: 2rem 0;
+  max-width: 20rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  padding: 1.25rem;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
 
-.datepicker-trigger {
-  padding: 0.5rem 1rem;
+.datepicker-selection {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.datepicker-selection-label {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.datepicker-selection-value {
+  margin: 0.25rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.datepicker-today-button {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  background-color: transparent;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
-  background-color: white;
-  color: #111827;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s;
+  transition: background-color 0.2s;
 }
 
-.datepicker-trigger:hover {
-  background-color: #f9fafb;
-}
-
-.datepicker-trigger:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #3b82f6;
-}
-
-.datepicker-dropdown {
-  position: absolute;
-  top: 100%;
-  margin-top: 0.5rem;
-  padding: 1rem;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  min-width: 320px;
+.datepicker-today-button:hover {
+  background-color: #f3f4f6;
 }
 
 .datepicker-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  padding: 1rem 0;
 }
 
 .datepicker-nav-button {
   padding: 0.5rem;
-  background: none;
   border: none;
-  border-radius: 0.25rem;
-  color: #111827;
+  border-radius: 0.5rem;
+  background: none;
+  color: #1f2937;
   cursor: pointer;
   font-size: 1.125rem;
   transition: background-color 0.2s;
@@ -202,23 +204,6 @@ export function DatePicker() {
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
-}
-
-.datepicker-today-button {
-  width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  background-color: #f3f4f6;
-  border: none;
-  border-radius: 0.25rem;
-  color: #111827;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.datepicker-today-button:hover {
-  background-color: #e5e7eb;
 }
 
 .datepicker-calendar {
@@ -258,38 +243,45 @@ export function DatePicker() {
 }
 
 .datepicker-day--today {
-  font-weight: bold;
+  font-weight: 600;
   box-shadow: 0 0 0 2px #3b82f6;
 }
 
 .datepicker-day--selected {
   background-color: #3b82f6;
-  color: white;
+  color: #ffffff;
 }
 
 .datepicker-day--selected:hover {
   background-color: #2563eb;
 }
 
-/* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  .datepicker-trigger {
-    background-color: #1f2937;
+  .datepicker {
+    border-color: #334155;
+    background-color: #111827;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);
+  }
+
+  .datepicker-selection {
+    border-color: #334155;
+  }
+
+  .datepicker-selection-label {
+    color: #9ca3af;
+  }
+
+  .datepicker-selection-value {
     color: #f9fafb;
-    border-color: #4b5563;
   }
 
-  .datepicker-trigger:hover {
-    background-color: #374151;
+  .datepicker-today-button {
+    color: #f9fafb;
+    border-color: #475569;
   }
 
-  .datepicker-trigger:focus {
-    box-shadow: 0 0 0 2px #60a5fa;
-  }
-
-  .datepicker-dropdown {
+  .datepicker-today-button:hover {
     background-color: #1f2937;
-    border-color: #374151;
   }
 
   .datepicker-nav-button {
@@ -297,20 +289,11 @@ export function DatePicker() {
   }
 
   .datepicker-nav-button:hover {
-    background-color: #374151;
+    background-color: #1f2937;
   }
 
   .datepicker-title {
     color: #f9fafb;
-  }
-
-  .datepicker-today-button {
-    background-color: #374151;
-    color: #f9fafb;
-  }
-
-  .datepicker-today-button:hover {
-    background-color: #4b5563;
   }
 
   .datepicker-weekday {
@@ -318,7 +301,7 @@ export function DatePicker() {
   }
 
   .datepicker-day--outside {
-    color: #4b5563;
+    color: #475569;
   }
 
   .datepicker-day--current-month {
@@ -326,7 +309,7 @@ export function DatePicker() {
   }
 
   .datepicker-day--current-month:hover {
-    background-color: #374151;
+    background-color: #1f2937;
   }
 
   .datepicker-day--today {
