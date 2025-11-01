@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
-import { Footer, Layout, Navbar } from 'nextra-theme-docs';
-import { Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import 'nextra-theme-docs/style.css';
-import './globals.css';
+import type { Metadata } from "next";
+import { Footer, Layout, Navbar } from "nextra-theme-docs";
+import { Head } from "nextra/components";
+import { getPageMap } from "nextra/page-map";
+import "nextra-theme-docs/style.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: '@h6s/calendar - Logic-first Calendar Hook for React',
-  description: 'Headless calendar library for React. Your calendar, your way.',
+  title: "@h6s/calendar - Logic-first Calendar Hook for React",
+  description: "Headless calendar library for React. Your calendar, your way.",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           pageMap={await getPageMap()}
           footer={
             <Footer>
-              MIT {new Date().getFullYear()} ©{' '}
+              MIT {new Date().getFullYear()} ©{" "}
               <a href="https://github.com/toss/h6s" target="_blank" rel="noopener noreferrer">
                 h6s
               </a>
