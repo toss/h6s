@@ -13058,6 +13058,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@h6s/calendar-docs", "workspace:docs/calendar"],\
           ["@h6s/calendar", "virtual:d9e218c110877c926f836d55065f0e786a637b7a92df25c5dd0725e0a75fb3f821cfa8a54ad9928eddbc9573fd7c537273db10d2e8ce70ec892da957b3ef9dd3#workspace:packages/calendar"],\
+          ["@types/mdx", "npm:2.0.13"],\
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
           ["@types/react-dom", "virtual:d9e218c110877c926f836d55065f0e786a637b7a92df25c5dd0725e0a75fb3f821cfa8a54ad9928eddbc9573fd7c537273db10d2e8ce70ec892da957b3ef9dd3#npm:18.3.7"],\
@@ -19105,6 +19106,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/mdx", [\
+      ["npm:2.0.13", {\
+        "packageLocation": "./.yarn/cache/@types-mdx-npm-2.0.13-52981f86f6-b73ed5f081.zip/node_modules/@types/mdx/",\
+        "packageDependencies": [\
+          ["@types/mdx", "npm:2.0.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:2.0.3", {\
         "packageLocation": "./.yarn/cache/@types-mdx-npm-2.0.3-0b710c028d-41deb51c29.zip/node_modules/@types/mdx/",\
         "packageDependencies": [\

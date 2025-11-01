@@ -6585,6 +6585,7 @@ __metadata:
   resolution: "@h6s/calendar-docs@workspace:docs/calendar"
   dependencies:
     "@h6s/calendar": "workspace:*"
+    "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:^22"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -10730,6 +10731,13 @@ __metadata:
   version: 2.0.3
   resolution: "@types/mdx@npm:2.0.3"
   checksum: 10/41deb51c29535913af01d25f0e1414cfb5a6948d0e60e77e4aca895694de48bf0ac69c5a81fe2d9617d726cb253001ef82a65b683d5ef51987d15aa1931d086b
+  languageName: node
+  linkType: hard
+
+"@types/mdx@npm:^2.0.13":
+  version: 2.0.13
+  resolution: "@types/mdx@npm:2.0.13"
+  checksum: 10/b73ed5f08114879b9590dc6a9ee8b648643c57c708583cd24b2bc3cc8961361fc63139ac7e9291e7b3b6e6b45707749d01d6f9727ddec5533df75dc3b90871a4
   languageName: node
   linkType: hard
 
