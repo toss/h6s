@@ -24,23 +24,23 @@ UI changes don't affect the logic. Zero UI dependencies means a stable, maintain
 
 ## Quick Start
 
-```bash
-npm install @h6s/calendar
-# or
-yarn add @h6s/calendar
-# or
-pnpm add @h6s/calendar
+```bash npm2yarn
+npm install @h6s/calendar date-fns
 ```
 
 ```tsx
 import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
 
 function MyCalendar() {
-  const { headers, body, navigation, view } = useCalendar();
+  const { headers, body, navigation, cursorDate } = useCalendar();
 
   return (
     <div>
-      {/* Your custom UI here */}
+      <button onClick={navigation.toPrev}>Previous</button>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      <button onClick={navigation.toNext}>Next</button>
+      {/* Your custom calendar UI here */}
     </div>
   );
 }
@@ -62,4 +62,4 @@ Headless components separate logic from presentation, giving you:
 - **Smaller Bundle Size** - No unnecessary UI code
 - **Better Maintainability** - Logic and UI evolve independently
 
-[Get Started](/docs/getting-started) | [View Examples](/docs/examples/datepicker)
+[Get Started](/getting-started) | [API Reference](/api-reference)
