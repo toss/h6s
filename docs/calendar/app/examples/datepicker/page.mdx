@@ -13,8 +13,6 @@ A complete DatePicker implementation using @h6s/calendar with Tailwind CSS.
 - Single date selection
 - Month/year navigation
 - Today button
-- Keyboard navigation support
-- Responsive design
 - Fully styled with Tailwind CSS
 - Dark mode support
 
@@ -135,36 +133,6 @@ export function DatePicker() {
 ```
 
 ## Key Implementation Details
-
-### State Management
-
-The DatePicker maintains two pieces of state:
-- `selectedDate`: The user's selected date
-- `isOpen`: Whether the calendar dropdown is visible
-
-### Date Selection
-
-When a date is clicked, we:
-1. Update the selected date
-2. Close the dropdown
-3. The button text updates to show the formatted date
-
-### Styling Classes
-
-Key Tailwind classes used:
-- `relative` and `absolute`: For dropdown positioning
-- `rounded-lg` and `shadow-lg`: For modern card appearance
-- `hover:bg-gray-100`: Interactive feedback
-- `ring-2 ring-blue-500`: Focus/current date indication
-- `bg-blue-500 text-white`: Selected date highlight
-
-### Accessibility
-
-- Keyboard navigation support through button elements
-- Semantic HTML with proper `<table>` structure
-- Focus states with ring utilities
-- Clear visual feedback for interactions
-- Explicit `type="button"` attributes to prevent form submission
 
 ### Dark Mode Support
 
