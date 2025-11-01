@@ -1,7 +1,7 @@
 import type { MetaRecord } from "nextra";
 
 const meta: MetaRecord = {
-  datepicker: {
+  "date-picker": {
     title: "Date Picker",
   },
 };
