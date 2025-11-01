@@ -1,0 +1,223 @@
+.datepicker-container {
+  position: relative;
+  display: inline-block;
+  margin: 2rem 0;
+}
+
+.datepicker-trigger {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #111827;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.datepicker-trigger:hover {
+  background-color: #f9fafb;
+}
+
+.datepicker-trigger:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .datepicker-trigger {
+    background-color: #1f2937;
+    color: #f9fafb;
+    border-color: #4b5563;
+  }
+
+  .datepicker-trigger:hover {
+    background-color: #374151;
+  }
+
+  .datepicker-trigger:focus {
+    box-shadow: 0 0 0 2px #60a5fa;
+  }
+}
+
+.datepicker-dropdown {
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+  min-width: 320px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-dropdown {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+}
+
+.datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.datepicker-nav-button {
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  border-radius: 0.25rem;
+  color: #111827;
+  cursor: pointer;
+  font-size: 1.125rem;
+  transition: background-color 0.2s;
+}
+
+.datepicker-nav-button:hover {
+  background-color: #f3f4f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-nav-button {
+    color: #f9fafb;
+  }
+
+  .datepicker-nav-button:hover {
+    background-color: #374151;
+  }
+}
+
+.datepicker-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-title {
+    color: #f9fafb;
+  }
+}
+
+.datepicker-today-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 0.25rem;
+  color: #111827;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.datepicker-today-button:hover {
+  background-color: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-today-button {
+    background-color: #374151;
+    color: #f9fafb;
+  }
+
+  .datepicker-today-button:hover {
+    background-color: #4b5563;
+  }
+}
+
+.datepicker-calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.datepicker-weekday {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-weekday {
+    color: #9ca3af;
+  }
+}
+
+.datepicker-day {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.datepicker-day--outside {
+  color: #d1d5db;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-day--outside {
+    color: #4b5563;
+  }
+}
+
+.datepicker-day--current-month {
+  color: #111827;
+}
+
+.datepicker-day--current-month:hover {
+  background-color: #f3f4f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-day--current-month {
+    color: #f9fafb;
+  }
+
+  .datepicker-day--current-month:hover {
+    background-color: #374151;
+  }
+}
+
+.datepicker-day--today {
+  font-weight: bold;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-day--today {
+    box-shadow: 0 0 0 2px #60a5fa;
+  }
+}
+
+.datepicker-day--selected {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.datepicker-day--selected:hover {
+  background-color: #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-day--selected {
+    background-color: #2563eb;
+  }
+
+  .datepicker-day--selected:hover {
+    background-color: #1d4ed8;
+  }
+}
