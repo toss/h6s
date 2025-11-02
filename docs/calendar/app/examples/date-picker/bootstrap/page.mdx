@@ -42,7 +42,7 @@ Add this script to your app's HTML `<head>` or root layout:
 
 ```html
 <script>
-  const updateTheme = () => {
+  function updateTheme() {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
   };

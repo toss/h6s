@@ -12,7 +12,7 @@ export function DatePicker() {
     defaultDate: selectedDate ?? new Date(),
   });
 
-  const handleDateSelect = (date: Date) => {
+  function handleDateSelect(date: Date) {
     setSelectedDate(date);
   };
 

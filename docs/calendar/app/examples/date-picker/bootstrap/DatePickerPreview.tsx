@@ -14,15 +14,9 @@ const IFRAME_HTML = `
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="${BOOTSTRAP_CDN_URL}" />
     <style>
-      :root { color-scheme: light dark; }
       body {
         margin: 0;
-        padding: 24px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
         background: transparent;
-      }
-      #bootstrap-root {
-        display: block;
       }
     </style>
   </head>
@@ -30,7 +24,7 @@ const IFRAME_HTML = `
     <div id="bootstrap-root"></div>
     <script>
       // Detect system dark mode and update Bootstrap theme
-      const updateTheme = () => {
+      function updateTheme() {
         const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
       };
@@ -121,8 +115,6 @@ export function DatePickerPreview() {
       title="Bootstrap Date Picker Preview"
       style={{
         width: "100%",
-        border: "none",
-        backgroundColor: "transparent",
       }}
       sandbox="allow-scripts allow-same-origin"
     />
