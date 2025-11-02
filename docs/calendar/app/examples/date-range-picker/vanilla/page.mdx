@@ -1,0 +1,93 @@
+import { DateRangePicker } from './DateRangePicker';
+import { CodeFromFile } from '../../../../components/CodeFromFile';
+
+# Vanilla CSS
+
+DateRangePicker built with @h6s/calendar and plain CSS.
+
+## Live Demo
+
+<DateRangePicker />
+
+## Features
+
+- Date range selection (start and end dates)
+- Visual range highlighting between selected dates
+- Hover preview showing potential range
+- Clear button to reset selection
+- Month/year navigation
+- Component-scoped CSS classes
+- Dark mode support with `@media (prefers-color-scheme: dark)`
+
+## Code
+
+### Component (TypeScript/React)
+
+<CodeFromFile
+  file="app/examples/date-range-picker/vanilla/DateRangePicker.tsx"
+  lang="tsx"
+  filename="DateRangePicker.tsx"
+/>
+
+### Styles (DateRangePicker.css)
+
+<CodeFromFile
+  file="app/examples/date-range-picker/vanilla/DateRangePicker.css"
+  lang="css"
+  filename="DateRangePicker.css"
+/>
+
+## Key Implementation Details
+
+### Range Selection Logic
+
+The component handles range selection in three states:
+
+1. **No selection**: User clicks to select start date
+2. **Start selected**: Hover shows potential range, click completes the range
+3. **Range complete**: Next click starts a new selection
+
+The range is automatically ordered (earlier date becomes start, later becomes end) regardless of click order.
+
+### Visual States
+
+- **Range Start/End**: Blue background with white text
+- **In Range**: Light blue background
+- **Hover Preview**: Shows potential range while hovering (when start is selected)
+- **Today**: Blue ring outline
+- **Outside Month**: Faded text
+
+### Dark Mode Support
+
+Dark mode is handled using CSS media queries:
+
+```css
+@media (prefers-color-scheme: dark) {
+  /* Dark mode styles */
+}
+```
+
+The component automatically adapts based on the user's system preference.
+
+### No Framework Dependencies
+
+This implementation requires:
+- ✅ Only `@h6s/calendar` and `date-fns`
+- ✅ Plain CSS (no Tailwind, no CSS-in-JS)
+- ✅ Works in any React project
+
+## Customization
+
+You can customize this picker by updating the CSS:
+
+- **Colors**: Change hex color values for range highlighting
+- **Spacing**: Adjust padding and margin values
+- **Sizing**: Modify width/height values
+- **Transitions**: Change transition duration and timing
+
+## See Also
+
+- [Single Date Picker (Vanilla)](/examples/date-picker/vanilla)
+- [Bootstrap 5 Example](/examples/date-picker/bootstrap)
+- [Tailwind CSS Example](/examples/date-picker/tailwind)
+- [API Reference](/api-reference)
