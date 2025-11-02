@@ -19,7 +19,7 @@ export function DatePicker() {
     <div className="my-4" style={{ maxWidth: "24rem" }}>
       <div className="card shadow-sm border rounded-3">
         <div className="card-body p-4">
-          <div className="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+          <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
             <div>
               <p className="text-body-secondary small mb-1 fw-medium">Selected date</p>
               <p className="text-body-emphasis fw-semibold mb-0 fs-6">
