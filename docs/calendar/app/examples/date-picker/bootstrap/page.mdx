@@ -15,7 +15,8 @@ DatePicker built with @h6s/calendar and Bootstrap 5 components.
 - Month/year navigation
 - Today shortcut
 - Uses Bootstrap 5 utility classes
-- Automatic CDN stylesheet loading for the example
+- Dark mode support (automatic system theme detection)
+- Accessible with proper ARIA labels
 
 ## Code
 
@@ -29,13 +30,44 @@ DatePicker built with @h6s/calendar and Bootstrap 5 components.
 
 ### Loading Bootstrap Styles
 
-The live demo wraps `DatePicker` with a shadow-root helper that injects the Bootstrap CDN stylesheet so the docs theme stays intact. In your app, import Bootstrap once globally (for example `import 'bootstrap/dist/css/bootstrap.min.css';` in `layout.tsx`) and render `<DatePicker />` directly.
+The live demo renders inside a lightweight `<iframe>` that loads the Bootstrap CDN stylesheet, so the docs theme stays untouched while Bootstrap's CSS variables remain available. In your app, import Bootstrap once globally (for example `import 'bootstrap/dist/css/bootstrap.min.css';` in `layout.tsx`) and render `<DatePicker />` directly.
+
+### Dark Mode Support
+
+This component uses Bootstrap 5's semantic color utilities (`text-body-emphasis`, `text-body-secondary`, etc.) which automatically adapt to dark mode. To enable dark mode in your app:
+
+**Option 1: Auto-detect system theme (recommended)**
+
+Add this script to your app's HTML `<head>` or root layout:
+
+```html
+<script>
+  const updateTheme = () => {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+  };
+  updateTheme();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+</script>
+```
+
+**Option 2: Manual theme toggle**
+
+```html
+<html data-bs-theme="light">
+  <!-- Toggle programmatically -->
+  <script>
+    document.documentElement.setAttribute('data-bs-theme', 'dark');
+  </script>
+</html>
+```
 
 ### Button States
 
 - Selected date uses `btn-primary`
-- Today's date gets an outline highlight
-- Disabled month days fade using `text-muted`
+- Today's date gets an outline highlight with `btn-outline-primary`
+- Current month days use `text-body` for proper contrast
+- Other month days fade with `text-body-secondary` and reduced opacity
 
 ## Customization
 

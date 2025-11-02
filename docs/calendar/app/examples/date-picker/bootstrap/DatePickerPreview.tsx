@@ -1,76 +1,130 @@
 "use client";
 
-import { type PropsWithChildren, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef } from "react";
+import { type Root, createRoot } from "react-dom/client";
 import { DatePicker } from "./DatePicker";
 
 const BOOTSTRAP_CDN_URL = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
-const BOOTSTRAP_LINK_ATTR = "data-bootstrap-datepicker-demo";
-const BOOTSTRAP_ROOT_ID = "bootstrap-datepicker-root";
 
-function useBootstrapPortal() {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const [mountNode, setMountNode] = useState<HTMLDivElement | null>(null);
+const IFRAME_HTML = `
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="${BOOTSTRAP_CDN_URL}" />
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: transparent;
+      }
+      #bootstrap-root {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bootstrap-root"></div>
+    <script>
+      // Detect system dark mode and update Bootstrap theme
+      const updateTheme = () => {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+      };
+
+      // Initial theme setup
+      updateTheme();
+
+      // Listen for theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+    </script>
+  </body>
+</html>
+`;
+
+export function DatePickerPreview() {
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const rootRef = useRef<Root | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   useEffect(() => {
-    const host = hostRef.current;
-    if (!host) {
+    const iframe = iframeRef.current;
+    if (!iframe) {
       return;
     }
 
-    const shadowRoot = host.shadowRoot ?? host.attachShadow({ mode: "open" });
+    const adjustHeight = () => {
+      const doc = iframe.contentDocument;
+      if (!doc) {
+        return;
+      }
+      const { body, documentElement } = doc;
+      const height = Math.max(
+        body?.scrollHeight ?? 0,
+        documentElement?.scrollHeight ?? 0,
+        0
+      );
+      iframe.style.height = height ? `${height}px` : "0px";
+    };
 
-    let link = shadowRoot.querySelector<HTMLLinkElement>(`link[${BOOTSTRAP_LINK_ATTR}]`);
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = BOOTSTRAP_CDN_URL;
-      link.crossOrigin = "anonymous";
-      link.setAttribute(BOOTSTRAP_LINK_ATTR, "true");
-      shadowRoot.appendChild(link);
+    const mountReactApp = () => {
+      const doc = iframe.contentDocument;
+      if (!doc) {
+        return;
+      }
+
+      const mountNode = doc.getElementById("bootstrap-root");
+      if (!mountNode) {
+        return;
+      }
+
+      rootRef.current?.unmount();
+      rootRef.current = createRoot(mountNode);
+      rootRef.current.render(<DatePicker />);
+
+      adjustHeight();
+
+      resizeObserverRef.current?.disconnect();
+      resizeObserverRef.current = new ResizeObserver(() => adjustHeight());
+      resizeObserverRef.current.observe(mountNode);
+      if (doc.body) {
+        resizeObserverRef.current.observe(doc.body);
+      }
+    };
+
+    const handleLoad = () => {
+      mountReactApp();
+    };
+
+    iframe.addEventListener("load", handleLoad);
+
+    if (iframe.contentDocument?.readyState === "complete") {
+      mountReactApp();
     }
-
-    let root = shadowRoot.querySelector<HTMLDivElement>(`#${BOOTSTRAP_ROOT_ID}`);
-    if (!root) {
-      root = document.createElement("div");
-      root.id = BOOTSTRAP_ROOT_ID;
-      shadowRoot.appendChild(root);
-    }
-
-    setMountNode(root);
 
     return () => {
-      setMountNode(null);
-      if (root && root.parentNode === shadowRoot) {
-        shadowRoot.removeChild(root);
-      }
-      if (link?.getAttribute(BOOTSTRAP_LINK_ATTR) && link.parentNode === shadowRoot) {
-        shadowRoot.removeChild(link);
-      }
+      iframe.removeEventListener("load", handleLoad);
+      resizeObserverRef.current?.disconnect();
+      resizeObserverRef.current = null;
+      rootRef.current?.unmount();
+      rootRef.current = null;
     };
   }, []);
 
-  return { hostRef, mountNode };
-}
-
-function ShadowRoot({ children }: PropsWithChildren) {
-  const { hostRef, mountNode } = useBootstrapPortal();
-
   return (
-    <div ref={hostRef}>
-      {mountNode ? createPortal(children, mountNode) : null}
-    </div>
-  );
-}
-
-/**
- * Doc-site wrapper that scopes Bootstrap styles inside a shadow root.
- * Use <DatePicker /> directly in your application.
- */
-export function DatePickerPreview() {
-  return (
-    <ShadowRoot>
-      <DatePicker />
-    </ShadowRoot>
+    <iframe
+      ref={iframeRef}
+      srcDoc={IFRAME_HTML}
+      title="Bootstrap Date Picker Preview"
+      style={{
+        width: "100%",
+        border: "none",
+        backgroundColor: "transparent",
+      }}
+      sandbox="allow-scripts allow-same-origin"
+    />
   );
 }

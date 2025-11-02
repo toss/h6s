@@ -4,10 +4,6 @@ import { useCalendar } from "@h6s/calendar";
 import { format, isSameDay } from "date-fns";
 import { useState } from "react";
 
-/**
- * Pure Bootstrap implementation.
- * Assumes Bootstrap styles are already available in the application.
- */
 export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -20,58 +16,63 @@ export function DatePicker() {
   };
 
   return (
-    <div className="my-4 d-flex">
-      <div className="card shadow-sm border border-secondary-subtle rounded-4 bg-body-tertiary">
+    <div className="my-4" style={{ maxWidth: "24rem" }}>
+      <div className="card shadow-sm border rounded-3">
         <div className="card-body p-4">
-          <div className="d-flex justify-content-between align-items-start border-bottom pb-3 mb-4">
+          <div className="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
             <div>
-              <p className="text-uppercase text-muted fw-semibold mb-1 small">Selected date</p>
-              <p className="h5 fw-semibold text-body-emphasis mb-0">
+              <p className="text-body-secondary small mb-1 fw-medium">Selected date</p>
+              <p className="text-body-emphasis fw-semibold mb-0 fs-6">
                 {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
               </p>
             </div>
             <button
               type="button"
               onClick={() => {
+                const today = new Date();
                 navigation.setToday();
-                setSelectedDate(new Date());
+                setSelectedDate(today);
               }}
-              className="btn btn-outline-primary btn-sm"
+              className="btn btn-outline-primary btn-sm px-3 fw-medium"
             >
               Today
             </button>
           </div>
 
-          <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="d-flex justify-content-between align-items-center py-3">
             <button
               type="button"
               onClick={navigation.toPrev}
-              className="btn btn-sm btn-outline-secondary rounded-circle"
+              className="btn btn-link text-body p-2 text-decoration-none"
               aria-label="Previous month"
             >
-              <span aria-hidden className="fw-semibold">
-                ‹
-              </span>
+              <span style={{ fontSize: "1.25rem" }}>←</span>
             </button>
-            <h2 className="h5 mb-0 fw-semibold text-body-emphasis">{format(cursorDate, "MMMM yyyy")}</h2>
+
+            <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
+              {format(cursorDate, "MMMM yyyy")}
+            </h2>
+
             <button
               type="button"
               onClick={navigation.toNext}
-              className="btn btn-sm btn-outline-secondary rounded-circle"
+              className="btn btn-link text-body p-2 text-decoration-none"
               aria-label="Next month"
             >
-              <span aria-hidden className="fw-semibold">
-                ›
-              </span>
+              <span style={{ fontSize: "1.25rem" }}>→</span>
             </button>
           </div>
 
           <table className="table table-borderless text-center mb-0">
-            <thead className="text-muted small text-uppercase">
+            <thead>
               <tr>
                 {headers.weekdays.map(({ key, value }) => (
-                  <th key={key} className="fw-semibold pb-2">
-                    {format(value, "EEE")}
+                  <th
+                    key={key}
+                    className="fw-medium text-body-secondary py-2"
+                    style={{ fontSize: "0.875rem" }}
+                  >
+                    {format(value, "EEEEEE")}
                   </th>
                 ))}
               </tr>
@@ -81,30 +82,35 @@ export function DatePicker() {
                 <tr key={key}>
                   {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
                     const isSelected = selectedDate && isSameDay(value, selectedDate);
-                    const baseClasses = "btn btn-sm rounded-circle d-inline-flex align-items-center justify-content-center";
-                    const widthStyle = { width: "2.5rem", height: "2.5rem" };
 
-                    let className = `${baseClasses} btn-outline-secondary text-body-secondary`;
-
-                    if (!isCurrentMonth) {
-                      className = `${baseClasses} btn-outline-light text-muted`;
-                    }
-
-                    if (isCurrentDate) {
-                      className = `${className} border border-primary text-primary bg-body`;
-                    }
+                    let btnClass = "btn btn-sm rounded-circle border-0";
+                    const style: React.CSSProperties = {
+                      width: "2.5rem",
+                      height: "2.5rem",
+                      fontSize: "0.875rem",
+                      transition: "all 0.15s ease"
+                    };
 
                     if (isSelected) {
-                      className = `${baseClasses} btn-primary text-white shadow-sm`;
+                      btnClass += " btn-primary";
+                    } else if (isCurrentDate) {
+                      btnClass += " text-body-emphasis fw-bold";
+                      style.boxShadow = "0 0 0 2px var(--bs-primary)";
+                    } else if (isCurrentMonth) {
+                      btnClass += " text-body";
+                    } else {
+                      btnClass += " text-body-secondary";
+                      style.opacity = 0.4;
                     }
 
                     return (
-                      <td key={key} className="py-1">
+                      <td key={key} className="p-1">
                         <button
                           type="button"
                           onClick={() => handleDateSelect(value)}
-                          className={className}
-                          style={widthStyle}
+                          className={btnClass}
+                          style={style}
+                          aria-label={format(value, "PPP")}
                         >
                           {format(value, "d")}
                         </button>
