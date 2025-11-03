@@ -111,14 +111,19 @@
 }
 
 .datepicker-day--outside {
-  color: #d1d5db;
+  color: #9ca3af;
+}
+
+.datepicker-day--outside:hover:not(.datepicker-day--selected) {
+  background-color: #f3f4f6;
+  color: #111827;
 }
 
 .datepicker-day--current-month {
   color: #111827;
 }
 
-.datepicker-day--current-month:hover {
+.datepicker-day--current-month:hover:not(.datepicker-day--selected) {
   background-color: #f3f4f6;
 }
 
@@ -181,14 +186,19 @@
   }
 
   .datepicker-day--outside {
-    color: #475569;
+    color: #6b7280;
+  }
+
+  .datepicker-day--outside:hover:not(.datepicker-day--selected) {
+    background-color: #374151;
+    color: #f9fafb;
   }
 
   .datepicker-day--current-month {
     color: #f9fafb;
   }
 
-  .datepicker-day--current-month:hover {
+  .datepicker-day--current-month:hover:not(.datepicker-day--selected) {
     background-color: #1f2937;
   }
 

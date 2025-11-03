@@ -19,8 +19,9 @@ export function DatePicker() {
   };
 
   return (
-    <div className="my-4" style={{ maxWidth: "24rem" }}>
-      <div className="card shadow-sm border rounded-3">
+    <div className="d-flex justify-content-center my-4">
+      <div style={{ maxWidth: "24rem" }}>
+        <div className="card shadow-sm border rounded-3">
         <div className="card-body p-4">
           <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
             <div>
@@ -97,13 +98,14 @@ export function DatePicker() {
 
                     if (isSelected) {
                       btnClass += " btn-primary";
-                    } else if (isCurrentDate) {
-                      btnClass += " text-primary fw-bold";
-                    } else if (isCurrentMonth) {
-                      btnClass += " text-body";
                     } else {
-                      btnClass += " text-body-secondary";
-                      style.opacity = 0.4;
+                      if (isCurrentDate) {
+                        btnClass += " text-primary fw-bold";
+                      } else if (isCurrentMonth) {
+                        btnClass += " text-body";
+                      } else {
+                        btnClass += " text-secondary";
+                      }
                     }
 
                     return (
@@ -124,6 +126,7 @@ export function DatePicker() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

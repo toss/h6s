@@ -82,10 +82,12 @@ export function DatePicker() {
                       onClick={() => handleDateSelect(value, isCurrentMonth)}
                       className={`
                         w-10 h-10 rounded-md text-sm transition
-                        ${!isCurrentMonth && "text-gray-300 dark:text-gray-600"}
-                        ${isCurrentMonth && "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"}
+                        ${!isCurrentMonth && "text-gray-400 dark:text-gray-500"}
+                        ${!isCurrentMonth && !isSelected && "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100"}
+                        ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
+                        ${isCurrentMonth && !isSelected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
                         ${isCurrentDate && "font-bold text-blue-500 dark:text-blue-400"}
-                        ${isSelected && "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"}
+                        ${isSelected && "bg-blue-500 text-white hover:!bg-blue-600 dark:bg-blue-600 dark:hover:!bg-blue-700"}
                       `}
                     >
                       {format(value, "d")}
