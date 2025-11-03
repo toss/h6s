@@ -1,13 +1,30 @@
 import { DatePicker } from './DatePicker';
 import { CodeFromFile } from '@/components/CodeFromFile';
+import { DemoWithCode } from '@/components/DemoWithCode';
 
 # Vanilla CSS
 
 DatePicker built with @h6s/calendar and plain CSS.
 
-## Live Demo
+## Basic
 
-<DatePicker />
+<DemoWithCode
+  demo={<DatePicker />}
+  code={
+    <>
+      <CodeFromFile
+        file="app/examples/date-calendar/vanilla/DatePicker.tsx"
+        lang="tsx"
+        filename="DatePicker.tsx"
+      />
+      <CodeFromFile
+        file="app/examples/date-calendar/vanilla/DatePicker.css"
+        lang="css"
+        filename="DatePicker.css"
+      />
+    </>
+  }
+/>
 
 ## Features
 
@@ -16,24 +33,6 @@ DatePicker built with @h6s/calendar and plain CSS.
 - Today button
 - Component-scoped CSS classes
 - Dark mode support with `@media (prefers-color-scheme: dark)`
-
-## Code
-
-### Component (TypeScript/React)
-
-<CodeFromFile
-  file="app/examples/date-calendar/vanilla/DatePicker.tsx"
-  lang="tsx"
-  filename="DatePicker.tsx"
-/>
-
-### Styles (DatePicker.css)
-
-<CodeFromFile
-  file="app/examples/date-calendar/vanilla/DatePicker.css"
-  lang="css"
-  filename="DatePicker.css"
-/>
 
 ## Key Implementation Details
 

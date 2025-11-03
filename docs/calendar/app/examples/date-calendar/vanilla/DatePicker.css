@@ -88,15 +88,26 @@
   text-align: center;
 }
 
+.datepicker-calendar tbody tr {
+  height: 2.75rem;
+}
+
+.datepicker-calendar td {
+  position: relative;
+  padding: 0.125rem 0;
+}
+
 .datepicker-day {
   width: 2.5rem;
   height: 2.5rem;
   border: none;
-  border-radius: 50%;
+  border-radius: 0.375rem;
   background: none;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
+  position: relative;
+  z-index: 2;
 }
 
 .datepicker-day--outside {
@@ -113,7 +124,7 @@
 
 .datepicker-day--today {
   font-weight: 600;
-  box-shadow: 0 0 0 2px #3b82f6;
+  color: #3b82f6;
 }
 
 .datepicker-day--selected {
@@ -182,7 +193,7 @@
   }
 
   .datepicker-day--today {
-    box-shadow: 0 0 0 2px #60a5fa;
+    color: #60a5fa;
   }
 
   .datepicker-day--selected {

@@ -1,13 +1,24 @@
 import { DatePickerPreview } from './DatePickerPreview';
+import { DatePicker } from './DatePicker';
 import { CodeFromFile } from '@/components/CodeFromFile';
+import { DemoWithCode } from '@/components/DemoWithCode';
 
 # Bootstrap 5
 
 DatePicker built with @h6s/calendar and Bootstrap 5 components.
 
-## Live Demo
+## Basic
 
-<DatePickerPreview />
+<DemoWithCode
+  demo={<DatePickerPreview />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-calendar/bootstrap/DatePicker.tsx"
+      lang="tsx"
+      filename="DatePicker.tsx"
+    />
+  }
+/>
 
 ## Features
 
@@ -17,14 +28,6 @@ DatePicker built with @h6s/calendar and Bootstrap 5 components.
 - Uses Bootstrap 5 utility classes
 - Dark mode support (automatic system theme detection)
 - Accessible with proper ARIA labels
-
-## Code
-
-<CodeFromFile
-  file="app/examples/date-calendar/bootstrap/DatePicker.tsx"
-  lang="tsx"
-  filename="DatePicker.tsx"
-/>
 
 ## Key Implementation Details
 

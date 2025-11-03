@@ -83,19 +83,19 @@ export function DatePicker() {
                   {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
                     const isSelected = selectedDate && isSameDay(value, selectedDate);
 
-                    let btnClass = "btn btn-sm rounded-circle border-0";
+                    let btnClass = "btn btn-sm border-0";
                     const style: React.CSSProperties = {
                       width: "2.5rem",
                       height: "2.5rem",
                       fontSize: "0.875rem",
-                      transition: "all 0.15s ease"
+                      transition: "all 0.15s ease",
+                      borderRadius: "0.375rem"
                     };
 
                     if (isSelected) {
                       btnClass += " btn-primary";
                     } else if (isCurrentDate) {
-                      btnClass += " text-body-emphasis fw-bold";
-                      style.boxShadow = "0 0 0 2px var(--bs-primary)";
+                      btnClass += " text-primary fw-bold";
                     } else if (isCurrentMonth) {
                       btnClass += " text-body";
                     } else {

@@ -1,13 +1,23 @@
 import { DatePicker } from './DatePicker';
 import { CodeFromFile } from '@/components/CodeFromFile';
+import { DemoWithCode } from '@/components/DemoWithCode';
 
 # Tailwind CSS
 
 DatePicker built with @h6s/calendar and Tailwind CSS.
 
-## Live Demo
+## Basic
 
-<DatePicker />
+<DemoWithCode
+  demo={<DatePicker />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-calendar/tailwind/DatePicker.tsx"
+      lang="tsx"
+      filename="DatePicker.tsx"
+    />
+  }
+/>
 
 ## Features
 
@@ -16,14 +26,6 @@ DatePicker built with @h6s/calendar and Tailwind CSS.
 - Today button
 - Fully styled with Tailwind CSS
 - Dark mode support with `dark:` variants
-
-## Code
-
-<CodeFromFile
-  file="app/examples/date-calendar/tailwind/DatePicker.tsx"
-  lang="tsx"
-  filename="DatePicker.tsx"
-/>
 
 ## Key Implementation Details
 
