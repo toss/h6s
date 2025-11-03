@@ -1,4 +1,4 @@
-.daterangepicker {
+.daterangepicker-dual {
   margin: 2rem 0;
   max-width: 44rem;
   border: 1px solid #e5e7eb;
@@ -172,7 +172,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .daterangepicker {
+  .daterangepicker-dual {
     border-color: #334155;
     background-color: #111827;
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);

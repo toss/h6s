@@ -87,7 +87,7 @@ export function DateRangePicker() {
   };
 
   return (
-    <div className="daterangepicker">
+    <div className="daterangepicker-basic">
       <div className="daterangepicker-selection">
         <div>
           <p className="daterangepicker-selection-label">Selected range</p>

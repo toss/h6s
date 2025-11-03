@@ -1,6 +1,6 @@
-.daterangepicker {
+.daterangepicker-basic {
   margin: 2rem 0;
-  max-width: 20rem;
+  width: 20rem;
   border: 1px solid #e5e7eb;
   border-radius: 1rem;
   background-color: #ffffff;
@@ -167,7 +167,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .daterangepicker {
+  .daterangepicker-basic {
     border-color: #334155;
     background-color: #111827;
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);

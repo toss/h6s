@@ -159,7 +159,7 @@ export function DateRangePickerDual() {
   };
 
   return (
-    <div className="daterangepicker daterangepicker-dual">
+    <div className="daterangepicker-dual">
       <div className="daterangepicker-selection">
         <div>
           <p className="daterangepicker-selection-label">Selected range</p>
