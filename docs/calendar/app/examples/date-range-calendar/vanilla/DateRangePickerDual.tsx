@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isWithinInterval, isAfter, isBefore } from "date-fns";
+import { format, isSameDay, isWithinInterval, isAfter, isBefore, addMonths, subMonths } from "date-fns";
 import { useState } from "react";
 import "./DateRangePicker.css";
 
@@ -10,12 +10,16 @@ type DateRange = {
   end: Date | null;
 };
 
-export function DateRangePicker() {
+export function DateRangePickerDual() {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 
-  const { headers, body, navigation, cursorDate } = useCalendar({
-    defaultDate: dateRange.start ?? new Date(),
+  const leftCalendar = useCalendar({
+    defaultDate: new Date(),
+  });
+
+  const rightCalendar = useCalendar({
+    defaultDate: addMonths(new Date(), 1),
   });
 
   function handleDateSelect(date: Date) {
@@ -86,50 +90,15 @@ export function DateRangePicker() {
     return `${format(start, "MMM d, yyyy")} - ${format(end, "MMM d, yyyy")}`;
   };
 
-  return (
-    <div className="daterangepicker">
-      <div className="daterangepicker-selection">
-        <div>
-          <p className="daterangepicker-selection-label">Selected range</p>
-          <p className="daterangepicker-selection-value">{formatRange()}</p>
-        </div>
-        <button
-          type="button"
-          onClick={handleClear}
-          className="daterangepicker-clear-button"
-          disabled={!dateRange.start}
-        >
-          Clear
-        </button>
-      </div>
-
-      <div className="daterangepicker-header">
-        <button
-          type="button"
-          onClick={navigation.toPrev}
-          className="daterangepicker-nav-button"
-          aria-label="Previous month"
-        >
-          ←
-        </button>
-        <h2 className="daterangepicker-title">{format(cursorDate, "MMMM yyyy")}</h2>
-        <button
-          type="button"
-          onClick={navigation.toNext}
-          className="daterangepicker-nav-button"
-          aria-label="Next month"
-        >
-          →
-        </button>
-      </div>
-
+  const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
+    return (
       <table
         className="daterangepicker-calendar"
         onMouseLeave={() => setHoverDate(null)}
       >
         <thead>
           <tr>
-            {headers.weekdays.map(({ key, value }) => (
+            {calendar.headers.weekdays.map(({ key, value }) => (
               <th key={key} className="daterangepicker-weekday">
                 {format(value, "EEEEEE")}
               </th>
@@ -137,7 +106,7 @@ export function DateRangePicker() {
           </tr>
         </thead>
         <tbody>
-          {body.value.map(({ key, value: days }) => (
+          {calendar.body.value.map(({ key, value: days }) => (
             <tr key={key}>
               {days.map(({ key, value, isCurrentMonth }) => {
                 const inRange = isInRange(value);
@@ -185,6 +154,67 @@ export function DateRangePicker() {
           ))}
         </tbody>
       </table>
+    );
+  };
+
+  return (
+    <div className="daterangepicker daterangepicker-dual">
+      <div className="daterangepicker-selection">
+        <div>
+          <p className="daterangepicker-selection-label">Selected range</p>
+          <p className="daterangepicker-selection-value">{formatRange()}</p>
+        </div>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="daterangepicker-clear-button"
+          disabled={!dateRange.start}
+        >
+          Clear
+        </button>
+      </div>
+
+      <div className="daterangepicker-calendars">
+        <div className="daterangepicker-calendar-container">
+          <div className="daterangepicker-header">
+            <button
+              type="button"
+              onClick={() => {
+                const newDate = subMonths(leftCalendar.cursorDate, 1);
+                leftCalendar.navigation.setDate(newDate);
+                rightCalendar.navigation.setDate(addMonths(newDate, 1));
+              }}
+              className="daterangepicker-nav-button"
+              aria-label="Previous month"
+            >
+              ←
+            </button>
+            <h2 className="daterangepicker-title">{format(leftCalendar.cursorDate, "MMMM yyyy")}</h2>
+            <div className="daterangepicker-nav-button-placeholder" />
+          </div>
+          {renderCalendar(leftCalendar)}
+        </div>
+
+        <div className="daterangepicker-calendar-container">
+          <div className="daterangepicker-header">
+            <div className="daterangepicker-nav-button-placeholder" />
+            <h2 className="daterangepicker-title">{format(rightCalendar.cursorDate, "MMMM yyyy")}</h2>
+            <button
+              type="button"
+              onClick={() => {
+                const newDate = addMonths(leftCalendar.cursorDate, 1);
+                leftCalendar.navigation.setDate(newDate);
+                rightCalendar.navigation.setDate(addMonths(newDate, 1));
+              }}
+              className="daterangepicker-nav-button"
+              aria-label="Next month"
+            >
+              →
+            </button>
+          </div>
+          {renderCalendar(rightCalendar)}
+        </div>
+      </div>
     </div>
   );
 }

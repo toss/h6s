@@ -1,4 +1,5 @@
 import { DateRangePicker } from './DateRangePicker';
+import { DateRangePickerDual } from './DateRangePickerDual';
 import { CodeFromFile } from '@/components/CodeFromFile';
 import { DemoWithCode } from '@/components/DemoWithCode';
 
@@ -6,7 +7,7 @@ import { DemoWithCode } from '@/components/DemoWithCode';
 
 DateRangePicker built with @h6s/calendar and plain CSS.
 
-## Basic
+## Basic (Single Calendar)
 
 <DemoWithCode
   demo={<DateRangePicker />}
@@ -23,6 +24,21 @@ DateRangePicker built with @h6s/calendar and plain CSS.
         filename="DateRangePicker.css"
       />
     </>
+  }
+/>
+
+## Dual Calendar
+
+For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
+
+<DemoWithCode
+  demo={<DateRangePickerDual />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-calendar/vanilla/DateRangePickerDual.tsx"
+      lang="tsx"
+      filename="DateRangePickerDual.tsx"
+    />
   }
 />
 
