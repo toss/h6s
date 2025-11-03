@@ -1,11 +1,25 @@
 .daterangepicker {
   margin: 2rem 0;
-  max-width: 20rem;
+  max-width: 44rem;
   border: 1px solid #e5e7eb;
   border-radius: 1rem;
   background-color: #ffffff;
   padding: 1.25rem;
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.daterangepicker-calendars {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.daterangepicker-calendar-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.daterangepicker-nav-button-placeholder {
+  width: 2.125rem;
 }
 
 .daterangepicker-selection {
@@ -124,15 +138,6 @@
   background-color: #e5e7eb;
 }
 
-.daterangepicker-day--outside {
-  color: #9ca3af;
-}
-
-.daterangepicker-day--outside:hover {
-  background-color: #e5e7eb;
-  color: #111827;
-}
-
 /* Range highlighting: only middle dates, not start/end */
 .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
   content: '';
@@ -216,15 +221,6 @@
 
   .daterangepicker-day--current-month:hover:not(.daterangepicker-day--selected) {
     background-color: #374151;
-  }
-
-  .daterangepicker-day--outside {
-    color: #4b5563;
-  }
-
-  .daterangepicker-day--outside:hover {
-    background-color: #374151;
-    color: #f9fafb;
   }
 
   .daterangepicker-calendar td.daterangepicker-cell--in-range::before {

@@ -3,7 +3,7 @@
 import { useCalendar } from "@h6s/calendar";
 import { format, isSameDay, isWithinInterval, isAfter, isBefore, addMonths, subMonths } from "date-fns";
 import { useState } from "react";
-import "./DateRangePicker.css";
+import "./DateRangePickerDual.css";
 
 type DateRange = {
   start: Date | null;
@@ -131,22 +131,23 @@ export function DateRangePickerDual() {
                   .filter(Boolean)
                   .join(" ");
 
-                const cellClassNames = [
-                  isMiddleRange && "daterangepicker-cell--in-range",
-                ]
-                  .filter(Boolean)
-                  .join(" ");
+                // Only apply cell styles to current month dates
+                const cellClassNames = isCurrentMonth && isMiddleRange
+                  ? "daterangepicker-cell--in-range"
+                  : "";
 
                 return (
                   <td key={key} className={cellClassNames}>
-                    <button
-                      type="button"
-                      onClick={() => handleDateSelect(value)}
-                      onMouseEnter={() => dateRange.start && !dateRange.end && setHoverDate(value)}
-                      className={buttonClassNames}
-                    >
-                      {format(value, "d")}
-                    </button>
+                    {isCurrentMonth ? (
+                      <button
+                        type="button"
+                        onClick={() => handleDateSelect(value)}
+                        onMouseEnter={() => dateRange.start && !dateRange.end && setHoverDate(value)}
+                        className={buttonClassNames}
+                      >
+                        {format(value, "d")}
+                      </button>
+                    ) : null}
                   </td>
                 );
               })}
