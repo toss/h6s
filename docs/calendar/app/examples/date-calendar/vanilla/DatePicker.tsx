@@ -12,7 +12,10 @@ export function DatePicker() {
     defaultDate: selectedDate ?? new Date(),
   });
 
-  function handleDateSelect(date: Date) {
+  function handleDateSelect(date: Date, isCurrentMonth: boolean) {
+    if (!isCurrentMonth) {
+      navigation.setDate(date);
+    }
     setSelectedDate(date);
   };
 
@@ -79,7 +82,7 @@ export function DatePicker() {
 
                 return (
                   <td key={key}>
-                    <button type="button" onClick={() => handleDateSelect(value)} className={classNames}>
+                    <button type="button" onClick={() => handleDateSelect(value, isCurrentMonth)} className={classNames}>
                       {format(value, "d")}
                     </button>
                   </td>

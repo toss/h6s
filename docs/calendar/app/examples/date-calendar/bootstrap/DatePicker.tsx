@@ -11,7 +11,10 @@ export function DatePicker() {
     defaultDate: selectedDate ?? new Date(),
   });
 
-  function handleDateSelect(date: Date) {
+  function handleDateSelect(date: Date, isCurrentMonth: boolean) {
+    if (!isCurrentMonth) {
+      navigation.setDate(date);
+    }
     setSelectedDate(date);
   };
 
@@ -107,7 +110,7 @@ export function DatePicker() {
                       <td key={key} className="p-1">
                         <button
                           type="button"
-                          onClick={() => handleDateSelect(value)}
+                          onClick={() => handleDateSelect(value, isCurrentMonth)}
                           className={btnClass}
                           style={style}
                           aria-label={format(value, "PPP")}
