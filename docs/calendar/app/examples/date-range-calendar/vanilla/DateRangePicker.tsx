@@ -71,8 +71,7 @@ export function DateRangePicker() {
       return isSameDay(date, rangeEnd);
     }
     if (hoverDate) {
-      const end = isAfter(dateRange.start, hoverDate) ? dateRange.start : hoverDate;
-      return isSameDay(date, end);
+      return isSameDay(date, hoverDate);
     }
     return false;
   }
