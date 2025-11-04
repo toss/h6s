@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { type Root, createRoot } from "react-dom/client";
-import { DatePicker } from "./DatePicker";
 
 const BOOTSTRAP_CDN_URL = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
 
@@ -39,7 +38,12 @@ const IFRAME_HTML = `
 </html>
 `;
 
-export function DatePickerPreview() {
+interface BootstrapPreviewProps {
+  children: React.ReactNode;
+  title?: string;
+}
+
+export function BootstrapPreview({ children, title = "Bootstrap Preview" }: BootstrapPreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const rootRef = useRef<Root | null>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
@@ -77,7 +81,7 @@ export function DatePickerPreview() {
 
       rootRef.current?.unmount();
       rootRef.current = createRoot(mountNode);
-      rootRef.current.render(<DatePicker />);
+      rootRef.current.render(children);
 
       adjustHeight();
 
@@ -106,13 +110,13 @@ export function DatePickerPreview() {
       rootRef.current?.unmount();
       rootRef.current = null;
     };
-  }, []);
+  }, [children]);
 
   return (
     <iframe
       ref={iframeRef}
       srcDoc={IFRAME_HTML}
-      title="Bootstrap Date Picker Preview"
+      title={title}
       style={{
         width: "100%",
       }}

@@ -1,7 +1,7 @@
-import { DatePickerPreview } from './DatePickerPreview';
 import { DatePicker } from './DatePicker';
 import { CodeFromFile } from '@/components/CodeFromFile';
 import { DemoWithCode } from '@/components/DemoWithCode';
+import { BootstrapPreview } from '@/components/BootstrapPreview';
 
 # Bootstrap 5
 
@@ -10,7 +10,11 @@ DatePicker built with @h6s/calendar and Bootstrap 5 components.
 ## Basic
 
 <DemoWithCode
-  demo={<DatePickerPreview />}
+  demo={
+    <BootstrapPreview>
+      <DatePicker />
+    </BootstrapPreview>
+  }
   code={
     <CodeFromFile
       file="app/examples/date-calendar/bootstrap/DatePicker.tsx"

@@ -1,0 +1,99 @@
+import { DateRangePicker } from './DateRangePicker';
+import { DateRangePickerDual } from './DateRangePickerDual';
+import { CodeFromFile } from '@/components/CodeFromFile';
+import { DemoWithCode } from '@/components/DemoWithCode';
+import { BootstrapPreview } from '@/components/BootstrapPreview';
+
+# Bootstrap 5
+
+DateRangePicker built with @h6s/calendar and Bootstrap 5.
+
+## Basic
+
+<DemoWithCode
+  demo={
+    <BootstrapPreview>
+      <DateRangePicker />
+    </BootstrapPreview>
+  }
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-calendar/bootstrap/DateRangePicker.tsx"
+      lang="tsx"
+      filename="DateRangePicker.tsx"
+    />
+  }
+/>
+
+## Dual Calendar
+
+For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
+
+<DemoWithCode
+  demo={
+    <BootstrapPreview>
+      <DateRangePickerDual />
+    </BootstrapPreview>
+  }
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-calendar/bootstrap/DateRangePickerDual.tsx"
+      lang="tsx"
+      filename="DateRangePickerDual.tsx"
+    />
+  }
+/>
+
+## Features
+
+- Date range selection (start and end dates)
+- Visual range highlighting between selected dates
+- Hover preview showing potential range
+- Clear button to reset selection
+- Month/year navigation
+- Bootstrap 5 utility classes and components
+- Responsive design with Bootstrap grid system
+
+## Key Implementation Details
+
+### Range Selection Logic
+
+The component handles range selection in three states:
+
+1. **No selection**: User clicks to select start date
+2. **Start selected**: Hover shows potential range, click completes the range
+3. **Range complete**: Next click starts a new selection
+
+The range is automatically ordered (earlier date becomes start, later becomes end) regardless of click order.
+
+### Visual States
+
+- **Range Start/End**: Primary button style (blue background with white text)
+- **In Range**: Light blue background with primary text color
+- **Hover Preview**: Shows potential range while hovering (when start is selected)
+- **Outside Month**: Muted text color (not shown in dual calendar)
+
+### Bootstrap Components
+
+This implementation uses:
+- ✅ Bootstrap Cards for container
+- ✅ Bootstrap Buttons (`.btn`, `.btn-primary`, `.btn-outline-primary`)
+- ✅ Bootstrap Tables (`.table`, `.table-borderless`)
+- ✅ Bootstrap Utilities (spacing, colors, typography)
+- ✅ Bootstrap Grid (`.row`, `.col-*` for dual calendar)
+
+## Customization
+
+You can customize this picker by updating Bootstrap classes and variables:
+
+- **Colors**: Change button variants (e.g., `btn-primary` to `btn-success`)
+- **Spacing**: Adjust Bootstrap spacing utilities (e.g., `p-4` to `p-5`)
+- **Sizing**: Modify button sizes (e.g., `btn-sm` to `btn-lg`)
+- **Theme**: Override Bootstrap CSS variables for global theming
+
+## See Also
+
+- [Single Date Picker (Bootstrap)](/examples/date-calendar/bootstrap)
+- [Vanilla CSS Example](/examples/date-range-calendar/vanilla)
+- [Tailwind CSS Example](/examples/date-range-calendar/tailwind)
+- [API Reference](/api-reference)
