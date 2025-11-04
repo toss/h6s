@@ -127,18 +127,19 @@
   background-color: #f3f4f6;
 }
 
-.datepicker-day--today {
+.datepicker-day--today:not(.datepicker-day--selected) {
   font-weight: 600;
-  color: #3b82f6;
 }
 
 .datepicker-day--selected {
   background-color: #3b82f6;
   color: #ffffff;
+  font-weight: 600;
 }
 
 .datepicker-day--selected:hover {
   background-color: #2563eb;
+  color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -202,15 +203,17 @@
     background-color: #1f2937;
   }
 
-  .datepicker-day--today {
-    color: #60a5fa;
+  .datepicker-day--today:not(.datepicker-day--selected) {
+    font-weight: 600;
   }
 
   .datepicker-day--selected {
     background-color: #2563eb;
+    color: #ffffff;
   }
 
   .datepicker-day--selected:hover {
     background-color: #1d4ed8;
+    color: #ffffff;
   }
 }
