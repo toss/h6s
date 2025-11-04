@@ -120,17 +120,12 @@
   color: #111827;
 }
 
-.daterangepicker-day--current-month:hover:not(.daterangepicker-day--selected) {
+.daterangepicker-day--current-month:hover {
   background-color: #e5e7eb;
 }
 
 .daterangepicker-day--outside {
   color: #9ca3af;
-}
-
-.daterangepicker-day--outside:hover {
-  background-color: #e5e7eb;
-  color: #111827;
 }
 
 /* Range highlighting: only middle dates, not start/end */
@@ -148,10 +143,6 @@
 
 .daterangepicker-day--in-range {
   color: #1e40af;
-}
-
-.daterangepicker-day--in-range:hover {
-  background-color: #bfdbfe;
 }
 
 /* Selected dates (actually clicked, not just hover) */
@@ -214,17 +205,8 @@
     color: #f9fafb;
   }
 
-  .daterangepicker-day--current-month:hover:not(.daterangepicker-day--selected) {
-    background-color: #374151;
-  }
-
   .daterangepicker-day--outside {
     color: #4b5563;
-  }
-
-  .daterangepicker-day--outside:hover {
-    background-color: #374151;
-    color: #f9fafb;
   }
 
   .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
@@ -234,19 +216,5 @@
 
   .daterangepicker-day--in-range {
     color: #93c5fd;
-  }
-
-  .daterangepicker-day--in-range:hover {
-    background-color: #1e40af;
-  }
-
-  .daterangepicker-day--selected {
-    background-color: #2563eb;
-    color: #ffffff;
-  }
-
-  .daterangepicker-day--selected:hover {
-    background-color: #1d4ed8;
-    color: #ffffff;
   }
 }
