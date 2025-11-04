@@ -177,7 +177,7 @@ export function DateRangePicker() {
 
                       const cellStyle: React.CSSProperties = {
                         position: "relative",
-                        padding: "0.125rem 0",
+                        padding: "0",
                       };
 
                       if (isMiddleRange) {

@@ -137,7 +137,7 @@ export function DateRangePickerDual() {
 
                 const cellStyle: React.CSSProperties = {
                   position: "relative",
-                  padding: "0.125rem 0",
+                  padding: "0",
                 };
 
                 if (isCurrentMonth && isMiddleRange) {
@@ -200,7 +200,7 @@ export function DateRangePickerDual() {
             </div>
 
             <div className="row g-4">
-              <div className="col-12 col-md-6">
+              <div className="col-6">
                 <div className="d-flex justify-content-between align-items-center py-3">
                   <button
                     type="button"
@@ -224,7 +224,7 @@ export function DateRangePickerDual() {
                 {renderCalendar(leftCalendar)}
               </div>
 
-              <div className="col-12 col-md-6">
+              <div className="col-6">
                 <div className="d-flex justify-content-between align-items-center py-3">
                   <div style={{ width: "2.125rem" }} />
 
