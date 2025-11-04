@@ -1,0 +1,98 @@
+import { DateRangePicker } from './DateRangePicker';
+import { DateRangePickerDual } from './DateRangePickerDual';
+import { CodeFromFile } from '@/components/CodeFromFile';
+import { DemoWithCode } from '@/components/DemoWithCode';
+
+# Tailwind CSS
+
+DateRangePicker built with @h6s/calendar and Tailwind CSS.
+
+## Basic
+
+<DemoWithCode
+  demo={<DateRangePicker />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-calendar/tailwind/DateRangePicker.tsx"
+      lang="tsx"
+      filename="DateRangePicker.tsx"
+    />
+  }
+/>
+
+## Dual Calendar
+
+For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
+
+<DemoWithCode
+  demo={<DateRangePickerDual />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-calendar/tailwind/DateRangePickerDual.tsx"
+      lang="tsx"
+      filename="DateRangePickerDual.tsx"
+    />
+  }
+/>
+
+## Features
+
+- Date range selection (start and end dates)
+- Visual range highlighting between selected dates
+- Hover preview showing potential range
+- Clear button to reset selection
+- Month/year navigation
+- Tailwind CSS utility classes
+- Dark mode support with `dark:` variants
+
+## Key Implementation Details
+
+### Range Selection Logic
+
+The component handles range selection in three states:
+
+1. **No selection**: User clicks to select start date
+2. **Start selected**: Hover shows potential range, click completes the range
+3. **Range complete**: Next click starts a new selection
+
+The range is automatically ordered (earlier date becomes start, later becomes end) regardless of click order.
+
+### Visual States
+
+- **Range Start/End**: Blue background with white text
+- **In Range**: Light blue background
+- **Hover Preview**: Shows potential range while hovering (when start is selected)
+- **Outside Month**: Faded text (not shown in dual calendar)
+
+### Dark Mode Support
+
+Dark mode is handled using Tailwind's `dark:` variant:
+
+```tsx
+className="bg-white dark:bg-gray-900"
+```
+
+The component automatically adapts based on the user's system preference.
+
+### Tailwind CSS
+
+This implementation requires:
+- ✅ Only `@h6s/calendar` and `date-fns`
+- ✅ Tailwind CSS configured in your project
+- ✅ No custom CSS files needed
+
+## Customization
+
+You can customize this picker by updating the Tailwind classes:
+
+- **Colors**: Change color utilities (e.g., `bg-blue-500` to `bg-purple-500`)
+- **Spacing**: Adjust padding/margin utilities (e.g., `p-4` to `p-6`)
+- **Sizing**: Modify width/height utilities (e.g., `w-96` to `w-full`)
+- **Border radius**: Change rounding (e.g., `rounded-2xl` to `rounded-lg`)
+
+## See Also
+
+- [Single Date Picker (Tailwind)](/examples/date-calendar/tailwind)
+- [Vanilla CSS Example](/examples/date-range-calendar/vanilla)
+- [Bootstrap 5 Example](/examples/date-calendar/bootstrap)
+- [API Reference](/api-reference)
