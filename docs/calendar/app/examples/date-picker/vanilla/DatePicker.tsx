@@ -3,12 +3,14 @@
 import { useCalendar } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
 import { format, isSameDay } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./DatePicker.css";
 
 export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+
+  const displayValue = useMemo(() => (selectedDate ? format(selectedDate, "PPP") : "Pick a date"), [selectedDate]);
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -16,9 +18,7 @@ export function DatePicker() {
         <label className="datepicker-field__label">Date</label>
         <Popover.Trigger asChild>
           <button type="button" className="datepicker-field__trigger">
-            <span className={`datepicker-field__value ${selectedDate ? "is-selected" : ""}`}>
-              {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
-            </span>
+            <span className={`datepicker-field__value ${selectedDate ? "is-selected" : ""}`}>{displayValue}</span>
             <svg className="datepicker-field__icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M6 2a1 1 0 0 1 2 0v1h4V2a1 1 0 1 1 2 0v1h1.5A1.5 1.5 0 0 1 17 4.5v11A1.5 1.5 0 0 1 15.5 17h-11A1.5 1.5 0 0 1 3 15.5v-11A1.5 1.5 0 0 1 4.5 3H6V2Zm-1.5 5v8h11V7h-11Z" />
             </svg>

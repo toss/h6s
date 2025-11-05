@@ -3,11 +3,13 @@
 import { useCalendar } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
 import { format, isSameDay } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+
+  const displayValue = useMemo(() => (selectedDate ? format(selectedDate, "PPP") : "Pick a date"), [selectedDate]);
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -21,7 +23,7 @@ export function DatePicker() {
             <span
               className={`truncate ${selectedDate ? "text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-500"}`}
             >
-              {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+              {displayValue}
             </span>
             <svg
               className="h-5 w-5 text-gray-400 dark:text-gray-500"
