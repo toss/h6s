@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@h6s/calendar": "workspace:*",
+    "@radix-ui/react-popover": "^1.1.2",
     "date-fns": "^4.1.0",
     "next": "^15.1.6",
     "nextra": "^4.0.11",
