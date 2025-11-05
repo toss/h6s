@@ -92,7 +92,7 @@ export function DateRangePickerDual() {
                   .filter(Boolean)
                   .join(" ");
 
-                const cellClassNames = inRange ? "daterangepicker-cell--in-range" : "";
+                const cellClassNames = isCurrentMonth && inRange ? "daterangepicker-cell--in-range" : "";
 
                 return (
                   <td key={key} className={cellClassNames}>

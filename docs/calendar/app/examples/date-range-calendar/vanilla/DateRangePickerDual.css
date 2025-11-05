@@ -135,6 +135,10 @@
   background-color: #f3f4f6;
 }
 
+.daterangepicker-day--selected:hover {
+  background-color: #3b82f6;
+}
+
 .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
   content: '';
   position: absolute;
@@ -211,6 +215,10 @@
 
   .daterangepicker-day:hover {
     background-color: #374151;
+  }
+
+  .daterangepicker-day--selected:hover {
+    background-color: #3b82f6;
   }
 
   .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
