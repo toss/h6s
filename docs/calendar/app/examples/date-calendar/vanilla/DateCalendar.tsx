@@ -3,9 +3,9 @@
 import { useCalendar } from "@h6s/calendar";
 import { format, isSameDay } from "date-fns";
 import { useState } from "react";
-import "./DatePicker.css";
+import "./DateCalendar.css";
 
-export function DatePicker() {
+export function DateCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { headers, body, navigation, cursorDate } = useCalendar({
@@ -20,11 +20,11 @@ export function DatePicker() {
   }
 
   return (
-    <div className="datepicker">
-      <div className="datepicker-selection">
+    <div className="datecalendar">
+      <div className="datecalendar-selection">
         <div>
-          <p className="datepicker-selection-label">Selected date</p>
-          <p className="datepicker-selection-value">{selectedDate ? format(selectedDate, "PPP") : "Pick a date"}</p>
+          <p className="datecalendar-selection-label">Selected date</p>
+          <p className="datecalendar-selection-value">{selectedDate ? format(selectedDate, "PPP") : "Pick a date"}</p>
         </div>
         <button
           type="button"
@@ -32,27 +32,27 @@ export function DatePicker() {
             navigation.setToday();
             setSelectedDate(new Date());
           }}
-          className="datepicker-today-button"
+          className="datecalendar-today-button"
         >
           Today
         </button>
       </div>
 
-      <div className="datepicker-header">
-        <button type="button" onClick={navigation.toPrev} className="datepicker-nav-button" aria-label="Previous month">
+      <div className="datecalendar-header">
+        <button type="button" onClick={navigation.toPrev} className="datecalendar-nav-button" aria-label="Previous month">
           ←
         </button>
-        <h2 className="datepicker-title">{format(cursorDate, "MMMM yyyy")}</h2>
-        <button type="button" onClick={navigation.toNext} className="datepicker-nav-button" aria-label="Next month">
+        <h2 className="datecalendar-title">{format(cursorDate, "MMMM yyyy")}</h2>
+        <button type="button" onClick={navigation.toNext} className="datecalendar-nav-button" aria-label="Next month">
           →
         </button>
       </div>
 
-      <table className="datepicker-calendar">
+      <table className="datecalendar-calendar">
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="datepicker-weekday">
+              <th key={key} className="datecalendar-weekday">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -64,11 +64,11 @@ export function DatePicker() {
               {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
                 const isSelected = selectedDate && isSameDay(value, selectedDate);
                 const classNames = [
-                  "datepicker-day",
-                  !isCurrentMonth && "datepicker-day--outside",
-                  isCurrentMonth && "datepicker-day--current-month",
-                  isCurrentDate && "datepicker-day--today",
-                  isSelected && "datepicker-day--selected",
+                  "datecalendar-day",
+                  !isCurrentMonth && "datecalendar-day--outside",
+                  isCurrentMonth && "datecalendar-day--current-month",
+                  isCurrentDate && "datecalendar-day--today",
+                  isSelected && "datecalendar-day--selected",
                 ]
                   .filter(Boolean)
                   .join(" ");

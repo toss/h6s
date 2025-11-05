@@ -1,5 +1,5 @@
-import { DateRangePicker } from './DateRangePicker';
-import { DateRangePickerDual } from './DateRangePickerDual';
+import { DateRangeCalendar } from './DateRangeCalendar';
+import { DateRangeCalendarDual } from './DateRangeCalendarDual';
 import { CodeFromFile } from '@/components/CodeFromFile';
 import { DemoWithCode } from '@/components/DemoWithCode';
 
@@ -10,18 +10,18 @@ DateRangePicker built with @h6s/calendar and plain CSS.
 ## Basic
 
 <DemoWithCode
-  demo={<DateRangePicker />}
+  demo={<DateRangeCalendar />}
   code={
     <>
       <CodeFromFile
-        file="app/examples/date-range-calendar/vanilla/DateRangePicker.tsx"
+        file="app/examples/date-range-calendar/vanilla/DateRangeCalendar.tsx"
         lang="tsx"
-        filename="DateRangePicker.tsx"
+        filename="DateRangeCalendar.tsx"
       />
       <CodeFromFile
-        file="app/examples/date-range-calendar/vanilla/DateRangePicker.css"
+        file="app/examples/date-range-calendar/vanilla/DateRangeCalendar.css"
         lang="css"
-        filename="DateRangePicker.css"
+        filename="DateRangeCalendar.css"
       />
     </>
   }
@@ -32,18 +32,18 @@ DateRangePicker built with @h6s/calendar and plain CSS.
 For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
 
 <DemoWithCode
-  demo={<DateRangePickerDual />}
+  demo={<DateRangeCalendarDual />}
   code={
     <>
       <CodeFromFile
-        file="app/examples/date-range-calendar/vanilla/DateRangePickerDual.tsx"
+        file="app/examples/date-range-calendar/vanilla/DateRangeCalendarDual.tsx"
         lang="tsx"
-        filename="DateRangePickerDual.tsx"
+        filename="DateRangeCalendarDual.tsx"
       />
       <CodeFromFile
-        file="app/examples/date-range-calendar/vanilla/DateRangePickerDual.css"
+        file="app/examples/date-range-calendar/vanilla/DateRangeCalendarDual.css"
         lang="css"
-        filename="DateRangePickerDual.css"
+        filename="DateRangeCalendarDual.css"
       />
     </>
   }

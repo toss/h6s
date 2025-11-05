@@ -1,5 +1,5 @@
-import { DateRangePicker } from './DateRangePicker';
-import { DateRangePickerDual } from './DateRangePickerDual';
+import { DateRangeCalendar } from './DateRangeCalendar';
+import { DateRangeCalendarDual } from './DateRangeCalendarDual';
 import { CodeFromFile } from '@/components/CodeFromFile';
 import { DemoWithCode } from '@/components/DemoWithCode';
 
@@ -10,12 +10,12 @@ DateRangePicker built with @h6s/calendar and Tailwind CSS.
 ## Basic
 
 <DemoWithCode
-  demo={<DateRangePicker />}
+  demo={<DateRangeCalendar />}
   code={
     <CodeFromFile
-      file="app/examples/date-range-calendar/tailwind/DateRangePicker.tsx"
+      file="app/examples/date-range-calendar/tailwind/DateRangeCalendar.tsx"
       lang="tsx"
-      filename="DateRangePicker.tsx"
+      filename="DateRangeCalendar.tsx"
     />
   }
 />
@@ -25,12 +25,12 @@ DateRangePicker built with @h6s/calendar and Tailwind CSS.
 For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
 
 <DemoWithCode
-  demo={<DateRangePickerDual />}
+  demo={<DateRangeCalendarDual />}
   code={
     <CodeFromFile
-      file="app/examples/date-range-calendar/tailwind/DateRangePickerDual.tsx"
+      file="app/examples/date-range-calendar/tailwind/DateRangeCalendarDual.tsx"
       lang="tsx"
-      filename="DateRangePickerDual.tsx"
+      filename="DateRangeCalendarDual.tsx"
     />
   }
 />

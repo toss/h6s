@@ -4,7 +4,7 @@ import { useCalendar } from "@h6s/calendar";
 import { format, isSameDay } from "date-fns";
 import { useState } from "react";
 
-export function DatePicker() {
+export function DateCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { headers, body, navigation, cursorDate } = useCalendar({

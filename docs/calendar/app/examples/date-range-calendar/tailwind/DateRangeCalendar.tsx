@@ -3,14 +3,13 @@
 import { useCalendar } from "@h6s/calendar";
 import { format, isAfter, isSameDay, isToday } from "date-fns";
 import { useState } from "react";
-import "./DateRangePicker.css";
 
 type DateRange = {
   start: Date | null;
   end: Date | null;
 };
 
-export function DateRangePicker() {
+export function DateRangeCalendar() {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 
@@ -57,47 +56,47 @@ export function DateRangePicker() {
   };
 
   return (
-    <div className="daterangepicker-basic">
-      <div className="daterangepicker-selection">
+    <div className="my-8 w-[22rem] rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-700 dark:bg-gray-900">
+      <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
         <div>
-          <p className="daterangepicker-selection-label">Selected range</p>
-          <p className="daterangepicker-selection-value">{formatRange()}</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected range</p>
+          <p className="mt-1 text-base font-semibold text-gray-900 dark:text-gray-100">{formatRange()}</p>
         </div>
         <button
           type="button"
           onClick={handleClear}
-          className="daterangepicker-clear-button"
           disabled={!dateRange.start}
+          className="rounded-lg border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
         >
           Clear
         </button>
       </div>
 
-      <div className="daterangepicker-header">
+      <div className="flex items-center justify-between py-4">
         <button
           type="button"
           onClick={navigation.toPrev}
-          className="daterangepicker-nav-button"
+          className="rounded-lg p-2 text-lg text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
           aria-label="Previous month"
         >
           ←
         </button>
-        <h2 className="daterangepicker-title">{format(cursorDate, "MMMM yyyy")}</h2>
+        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{format(cursorDate, "MMMM yyyy")}</h2>
         <button
           type="button"
           onClick={navigation.toNext}
-          className="daterangepicker-nav-button"
+          className="rounded-lg p-2 text-lg text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
           aria-label="Next month"
         >
           →
         </button>
       </div>
 
-      <table className="daterangepicker-calendar" onMouseLeave={() => setHoverDate(null)}>
+      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="daterangepicker-weekday">
+              <th key={key} className="p-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -111,21 +110,14 @@ export function DateRangePicker() {
                 const selected = isSelected(value);
                 const today = isToday(value);
 
-                const buttonClassNames = [
-                  "daterangepicker-day",
-                  !isCurrentMonth && "daterangepicker-day--outside",
-                  isCurrentMonth && "daterangepicker-day--current-month",
-                  inRange && "daterangepicker-day--in-range",
-                  selected && "daterangepicker-day--selected",
-                  today && "daterangepicker-day--today",
-                ]
-                  .filter(Boolean)
-                  .join(" ");
-
-                const cellClassNames = inRange ? "daterangepicker-cell--in-range" : "";
-
                 return (
-                  <td key={key} className={cellClassNames}>
+                  <td
+                    key={key}
+                    className={`
+                      relative p-0.5
+                      ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
+                    `}
+                  >
                     <button
                       type="button"
                       onClick={() => handleDateSelect(value)}
@@ -134,7 +126,15 @@ export function DateRangePicker() {
                           setHoverDate(value);
                         }
                       }}
-                      className={buttonClassNames}
+                      className={`
+                        relative z-10 w-10 h-10 rounded-md text-sm transition
+                        ${!isCurrentMonth && "text-gray-400 dark:text-gray-600"}
+                        ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
+                        ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
+                        ${inRange && "text-blue-900 dark:text-blue-100"}
+                        ${selected && "!bg-blue-500 !text-white font-semibold hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-600"}
+                        ${today && "border-2 border-blue-500"}
+                      `}
                     >
                       {format(value, "d")}
                     </button>

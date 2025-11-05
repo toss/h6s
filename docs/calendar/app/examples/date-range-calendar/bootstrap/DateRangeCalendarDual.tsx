@@ -9,7 +9,7 @@ type DateRange = {
   end: Date | null;
 };
 
-export function DateRangePickerDual() {
+export function DateRangeCalendarDual() {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 

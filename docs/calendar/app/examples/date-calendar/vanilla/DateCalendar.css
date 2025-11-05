@@ -1,4 +1,4 @@
-.datepicker {
+.datecalendar {
   margin: 2rem 0;
   max-width: 20rem;
   border: 1px solid #e5e7eb;
@@ -8,7 +8,7 @@
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
 
-.datepicker-selection {
+.datecalendar-selection {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -16,21 +16,21 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.datepicker-selection-label {
+.datecalendar-selection-label {
   margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
   color: #6b7280;
 }
 
-.datepicker-selection-value {
+.datecalendar-selection-value {
   margin: 0.25rem 0 0;
   font-size: 1.125rem;
   font-weight: 600;
   color: #111827;
 }
 
-.datepicker-today-button {
+.datecalendar-today-button {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -46,14 +46,14 @@
   background-color: #f3f4f6;
 }
 
-.datepicker-header {
+.datecalendar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 0;
 }
 
-.datepicker-nav-button {
+.datecalendar-nav-button {
   padding: 0.5rem;
   border: none;
   border-radius: 0.5rem;
@@ -68,19 +68,19 @@
   background-color: #f3f4f6;
 }
 
-.datepicker-title {
+.datecalendar-title {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
 }
 
-.datepicker-calendar {
+.datecalendar-calendar {
   width: 100%;
   border-collapse: collapse;
 }
 
-.datepicker-weekday {
+.datecalendar-weekday {
   padding: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -97,7 +97,7 @@
   padding: 0.125rem 0;
 }
 
-.datepicker-day {
+.datecalendar-day {
   width: 2.5rem;
   height: 2.5rem;
   border: none;
@@ -157,15 +157,15 @@
     border-color: #334155;
   }
 
-  .datepicker-selection-label {
+  .datecalendar-selection-label {
     color: #9ca3af;
   }
 
-  .datepicker-selection-value {
+  .datecalendar-selection-value {
     color: #f9fafb;
   }
 
-  .datepicker-today-button {
+  .datecalendar-today-button {
     color: #f9fafb;
     border-color: #475569;
   }
@@ -174,7 +174,7 @@
     background-color: #1f2937;
   }
 
-  .datepicker-nav-button {
+  .datecalendar-nav-button {
     color: #f9fafb;
   }
 
@@ -182,11 +182,11 @@
     background-color: #1f2937;
   }
 
-  .datepicker-title {
+  .datecalendar-title {
     color: #f9fafb;
   }
 
-  .datepicker-weekday {
+  .datecalendar-weekday {
     color: #9ca3af;
   }
 

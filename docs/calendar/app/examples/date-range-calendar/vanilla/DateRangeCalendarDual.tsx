@@ -3,14 +3,14 @@
 import { useCalendar } from "@h6s/calendar";
 import { addMonths, format, isAfter, isSameDay, isToday, subMonths } from "date-fns";
 import { useState } from "react";
-import "./DateRangePickerDual.css";
+import "./DateRangeCalendarDual.css";
 
 type DateRange = {
   start: Date | null;
   end: Date | null;
 };
 
-export function DateRangePickerDual() {
+export function DateRangeCalendarDual() {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
 
@@ -62,11 +62,11 @@ export function DateRangePickerDual() {
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="daterangepicker-calendar" onMouseLeave={() => setHoverDate(null)}>
+      <table className="daterangecalendar-calendar" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="daterangepicker-weekday">
+              <th key={key} className="daterangecalendar-weekday">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -81,17 +81,17 @@ export function DateRangePickerDual() {
                 const today = isToday(value);
 
                 const buttonClassNames = [
-                  "daterangepicker-day",
-                  !isCurrentMonth && "daterangepicker-day--outside",
-                  isCurrentMonth && "daterangepicker-day--current-month",
-                  inRange && "daterangepicker-day--in-range",
-                  selected && "daterangepicker-day--selected",
-                  today && "daterangepicker-day--today",
+                  "daterangecalendar-day",
+                  !isCurrentMonth && "daterangecalendar-day--outside",
+                  isCurrentMonth && "daterangecalendar-day--current-month",
+                  inRange && "daterangecalendar-day--in-range",
+                  selected && "daterangecalendar-day--selected",
+                  today && "daterangecalendar-day--today",
                 ]
                   .filter(Boolean)
                   .join(" ");
 
-                const cellClassNames = isCurrentMonth && inRange ? "daterangepicker-cell--in-range" : "";
+                const cellClassNames = isCurrentMonth && inRange ? "daterangecalendar-cell--in-range" : "";
 
                 return (
                   <td key={key} className={cellClassNames}>
@@ -120,25 +120,25 @@ export function DateRangePickerDual() {
   };
 
   return (
-    <div className="daterangepicker-dual">
-      <div className="daterangepicker-selection">
+    <div className="daterangecalendar-dual">
+      <div className="daterangecalendar-selection">
         <div>
-          <p className="daterangepicker-selection-label">Selected range</p>
-          <p className="daterangepicker-selection-value">{formatRange()}</p>
+          <p className="daterangecalendar-selection-label">Selected range</p>
+          <p className="daterangecalendar-selection-value">{formatRange()}</p>
         </div>
         <button
           type="button"
           onClick={handleClear}
-          className="daterangepicker-clear-button"
+          className="daterangecalendar-clear-button"
           disabled={!dateRange.start}
         >
           Clear
         </button>
       </div>
 
-      <div className="daterangepicker-calendars">
-        <div className="daterangepicker-calendar-container">
-          <div className="daterangepicker-header">
+      <div className="daterangecalendar-calendars">
+        <div className="daterangecalendar-calendar-container">
+          <div className="daterangecalendar-header">
             <button
               type="button"
               onClick={() => {
@@ -146,21 +146,21 @@ export function DateRangePickerDual() {
                 leftCalendar.navigation.setDate(newDate);
                 rightCalendar.navigation.setDate(addMonths(newDate, 1));
               }}
-              className="daterangepicker-nav-button"
+              className="daterangecalendar-nav-button"
               aria-label="Previous month"
             >
               ←
             </button>
-            <h2 className="daterangepicker-title">{format(leftCalendar.cursorDate, "MMMM yyyy")}</h2>
-            <div className="daterangepicker-nav-button-placeholder" />
+            <h2 className="daterangecalendar-title">{format(leftCalendar.cursorDate, "MMMM yyyy")}</h2>
+            <div className="daterangecalendar-nav-button-placeholder" />
           </div>
           {renderCalendar(leftCalendar)}
         </div>
 
-        <div className="daterangepicker-calendar-container">
-          <div className="daterangepicker-header">
-            <div className="daterangepicker-nav-button-placeholder" />
-            <h2 className="daterangepicker-title">{format(rightCalendar.cursorDate, "MMMM yyyy")}</h2>
+        <div className="daterangecalendar-calendar-container">
+          <div className="daterangecalendar-header">
+            <div className="daterangecalendar-nav-button-placeholder" />
+            <h2 className="daterangecalendar-title">{format(rightCalendar.cursorDate, "MMMM yyyy")}</h2>
             <button
               type="button"
               onClick={() => {
@@ -168,7 +168,7 @@ export function DateRangePickerDual() {
                 leftCalendar.navigation.setDate(newDate);
                 rightCalendar.navigation.setDate(addMonths(newDate, 1));
               }}
-              className="daterangepicker-nav-button"
+              className="daterangecalendar-nav-button"
               aria-label="Next month"
             >
               →
