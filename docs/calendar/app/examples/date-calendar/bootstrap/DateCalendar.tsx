@@ -37,7 +37,7 @@ export function DateCalendar() {
                   navigation.setToday();
                   setSelectedDate(today);
                 }}
-                className="btn btn-outline-primary btn-sm px-3 fw-medium"
+                className="btn btn-primary btn-sm px-3 fw-medium"
               >
                 Today
               </button>

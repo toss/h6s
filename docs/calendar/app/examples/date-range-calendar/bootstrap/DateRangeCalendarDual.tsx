@@ -168,7 +168,7 @@ export function DateRangeCalendarDual() {
                 type="button"
                 onClick={handleClear}
                 disabled={!dateRange.start}
-                className="btn btn-outline-primary btn-sm px-3 fw-medium"
+                className="btn btn-primary btn-sm px-3 fw-medium"
               >
                 Clear
               </button>
