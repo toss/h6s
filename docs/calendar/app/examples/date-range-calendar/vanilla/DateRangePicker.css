@@ -93,14 +93,8 @@
   text-align: center;
 }
 
-.daterangepicker-calendar tbody tr {
-  /* Add small gap between rows for visual separation */
-  height: 2.75rem;
-}
-
 .daterangepicker-calendar td {
   position: relative;
-  padding: 0.125rem 0;
 }
 
 .daterangepicker-day {
@@ -111,7 +105,6 @@
   background: none;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
   position: relative;
   z-index: 2;
 }
@@ -120,15 +113,14 @@
   color: #111827;
 }
 
-.daterangepicker-day--current-month:hover {
-  background-color: #e5e7eb;
-}
-
 .daterangepicker-day--outside {
   color: #9ca3af;
 }
 
-/* Range highlighting: only middle dates, not start/end */
+.daterangepicker-day:hover {
+  background-color: #f3f4f6;
+}
+
 .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
   content: '';
   position: absolute;
@@ -145,16 +137,10 @@
   color: #1e40af;
 }
 
-/* Selected dates (actually clicked, not just hover) */
 .daterangepicker-day--selected {
   background-color: #3b82f6;
   color: #ffffff;
   font-weight: 600;
-}
-
-.daterangepicker-day--selected:hover {
-  background-color: #2563eb;
-  color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -209,9 +195,12 @@
     color: #4b5563;
   }
 
+  .daterangepicker-day:hover {
+    background-color: #374151;
+  }
+
   .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
     background-color: #1e3a8a;
-    height: 2rem;
   }
 
   .daterangepicker-day--in-range {
