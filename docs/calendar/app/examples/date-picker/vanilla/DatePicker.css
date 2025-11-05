@@ -1,0 +1,253 @@
+.datepicker-field {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.datepicker-field__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.datepicker-field__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.datepicker-field__trigger:hover {
+  border-color: #3b82f6;
+}
+
+.datepicker-field__trigger:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.datepicker-field__value {
+  flex: 1;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+  color: #6b7280;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.datepicker-field__value.is-selected {
+  color: #111827;
+}
+
+.datepicker-field__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #9ca3af;
+}
+
+.datepicker-field__clear {
+  align-self: flex-start;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.datepicker-field__clear:hover {
+  text-decoration: underline;
+}
+
+.datepicker-popover {
+  z-index: 50;
+  width: min(22rem, calc(100vw - 2rem));
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+  padding: 1.25rem;
+  outline: none;
+}
+
+.datepicker-popover__arrow {
+  fill: #ffffff;
+}
+
+.datepicker-popover__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.datepicker-popover__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.datepicker-popover__nav-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  background-color: transparent;
+  color: #1f2937;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.datepicker-popover__nav-button:hover {
+  background-color: #f3f4f6;
+}
+
+.datepicker-popover__month {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.datepicker-popover__table-wrapper {
+  overflow-x: auto;
+}
+
+.datepicker-popover__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.datepicker-popover__weekday {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.datepicker-popover__cell {
+  padding: 0.25rem 0;
+  text-align: center;
+}
+
+.datepicker-popover__day {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: transparent;
+  font-size: 0.875rem;
+  color: #111827;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.datepicker-popover__day:hover {
+  background-color: #f3f4f6;
+}
+
+.datepicker-popover__day--today {
+  border: 2px solid #3b82f6;
+  font-weight: 600;
+}
+
+.datepicker-popover__day--selected {
+  background-color: #3b82f6;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.datepicker-popover__day--selected:hover {
+  background-color: #2563eb;
+}
+
+.datepicker-popover__day--outside {
+  color: #9ca3af;
+}
+
+.datepicker-popover__day--outside:hover {
+  color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-field__label {
+    color: #d1d5db;
+  }
+
+  .datepicker-field__trigger {
+    border-color: #475569;
+    background-color: #111827;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.6);
+  }
+
+  .datepicker-field__value {
+    color: #94a3b8;
+  }
+
+  .datepicker-field__value.is-selected {
+    color: #f8fafc;
+  }
+
+  .datepicker-field__icon {
+    color: #94a3b8;
+  }
+
+  .datepicker-popover {
+    background-color: #111827;
+    border-color: #1f2937;
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.6);
+  }
+
+  .datepicker-popover__nav-button {
+    color: #f9fafb;
+  }
+
+  .datepicker-popover__nav-button:hover {
+    background-color: #1f2937;
+  }
+
+  .datepicker-popover__month {
+    color: #f9fafb;
+  }
+
+  .datepicker-popover__weekday {
+    color: #9ca3af;
+  }
+
+  .datepicker-popover__day {
+    color: #f9fafb;
+  }
+
+  .datepicker-popover__day--outside {
+    color: #6b7280;
+  }
+
+  .datepicker-popover__day:hover {
+    background-color: #1f2937;
+  }
+
+  .datepicker-popover__day--selected {
+    background-color: #2563eb;
+  }
+
+  .datepicker-popover__day--selected:hover {
+    background-color: #1d4ed8;
+  }
+
+  .datepicker-popover__arrow {
+    fill: #111827;
+  }
+}
