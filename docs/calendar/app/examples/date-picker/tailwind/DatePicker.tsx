@@ -11,7 +11,7 @@ export function DatePicker() {
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <div className="w-full max-w-sm space-y-2">
+      <div className="flex w-full max-w-sm flex-col items-start gap-2">
         <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Date</label>
         <Popover.Trigger asChild>
           <button
