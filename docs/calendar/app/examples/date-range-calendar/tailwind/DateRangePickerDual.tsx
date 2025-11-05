@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isWithinInterval, isAfter, isBefore, addMonths, subMonths } from "date-fns";
+import { format, isSameDay, isAfter, isToday, addMonths, subMonths } from "date-fns";
 import { useState } from "react";
 
 type DateRange = {
@@ -23,14 +23,12 @@ export function DateRangePickerDual() {
 
   function handleDateSelect(date: Date) {
     if (!dateRange.start || (dateRange.start && dateRange.end)) {
-      // Start new selection
       setDateRange({ start: date, end: null });
     } else {
-      // Complete the range
       if (isAfter(date, dateRange.start)) {
         setDateRange({ start: dateRange.start, end: date });
       } else {
-        setDateRange({ start: date, end: dateRange.start });
+        setDateRange({ start: date, end: null });
       }
     }
   }
@@ -43,50 +41,22 @@ export function DateRangePickerDual() {
   function isInRange(date: Date): boolean {
     if (!dateRange.start) return false;
 
-    const end = dateRange.end || hoverDate;
+    const end = dateRange.end || (hoverDate && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
     if (!end) return false;
 
-    // If start and end are the same day, there's no range
-    if (isSameDay(dateRange.start, end)) return false;
-
-    const rangeStart = isBefore(dateRange.start, end) ? dateRange.start : end;
-    const rangeEnd = isAfter(dateRange.start, end) ? dateRange.start : end;
-
-    // Exclude start and end dates - only dates strictly between them
-    return isWithinInterval(date, { start: rangeStart, end: rangeEnd })
-      && !isSameDay(date, rangeStart)
-      && !isSameDay(date, rangeEnd);
+    return isAfter(date, dateRange.start) && isAfter(end, date);
   }
 
-  function isRangeStart(date: Date): boolean {
-    if (!dateRange.start) return false;
-    if (dateRange.end) {
-      const rangeStart = isBefore(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-      return isSameDay(date, rangeStart);
-    }
-    return isSameDay(date, dateRange.start);
-  }
-
-  function isRangeEnd(date: Date): boolean {
-    if (!dateRange.start) return false;
-    if (dateRange.end) {
-      const rangeEnd = isAfter(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-      return isSameDay(date, rangeEnd);
-    }
-    if (hoverDate) {
-      return isSameDay(date, hoverDate);
-    }
+  function isSelected(date: Date): boolean {
+    if (dateRange.start && isSameDay(date, dateRange.start)) return true;
+    if (dateRange.end && isSameDay(date, dateRange.end)) return true;
     return false;
   }
 
   const formatRange = () => {
     if (!dateRange.start) return "Pick a start date";
-    if (!dateRange.end) return `${format(dateRange.start, "MMM d, yyyy")} - ...`;
-
-    const start = isBefore(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-    const end = isAfter(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-
-    return `${format(start, "MMM d, yyyy")} - ${format(end, "MMM d, yyyy")}`;
+    if (!dateRange.end) return `${format(dateRange.start, "MM/dd/yyyy")} - ...`;
+    return `${format(dateRange.start, "MM/dd/yyyy")} - ${format(dateRange.end, "MM/dd/yyyy")}`;
   };
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
@@ -106,39 +76,36 @@ export function DateRangePickerDual() {
         </thead>
         <tbody>
           {calendar.body.value.map(({ key, value: days }) => (
-            <tr key={key} className="h-11">
+            <tr key={key}>
               {days.map(({ key, value, isCurrentMonth }) => {
                 const inRange = isInRange(value);
-                const isStart = isRangeStart(value);
-                const isEnd = isRangeEnd(value);
-
-                // Only apply in-range to dates between start and end (exclusive)
-                const isMiddleRange = inRange && !isStart && !isEnd;
-
-                // Only show primary color for actually selected dates (not hover)
-                const isSelectedStart = dateRange.start && isSameDay(value, dateRange.start);
-                const isSelectedEnd = dateRange.end && isSameDay(value, dateRange.end);
-                const isSelected = isSelectedStart || isSelectedEnd;
+                const selected = isSelected(value);
+                const today = isToday(value);
 
                 return (
                   <td
                     key={key}
                     className={`
                       relative p-0.5
-                      ${isCurrentMonth && isMiddleRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
+                      ${isCurrentMonth && inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
                     `}
                   >
                     {isCurrentMonth ? (
                       <button
                         type="button"
                         onClick={() => handleDateSelect(value)}
-                        onMouseEnter={() => dateRange.start && !dateRange.end && setHoverDate(value)}
+                        onMouseEnter={() => {
+                          if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
+                            setHoverDate(value);
+                          }
+                        }}
                         className={`
                           relative z-10 w-10 h-10 rounded-md text-sm transition
                           text-gray-900 dark:text-gray-100
-                          hover:bg-gray-100 dark:hover:bg-gray-800
-                          ${isMiddleRange && "text-blue-900 dark:text-blue-100"}
-                          ${isSelected && "bg-blue-500 text-white font-semibold hover:!bg-blue-600 dark:bg-blue-600 dark:hover:!bg-blue-700"}
+                          ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
+                          ${inRange && "text-blue-900 dark:text-blue-100"}
+                          ${selected && "!bg-blue-500 !text-white font-semibold hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-600"}
+                          ${today && "border-2 border-blue-500"}
                         `}
                       >
                         {format(value, "d")}
