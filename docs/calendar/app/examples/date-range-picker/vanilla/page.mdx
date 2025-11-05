@@ -1,0 +1,40 @@
+import { CodeFromFile } from "@/components/CodeFromFile";
+import { DemoWithCode } from "@/components/DemoWithCode";
+import { DateRangePicker } from "./DateRangePicker";
+
+# Vanilla CSS
+
+Date range picker with dual calendar popover built using plain CSS and BEM-style conventions.
+
+## Basic
+
+<DemoWithCode
+  demo={<DateRangePicker />}
+  code={
+    <>
+      <CodeFromFile
+        file="app/examples/date-range-picker/vanilla/DateRangePicker.tsx"
+        lang="tsx"
+        filename="DateRangePicker.tsx"
+      />
+      <CodeFromFile
+        file="app/examples/date-range-picker/vanilla/DateRangePicker.css"
+        lang="css"
+        filename="DateRangePicker.css"
+      />
+    </>
+  }
+/>
+
+## Features
+
+- Field-style trigger with placeholder and clear action
+- Floating popover built with `@radix-ui/react-popover`
+- Dual calendar layout showing consecutive months
+- Date range selection with visual highlighting
+- Hover preview showing potential range
+- Synchronized month navigation
+- Calendar interaction via `@h6s/calendar`
+- Keyboard support for `Escape` to dismiss
+- Vanilla CSS with BEM-style class names
+- Dark mode support via `prefers-color-scheme`
