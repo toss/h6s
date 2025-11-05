@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isWithinInterval, isAfter, isBefore, addMonths, subMonths } from "date-fns";
+import { format, isSameDay, isAfter, isToday, addMonths, subMonths } from "date-fns";
 import { useState } from "react";
 
 type DateRange = {
@@ -23,14 +23,12 @@ export function DateRangePickerDual() {
 
   function handleDateSelect(date: Date) {
     if (!dateRange.start || (dateRange.start && dateRange.end)) {
-      // Start new selection
       setDateRange({ start: date, end: null });
     } else {
-      // Complete the range
       if (isAfter(date, dateRange.start)) {
         setDateRange({ start: dateRange.start, end: date });
       } else {
-        setDateRange({ start: date, end: dateRange.start });
+        setDateRange({ start: date, end: null });
       }
     }
   }
@@ -43,50 +41,22 @@ export function DateRangePickerDual() {
   function isInRange(date: Date): boolean {
     if (!dateRange.start) return false;
 
-    const end = dateRange.end || hoverDate;
+    const end = dateRange.end || (hoverDate && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
     if (!end) return false;
 
-    // If start and end are the same day, there's no range
-    if (isSameDay(dateRange.start, end)) return false;
-
-    const rangeStart = isBefore(dateRange.start, end) ? dateRange.start : end;
-    const rangeEnd = isAfter(dateRange.start, end) ? dateRange.start : end;
-
-    // Exclude start and end dates - only dates strictly between them
-    return isWithinInterval(date, { start: rangeStart, end: rangeEnd })
-      && !isSameDay(date, rangeStart)
-      && !isSameDay(date, rangeEnd);
+    return isAfter(date, dateRange.start) && isAfter(end, date);
   }
 
-  function isRangeStart(date: Date): boolean {
-    if (!dateRange.start) return false;
-    if (dateRange.end) {
-      const rangeStart = isBefore(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-      return isSameDay(date, rangeStart);
-    }
-    return isSameDay(date, dateRange.start);
-  }
-
-  function isRangeEnd(date: Date): boolean {
-    if (!dateRange.start) return false;
-    if (dateRange.end) {
-      const rangeEnd = isAfter(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-      return isSameDay(date, rangeEnd);
-    }
-    if (hoverDate) {
-      return isSameDay(date, hoverDate);
-    }
+  function isSelected(date: Date): boolean {
+    if (dateRange.start && isSameDay(date, dateRange.start)) return true;
+    if (dateRange.end && isSameDay(date, dateRange.end)) return true;
     return false;
   }
 
   const formatRange = () => {
     if (!dateRange.start) return "Pick a start date";
-    if (!dateRange.end) return `${format(dateRange.start, "MMM d, yyyy")} - ...`;
-
-    const start = isBefore(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-    const end = isAfter(dateRange.start, dateRange.end) ? dateRange.start : dateRange.end;
-
-    return `${format(start, "MMM d, yyyy")} - ${format(end, "MMM d, yyyy")}`;
+    if (!dateRange.end) return `${format(dateRange.start, "MM/dd/yyyy")} - ...`;
+    return `${format(dateRange.start, "MM/dd/yyyy")} - ${format(dateRange.end, "MM/dd/yyyy")}`;
   };
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
@@ -110,19 +80,11 @@ export function DateRangePickerDual() {
         </thead>
         <tbody>
           {calendar.body.value.map(({ key, value: days }) => (
-            <tr key={key} style={{ height: "2.75rem" }}>
+            <tr key={key}>
               {days.map(({ key, value, isCurrentMonth }) => {
                 const inRange = isInRange(value);
-                const isStart = isRangeStart(value);
-                const isEnd = isRangeEnd(value);
-
-                // Only apply in-range to dates between start and end (exclusive)
-                const isMiddleRange = inRange && !isStart && !isEnd;
-
-                // Only show primary color for actually selected dates (not hover)
-                const isSelectedStart = dateRange.start && isSameDay(value, dateRange.start);
-                const isSelectedEnd = dateRange.end && isSameDay(value, dateRange.end);
-                const isSelected = isSelectedStart || isSelectedEnd;
+                const selected = isSelected(value);
+                const today = isToday(value);
 
                 let btnClass = "btn btn-sm border-0";
                 const style: React.CSSProperties = {
@@ -133,6 +95,8 @@ export function DateRangePickerDual() {
                   borderRadius: "0.375rem",
                   position: "relative",
                   zIndex: 2,
+                  ["--bs-btn-hover-bg" as any]: selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
+                  ["--bs-btn-hover-border-color" as any]: "transparent",
                 };
 
                 const cellStyle: React.CSSProperties = {
@@ -140,14 +104,26 @@ export function DateRangePickerDual() {
                   padding: "0",
                 };
 
-                if (isCurrentMonth && isMiddleRange) {
-                  cellStyle.backgroundColor = "#dbeafe";
+                const rangeStyle: React.CSSProperties | undefined = isCurrentMonth && inRange ? {
+                  content: '""',
+                  position: "absolute",
+                  top: "50%",
+                  left: 0,
+                  right: 0,
+                  height: "2rem",
+                  transform: "translateY(-50%)",
+                  backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
+                  zIndex: 0,
+                } : undefined;
+
+                if (today) {
+                  style.border = "2px solid #0d6efd";
                 }
 
-                if (isSelected) {
+                if (selected) {
                   btnClass += " btn-primary fw-semibold";
-                } else if (isMiddleRange) {
-                  btnClass += " text-primary";
+                } else if (inRange) {
+                  btnClass += " text-primary-emphasis";
                   style.fontWeight = 500;
                 } else if (isCurrentMonth) {
                   btnClass += " text-body";
@@ -155,11 +131,16 @@ export function DateRangePickerDual() {
 
                 return (
                   <td key={key} className="p-0" style={cellStyle}>
+                    {isCurrentMonth && inRange && <div style={rangeStyle} />}
                     {isCurrentMonth ? (
                       <button
                         type="button"
                         onClick={() => handleDateSelect(value)}
-                        onMouseEnter={() => dateRange.start && !dateRange.end && setHoverDate(value)}
+                        onMouseEnter={() => {
+                          if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
+                            setHoverDate(value);
+                          }
+                        }}
                         className={btnClass}
                         style={style}
                         aria-label={format(value, "PPP")}
