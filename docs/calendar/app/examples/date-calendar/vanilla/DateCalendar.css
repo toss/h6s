@@ -42,7 +42,7 @@
   transition: background-color 0.2s;
 }
 
-.datepicker-today-button:hover {
+.datecalendar-today-button:hover {
   background-color: #f3f4f6;
 }
 
@@ -64,7 +64,7 @@
   transition: background-color 0.2s;
 }
 
-.datepicker-nav-button:hover {
+.datecalendar-nav-button:hover {
   background-color: #f3f4f6;
 }
 
@@ -88,11 +88,11 @@
   text-align: center;
 }
 
-.datepicker-calendar tbody tr {
+.datecalendar-calendar tbody tr {
   height: 2.75rem;
 }
 
-.datepicker-calendar td {
+.datecalendar-calendar td {
   position: relative;
   padding: 0.125rem 0;
 }
@@ -110,50 +110,50 @@
   z-index: 2;
 }
 
-.datepicker-day--outside {
+.datecalendar-day--outside {
   color: #9ca3af;
 }
 
-.datepicker-day--outside:hover:not(.datepicker-day--selected) {
+.datecalendar-day--outside:hover:not(.datecalendar-day--selected) {
   background-color: #f3f4f6;
   color: #111827;
 }
 
-.datepicker-day--current-month {
+.datecalendar-day--current-month {
   color: #111827;
 }
 
-.datepicker-day--current-month:hover:not(.datepicker-day--selected) {
+.datecalendar-day--current-month:hover:not(.datecalendar-day--selected) {
   background-color: #f3f4f6;
 }
 
-.datepicker-day--today {
+.datecalendar-day--today {
   border: 2px solid #3b82f6;
 }
 
-.datepicker-day--today:not(.datepicker-day--selected) {
+.datecalendar-day--today:not(.datecalendar-day--selected) {
   font-weight: 600;
 }
 
-.datepicker-day--selected {
+.datecalendar-day--selected {
   background-color: #3b82f6;
   color: #ffffff;
   font-weight: 600;
 }
 
-.datepicker-day--selected:hover {
+.datecalendar-day--selected:hover {
   background-color: #2563eb;
   color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
-  .datepicker {
+  .datecalendar {
     border-color: #334155;
     background-color: #111827;
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);
   }
 
-  .datepicker-selection {
+  .datecalendar-selection {
     border-color: #334155;
   }
 
@@ -170,7 +170,7 @@
     border-color: #475569;
   }
 
-  .datepicker-today-button:hover {
+  .datecalendar-today-button:hover {
     background-color: #1f2937;
   }
 
@@ -178,7 +178,7 @@
     color: #f9fafb;
   }
 
-  .datepicker-nav-button:hover {
+  .datecalendar-nav-button:hover {
     background-color: #1f2937;
   }
 
@@ -190,37 +190,37 @@
     color: #9ca3af;
   }
 
-  .datepicker-day--outside {
+  .datecalendar-day--outside {
     color: #6b7280;
   }
 
-  .datepicker-day--outside:hover:not(.datepicker-day--selected) {
+  .datecalendar-day--outside:hover:not(.datecalendar-day--selected) {
     background-color: #374151;
     color: #f9fafb;
   }
 
-  .datepicker-day--current-month {
+  .datecalendar-day--current-month {
     color: #f9fafb;
   }
 
-  .datepicker-day--current-month:hover:not(.datepicker-day--selected) {
+  .datecalendar-day--current-month:hover:not(.datecalendar-day--selected) {
     background-color: #1f2937;
   }
 
-  .datepicker-day--today {
+  .datecalendar-day--today {
     border: 2px solid #3b82f6;
   }
 
-  .datepicker-day--today:not(.datepicker-day--selected) {
+  .datecalendar-day--today:not(.datecalendar-day--selected) {
     font-weight: 600;
   }
 
-  .datepicker-day--selected {
+  .datecalendar-day--selected {
     background-color: #2563eb;
     color: #ffffff;
   }
 
-  .datepicker-day--selected:hover {
+  .datecalendar-day--selected:hover {
     background-color: #1d4ed8;
     color: #ffffff;
   }
