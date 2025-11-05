@@ -125,6 +125,10 @@
   background-color: #3b82f6;
 }
 
+.daterangepicker-day--today {
+  border: 2px solid #3b82f6;
+}
+
 .daterangepicker-calendar td.daterangepicker-cell--in-range::before {
   content: '';
   position: absolute;

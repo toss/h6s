@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter } from "date-fns";
+import { format, isSameDay, isAfter, isToday } from "date-fns";
 import { useState } from "react";
 import "./DateRangePicker.css";
 
@@ -112,6 +112,7 @@ export function DateRangePicker() {
               {days.map(({ key, value, isCurrentMonth }) => {
                 const inRange = isInRange(value);
                 const selected = isSelected(value);
+                const today = isToday(value);
 
                 const buttonClassNames = [
                   "daterangepicker-day",
@@ -119,6 +120,7 @@ export function DateRangePicker() {
                   isCurrentMonth && "daterangepicker-day--current-month",
                   inRange && "daterangepicker-day--in-range",
                   selected && "daterangepicker-day--selected",
+                  today && "daterangepicker-day--today",
                 ]
                   .filter(Boolean)
                   .join(" ");
