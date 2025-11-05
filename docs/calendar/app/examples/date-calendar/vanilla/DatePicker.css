@@ -127,6 +127,10 @@
   background-color: #f3f4f6;
 }
 
+.datepicker-day--today {
+  border: 2px solid #3b82f6;
+}
+
 .datepicker-day--today:not(.datepicker-day--selected) {
   font-weight: 600;
 }
@@ -201,6 +205,10 @@
 
   .datepicker-day--current-month:hover:not(.datepicker-day--selected) {
     background-color: #1f2937;
+  }
+
+  .datepicker-day--today {
+    border: 2px solid #3b82f6;
   }
 
   .datepicker-day--today:not(.datepicker-day--selected) {
