@@ -126,8 +126,8 @@ export function DateRangePicker() {
                       const selected = isSelected(value);
                       const today = isToday(value);
 
-                      let btnClass = "btn btn-sm border-0";
-                      const style: React.CSSProperties = {
+                      let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
+                      const style = {
                         width: "2.5rem",
                         height: "2.5rem",
                         fontSize: "0.875rem",
@@ -135,9 +135,9 @@ export function DateRangePicker() {
                         borderRadius: "0.375rem",
                         position: "relative",
                         zIndex: 2,
-                        ["--bs-btn-hover-bg" as any]: selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
-                        ["--bs-btn-hover-border-color" as any]: "transparent",
-                      };
+                        "--bs-btn-hover-bg": selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
+                        "--bs-btn-hover-border-color": "transparent",
+                      } as React.CSSProperties;
 
                       const cellStyle: React.CSSProperties = {
                         position: "relative",
