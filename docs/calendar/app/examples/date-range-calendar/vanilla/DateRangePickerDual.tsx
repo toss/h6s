@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter, isToday, addMonths, subMonths } from "date-fns";
+import { addMonths, format, isAfter, isSameDay, isToday, subMonths } from "date-fns";
 import { useState } from "react";
 import "./DateRangePickerDual.css";
 
@@ -62,10 +62,7 @@ export function DateRangePickerDual() {
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table
-        className="daterangepicker-calendar"
-        onMouseLeave={() => setHoverDate(null)}
-      >
+      <table className="daterangepicker-calendar" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (

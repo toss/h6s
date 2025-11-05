@@ -9,7 +9,7 @@ const meta: MetaRecord = {
   },
   tailwind: {
     title: "Tailwind CSS",
-  }
+  },
 };
 
 export default meta;

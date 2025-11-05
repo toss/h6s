@@ -17,16 +17,14 @@ export function DatePicker() {
       navigation.setDate(date);
     }
     setSelectedDate(date);
-  };
+  }
 
   return (
     <div className="datepicker">
       <div className="datepicker-selection">
         <div>
           <p className="datepicker-selection-label">Selected date</p>
-          <p className="datepicker-selection-value">
-            {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
-          </p>
+          <p className="datepicker-selection-value">{selectedDate ? format(selectedDate, "PPP") : "Pick a date"}</p>
         </div>
         <button
           type="button"
@@ -41,12 +39,7 @@ export function DatePicker() {
       </div>
 
       <div className="datepicker-header">
-        <button
-          type="button"
-          onClick={navigation.toPrev}
-          className="datepicker-nav-button"
-          aria-label="Previous month"
-        >
+        <button type="button" onClick={navigation.toPrev} className="datepicker-nav-button" aria-label="Previous month">
           ←
         </button>
         <h2 className="datepicker-title">{format(cursorDate, "MMMM yyyy")}</h2>
@@ -82,7 +75,11 @@ export function DatePicker() {
 
                 return (
                   <td key={key}>
-                    <button type="button" onClick={() => handleDateSelect(value, isCurrentMonth)} className={classNames}>
+                    <button
+                      type="button"
+                      onClick={() => handleDateSelect(value, isCurrentMonth)}
+                      className={classNames}
+                    >
                       {format(value, "d")}
                     </button>
                   </td>

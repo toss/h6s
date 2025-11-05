@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 type DemoWithCodeProps = {
   demo: ReactNode;
@@ -13,9 +13,7 @@ export function DemoWithCode({ demo, code }: DemoWithCodeProps) {
   return (
     <div className="my-6 overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <div className="relative p-8">
-        <div className="flex items-center justify-center">
-          {demo}
-        </div>
+        <div className="flex items-center justify-center">{demo}</div>
 
         <div className="absolute bottom-3 right-3 flex gap-2">
           <button

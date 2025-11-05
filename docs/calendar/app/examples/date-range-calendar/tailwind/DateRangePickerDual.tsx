@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter, isToday, addMonths, subMonths } from "date-fns";
+import { addMonths, format, isAfter, isSameDay, isToday, subMonths } from "date-fns";
 import { useState } from "react";
 
 type DateRange = {
@@ -61,10 +61,7 @@ export function DateRangePickerDual() {
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table
-        className="w-full border-collapse"
-        onMouseLeave={() => setHoverDate(null)}
-      >
+      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
@@ -153,7 +150,9 @@ export function DateRangePickerDual() {
             >
               ←
             </button>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{format(leftCalendar.cursorDate, "MMMM yyyy")}</h2>
+            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+              {format(leftCalendar.cursorDate, "MMMM yyyy")}
+            </h2>
             <div className="w-9" />
           </div>
           {renderCalendar(leftCalendar)}
@@ -162,7 +161,9 @@ export function DateRangePickerDual() {
         <div className="flex-1">
           <div className="flex items-center justify-between py-4">
             <div className="w-9" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{format(rightCalendar.cursorDate, "MMMM yyyy")}</h2>
+            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+              {format(rightCalendar.cursorDate, "MMMM yyyy")}
+            </h2>
             <button
               type="button"
               onClick={() => {

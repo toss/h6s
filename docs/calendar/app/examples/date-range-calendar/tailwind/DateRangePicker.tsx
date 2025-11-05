@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter, isToday } from "date-fns";
+import { format, isAfter, isSameDay, isToday } from "date-fns";
 import { useState } from "react";
 
 type DateRange = {
@@ -92,10 +92,7 @@ export function DateRangePicker() {
         </button>
       </div>
 
-      <table
-        className="w-full border-collapse"
-        onMouseLeave={() => setHoverDate(null)}
-      >
+      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (

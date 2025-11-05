@@ -15,7 +15,7 @@ export function FrameworkTabs({ children }: FrameworkTabsProps) {
       { key: "bootstrap", label: "Bootstrap 5" },
       { key: "vanilla", label: "Vanilla CSS" },
     ],
-    []
+    [],
   );
 
   const [activeFramework, setActiveFramework] = useState<Framework>("tailwind");

@@ -60,11 +60,7 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
         return;
       }
       const { body, documentElement } = doc;
-      const height = Math.max(
-        body?.scrollHeight ?? 0,
-        documentElement?.scrollHeight ?? 0,
-        0
-      );
+      const height = Math.max(body?.scrollHeight ?? 0, documentElement?.scrollHeight ?? 0, 0);
       iframe.style.height = height ? `${height}px` : "0px";
     };
 

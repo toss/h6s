@@ -16,7 +16,7 @@ export function DatePicker() {
       navigation.setDate(date);
     }
     setSelectedDate(date);
-  };
+  }
 
   return (
     <div className="my-8 w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">

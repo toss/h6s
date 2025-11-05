@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter, isToday } from "date-fns";
+import { format, isAfter, isSameDay, isToday } from "date-fns";
 import { useState } from "react";
 import "./DateRangePicker.css";
 
@@ -93,10 +93,7 @@ export function DateRangePicker() {
         </button>
       </div>
 
-      <table
-        className="daterangepicker-calendar"
-        onMouseLeave={() => setHoverDate(null)}
-      >
+      <table className="daterangepicker-calendar" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (

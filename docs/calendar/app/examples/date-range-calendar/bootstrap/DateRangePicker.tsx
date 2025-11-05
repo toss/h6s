@@ -1,7 +1,7 @@
 "use client";
 
 import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay, isAfter, isToday } from "date-fns";
+import { format, isAfter, isSameDay, isToday } from "date-fns";
 import { useState } from "react";
 
 type DateRange = {
@@ -63,9 +63,7 @@ export function DateRangePicker() {
             <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
               <div>
                 <p className="text-body-secondary small mb-1 fw-semibold">Selected range</p>
-                <p className="text-body-emphasis fw-semibold mb-0 fs-6">
-                  {formatRange()}
-                </p>
+                <p className="text-body-emphasis fw-semibold mb-0 fs-6">{formatRange()}</p>
               </div>
               <button
                 type="button"
@@ -87,9 +85,7 @@ export function DateRangePicker() {
                 <span style={{ fontSize: "1.25rem" }}>←</span>
               </button>
 
-              <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
-                {format(cursorDate, "MMMM yyyy")}
-              </h2>
+              <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">{format(cursorDate, "MMMM yyyy")}</h2>
 
               <button
                 type="button"
@@ -101,18 +97,11 @@ export function DateRangePicker() {
               </button>
             </div>
 
-            <table
-              className="table table-borderless text-center mb-0"
-              onMouseLeave={() => setHoverDate(null)}
-            >
+            <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
               <thead>
                 <tr>
                   {headers.weekdays.map(({ key, value }) => (
-                    <th
-                      key={key}
-                      className="fw-medium text-body-secondary py-2"
-                      style={{ fontSize: "0.875rem" }}
-                    >
+                    <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
                       {format(value, "EEEEEE")}
                     </th>
                   ))}
@@ -144,17 +133,19 @@ export function DateRangePicker() {
                         padding: "0",
                       };
 
-                      const rangeStyle: React.CSSProperties | undefined = inRange ? {
-                        content: '""',
-                        position: "absolute",
-                        top: "50%",
-                        left: 0,
-                        right: 0,
-                        height: "2rem",
-                        transform: "translateY(-50%)",
-                        backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
-                        zIndex: 0,
-                      } : undefined;
+                      const rangeStyle: React.CSSProperties | undefined = inRange
+                        ? {
+                            content: '""',
+                            position: "absolute",
+                            top: "50%",
+                            left: 0,
+                            right: 0,
+                            height: "2rem",
+                            transform: "translateY(-50%)",
+                            backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
+                            zIndex: 0,
+                          }
+                        : undefined;
 
                       if (today) {
                         style.border = "2px solid #0d6efd";
