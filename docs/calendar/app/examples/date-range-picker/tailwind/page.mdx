@@ -1,0 +1,32 @@
+import { DateRangePicker } from "./DateRangePicker";
+import { CodeFromFile } from "@/components/CodeFromFile";
+import { DemoWithCode } from "@/components/DemoWithCode";
+
+# Tailwind CSS
+
+Input field that opens a date range picker popover with dual calendars, powered by `@radix-ui/react-popover`.
+
+## Basic
+
+<DemoWithCode
+  demo={<DateRangePicker />}
+  code={
+    <CodeFromFile
+      file="app/examples/date-range-picker/tailwind/DateRangePicker.tsx"
+      lang="tsx"
+      filename="DateRangePicker.tsx"
+    />
+  }
+/>
+
+## Features
+
+- Field-style trigger with placeholder and clear action
+- Floating popover built with `@radix-ui/react-popover`
+- Dual calendar layout showing consecutive months
+- Date range selection with visual highlighting
+- Hover preview showing potential range
+- Synchronized month navigation
+- Calendar interaction via `@h6s/calendar`
+- Keyboard support for `Escape` to dismiss
+- Tailwind CSS styling with dark mode variants

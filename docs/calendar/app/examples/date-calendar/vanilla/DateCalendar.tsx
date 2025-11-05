@@ -39,7 +39,12 @@ export function DateCalendar() {
       </div>
 
       <div className="datecalendar-header">
-        <button type="button" onClick={navigation.toPrev} className="datecalendar-nav-button" aria-label="Previous month">
+        <button
+          type="button"
+          onClick={navigation.toPrev}
+          className="datecalendar-nav-button"
+          aria-label="Previous month"
+        >
           ←
         </button>
         <h2 className="datecalendar-title">{format(cursorDate, "MMMM yyyy")}</h2>
