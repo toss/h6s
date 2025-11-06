@@ -1,0 +1,200 @@
+# Headless Philosophy
+
+## What is Headless?
+
+**Headless components separate logic from presentation.**
+
+Instead of providing a complete UI component with predefined styles, a headless library gives you the **logic, state management, and behavior** - leaving the visual presentation entirely up to you.
+
+## The Problem with Traditional Calendar Libraries
+
+Traditional calendar libraries come with built-in UI:
+
+```tsx
+// Traditional approach - UI is bundled
+import Calendar from 'some-calendar-lib';
+
+<Calendar
+  theme="dark"           // Limited theme options
+  primaryColor="blue"    // Restricted customization
+  borderRadius="8px"     // Can't match your design system
+/>
+```
+
+**Problems:**
+- 🎨 **Design constraints** - Can't fully match your design system
+- 📦 **Bundle bloat** - Shipping CSS you don't use
+- 🔧 **Override hell** - Fighting with `!important` to customize
+- 🚫 **Framework lock-in** - Doesn't work with your CSS solution
+
+## The Headless Approach
+
+With `@h6s/calendar`, you get pure logic:
+
+```tsx
+// Headless approach - you control everything
+import { useCalendar } from '@h6s/calendar';
+
+const { headers, body, navigation } = useCalendar();
+
+// Build YOUR calendar with YOUR styling
+<YourCustomCalendar
+  data={body}
+  onNavigate={navigation}
+  className={yourStyles}
+/>
+```
+
+**Benefits:**
+- ✅ **Complete design freedom** - Match any design system perfectly
+- ✅ **Lightweight** - No CSS bundle, just logic
+- ✅ **Flexible** - Use any styling solution (Tailwind, CSS Modules, styled-components, etc.)
+- ✅ **Framework agnostic** - Works anywhere React works
+
+## Separation of Concerns
+
+```
+┌─────────────────────────────────────┐
+│         Your Application            │
+├─────────────────────────────────────┤
+│  Presentation Layer (Your Control)  │
+│  • Styling (Tailwind/CSS/etc)       │
+│  • Markup structure                 │
+│  • Visual design                    │
+├─────────────────────────────────────┤
+│  Logic Layer (@h6s/calendar)        │
+│  • Date calculations                │
+│  • State management                 │
+│  • Navigation logic                 │
+│  • Calendar data structure          │
+└─────────────────────────────────────┘
+```
+
+The logic layer is stable and well-tested. The presentation layer is entirely yours to customize.
+
+## Real-World Example
+
+Let's see how the same hook works with different styling solutions:
+
+### With Tailwind CSS
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+
+function TailwindCalendar() {
+  const { body } = useCalendar();
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-4">
+      {body.value.map(week => (
+        <div className="flex gap-2">
+          {week.value.map(day => (
+            <button className="w-10 h-10 rounded-full hover:bg-blue-100">
+              {format(day.value, 'd')}
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### With CSS Modules
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import styles from './Calendar.module.css';
+
+function CSSModulesCalendar() {
+  const { body } = useCalendar();
+
+  return (
+    <div className={styles.calendar}>
+      {body.value.map(week => (
+        <div className={styles.week}>
+          {week.value.map(day => (
+            <button className={styles.day}>
+              {format(day.value, 'd')}
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### With styled-components
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import styled from 'styled-components';
+
+const CalendarContainer = styled.div`
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+`;
+
+const Day = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  &:hover {
+    background: #e3f2fd;
+  }
+`;
+
+function StyledCalendar() {
+  const { body } = useCalendar();
+
+  return (
+    <CalendarContainer>
+      {/* Same logic, different styles */}
+    </CalendarContainer>
+  );
+}
+```
+
+## Same Logic, Any Design
+
+The power of headless is that **the calendar logic never changes**, but you can create completely different visual experiences:
+
+- 📱 Mobile-first calendar
+- 🎨 Neumorphic design
+- 🌙 Dark mode friendly
+- ♿ Accessibility-focused
+- 🏢 Corporate design system
+- 🎮 Gaming UI theme
+
+All using the same `useCalendar()` hook.
+
+## When to Use Headless?
+
+**Use headless when:**
+- ✅ You have a design system to match
+- ✅ You need full control over styling
+- ✅ You want to minimize bundle size
+- ✅ You're building a design system yourself
+
+**Consider traditional components when:**
+- ❌ You need a quick prototype with default styles
+- ❌ You don't care about visual customization
+- ❌ You want an out-of-the-box solution
+
+## Philosophy in Action
+
+See our [Examples](/examples) to see how the same `useCalendar` hook powers completely different calendar designs:
+
+- DatePicker with popover
+- DateRangePicker with dual calendars
+- Standalone date calendars
+- All with Tailwind, Vanilla CSS, and Bootstrap variants
+
+Each example uses **the exact same hook**, just with different presentation layers.
+
+---
+
+**Next:** Learn how to use the [API Reference](/api/use-calendar) to build your own calendar.

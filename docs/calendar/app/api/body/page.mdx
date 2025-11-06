@@ -1,0 +1,263 @@
+# body
+
+The `body` property provides the main calendar grid data - the core structure for rendering your calendar UI.
+
+## Type
+
+```tsx
+body: {
+  value: Array<{
+    key: string;        // Unique key for the week row
+    value: Array<{
+      key: string;              // Unique key for the day cell
+      value: Date;              // Date object for this cell
+      isCurrentDate: boolean;   // Is this today's date?
+      isCurrentMonth: boolean;  // Is this date in the current month?
+      isWeekend: boolean;       // Is this a weekend day?
+    }>;
+  }>;
+}
+```
+
+## Structure
+
+The `body` contains a nested array structure:
+- **Outer array**: Represents weeks
+- **Inner array**: Represents days within each week
+
+The structure adapts based on the calendar view type:
+- **Month view**: 4-6 weeks with 7 days each
+- **Week view**: 1 week with 7 days
+- **Day view**: 1 day
+
+## Usage
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
+
+function Calendar() {
+  const { body } = useCalendar();
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }) => (
+        <tr key={key}>
+          {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
+            <td
+              key={key}
+              className={!isCurrentMonth ? 'opacity-30' : ''}
+            >
+              <button className={isCurrentDate ? 'font-bold' : ''}>
+                {format(value, 'd')}
+              </button>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
+
+## Properties
+
+### `value`
+- **Type**: `Date`
+- **Description**: The date object for this calendar cell
+- **Usage**: Format and display the date
+
+### `isCurrentDate`
+- **Type**: `boolean`
+- **Description**: `true` if this cell represents today's date
+- **Usage**: Highlight today in your calendar
+
+### `isCurrentMonth`
+- **Type**: `boolean`
+- **Description**: `true` if this date belongs to the currently displayed month
+- **Usage**: Dim or hide dates from previous/next months
+
+### `isWeekend`
+- **Type**: `boolean`
+- **Description**: `true` if this is Saturday or Sunday
+- **Usage**: Apply weekend-specific styling
+
+## Common Patterns
+
+### Highlighting Today
+
+```tsx
+<button
+  className={
+    day.isCurrentDate
+      ? 'border-2 border-blue-500 font-bold'
+      : ''
+  }
+>
+  {format(day.value, 'd')}
+</button>
+```
+
+### Dimming Outside Month Dates
+
+```tsx
+<td
+  style={{
+    opacity: day.isCurrentMonth ? 1 : 0.3
+  }}
+>
+  {format(day.value, 'd')}
+</td>
+```
+
+### Weekend Styling
+
+```tsx
+<td
+  className={
+    day.isWeekend
+      ? 'bg-gray-50'
+      : 'bg-white'
+  }
+>
+  {format(day.value, 'd')}
+</td>
+```
+
+### Date Selection
+
+```tsx
+function SelectableCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { body } = useCalendar();
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }) => (
+        <tr key={key}>
+          {days.map(({ key, value, isCurrentMonth }) => {
+            const isSelected = selectedDate &&
+              isSameDay(value, selectedDate);
+
+            return (
+              <td key={key}>
+                <button
+                  onClick={() => setSelectedDate(value)}
+                  disabled={!isCurrentMonth}
+                  className={isSelected ? 'bg-blue-500 text-white' : ''}
+                >
+                  {format(value, 'd')}
+                </button>
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
+
+## Example with Full Styling
+
+### Tailwind CSS
+
+```tsx
+<tbody>
+  {body.value.map(({ key, value: days }) => (
+    <tr key={key}>
+      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
+        <td key={key} className="p-1">
+          <button
+            className={`
+              w-10 h-10 rounded-md text-sm transition
+              ${!isCurrentMonth && "text-gray-400"}
+              ${isCurrentMonth && "text-gray-900 hover:bg-gray-100"}
+              ${isCurrentDate && "border-2 border-blue-500 font-bold"}
+            `}
+          >
+            {format(value, 'd')}
+          </button>
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+```
+
+### Vanilla CSS with BEM
+
+```tsx
+<tbody>
+  {body.value.map(({ key, value: days }) => (
+    <tr key={key}>
+      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
+        const classes = [
+          'calendar-day',
+          !isCurrentMonth && 'calendar-day--outside',
+          isCurrentDate && 'calendar-day--today',
+        ].filter(Boolean).join(' ');
+
+        return (
+          <td key={key}>
+            <button className={classes}>
+              {format(value, 'd')}
+            </button>
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
+```
+
+## View Type Behavior
+
+The `body` structure adapts to the current view type:
+
+```tsx
+const { body, view } = useCalendar();
+
+// Month view: Multiple weeks
+if (view.isMonthView) {
+  console.log(body.value.length); // 4-6 weeks
+}
+
+// Week view: Single week
+if (view.isWeekView) {
+  console.log(body.value.length); // 1 week
+  console.log(body.value[0].value.length); // 7 days
+}
+
+// Day view: Single day
+if (view.isDayView) {
+  console.log(body.value.length); // 1 week
+  console.log(body.value[0].value.length); // 1 day
+}
+```
+
+## Performance Tips
+
+The `key` properties are optimized for React's reconciliation:
+
+```tsx
+// ✅ Good - use provided keys
+{body.value.map(({ key, value: days }) => (
+  <tr key={key}>
+    {days.map(({ key, value }) => (
+      <td key={key}>{format(value, 'd')}</td>
+    ))}
+  </tr>
+))}
+
+// ❌ Bad - don't use array index
+{body.value.map((week, i) => (
+  <tr key={i}>...</tr>
+))}
+```
+
+## Related
+
+- [headers](/api/headers) - Weekday header data
+- [navigation](/api/navigation) - Month/week/day navigation
+- [view](/api/view) - View type controls

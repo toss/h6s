@@ -1,0 +1,296 @@
+# utilities
+
+Utility methods and metadata properties provided by `useCalendar`.
+
+## Metadata Properties
+
+### `cursorDate`
+
+The current date being displayed in the calendar.
+
+```tsx
+const { cursorDate } = useCalendar();
+
+console.log(cursorDate); // Date object
+console.log(format(cursorDate, 'MMMM yyyy')); // "January 2024"
+```
+
+### `year`, `month`, `day`
+
+Extracted components from `cursorDate` for convenience.
+
+```tsx
+const { year, month, day } = useCalendar();
+
+console.log(year);   // 2024
+console.log(month);  // 0 (January is 0, December is 11)
+console.log(day);    // 15
+```
+
+**Note**: `month` is 0-indexed (0 = January, 11 = December) following JavaScript Date convention.
+
+### `weekStartsOn`
+
+The currently configured first day of the week.
+
+```tsx
+const { weekStartsOn } = useCalendar();
+
+console.log(weekStartsOn); // 0-6 (0 = Sunday, 1 = Monday, ...)
+```
+
+### `startWeekdayInMonth`
+
+Which day of the week the current month starts on.
+
+```tsx
+const { startWeekdayInMonth } = useCalendar();
+
+// If January 2024 starts on Monday:
+console.log(startWeekdayInMonth); // 1
+```
+
+### `weeksInMonth`
+
+Number of weeks in the current month view.
+
+```tsx
+const { weeksInMonth } = useCalendar();
+
+console.log(weeksInMonth); // 4-6 (typically 5 or 6)
+```
+
+### `weekdays`
+
+Array of Date objects representing the weekday headers.
+
+```tsx
+const { weekdays } = useCalendar();
+
+console.log(weekdays); // [{ value: Date }, { value: Date }, ...]
+console.log(weekdays.length); // 7
+```
+
+### `today`
+
+Position of today's date in the calendar grid.
+
+```tsx
+const { today } = useCalendar();
+
+console.log(today.weekIndex);  // Week row index (0-based)
+console.log(today.dateIndex);  // Day column index (0-6)
+```
+
+## Utility Methods
+
+### `getDateCellByIndex(weekIndex, dayIndex)`
+
+Get a specific date cell by its position in the calendar grid.
+
+**Parameters:**
+- `weekIndex` (number): Week row index (0-based)
+- `dayIndex` (number): Day column index (0-6)
+
+**Returns:**
+- Object with `value` property containing the Date
+
+```tsx
+const { getDateCellByIndex } = useCalendar();
+
+// Get the date in the first week, first day
+const cell = getDateCellByIndex(0, 0);
+console.log(cell.value); // Date object
+
+// Get the date in the third week, fourth day
+const midMonthCell = getDateCellByIndex(2, 3);
+console.log(format(midMonthCell.value, 'MMM d, yyyy')); // "Jan 18, 2024"
+```
+
+## Usage Examples
+
+### Display Current Month/Year
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
+
+function Calendar() {
+  const { cursorDate, year, month } = useCalendar();
+
+  return (
+    <div>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      {/* Or build it manually: */}
+      <p>Year: {year}, Month: {month + 1}</p>
+    </div>
+  );
+}
+```
+
+### Month Statistics
+
+```tsx
+function MonthStats() {
+  const { weeksInMonth, startWeekdayInMonth, cursorDate } = useCalendar();
+
+  return (
+    <div className="stats">
+      <p>Month: {format(cursorDate, 'MMMM yyyy')}</p>
+      <p>Weeks: {weeksInMonth}</p>
+      <p>Starts on: {format(new Date().setDay(startWeekdayInMonth), 'EEEE')}</p>
+    </div>
+  );
+}
+```
+
+### Highlight Today
+
+```tsx
+function CalendarWithTodayHighlight() {
+  const { body, today } = useCalendar();
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }, weekIndex) => (
+        <tr key={key}>
+          {days.map(({ key, value }, dayIndex) => {
+            const isToday =
+              weekIndex === today.weekIndex &&
+              dayIndex === today.dateIndex;
+
+            return (
+              <td
+                key={key}
+                className={isToday ? 'bg-blue-100 font-bold' : ''}
+              >
+                {format(value, 'd')}
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
+
+### Direct Cell Access
+
+```tsx
+function CalendarWithCellAccess() {
+  const { getDateCellByIndex } = useCalendar();
+
+  const handleCellClick = (weekIndex: number, dayIndex: number) => {
+    const cell = getDateCellByIndex(weekIndex, dayIndex);
+    console.log('Clicked date:', format(cell.value, 'PP'));
+  };
+
+  return (
+    <tbody>
+      {Array.from({ length: 6 }, (_, weekIndex) => (
+        <tr key={weekIndex}>
+          {Array.from({ length: 7 }, (_, dayIndex) => {
+            const cell = getDateCellByIndex(weekIndex, dayIndex);
+
+            return (
+              <td
+                key={dayIndex}
+                onClick={() => handleCellClick(weekIndex, dayIndex)}
+              >
+                {format(cell.value, 'd')}
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
+
+### Calendar Breadcrumbs
+
+```tsx
+function CalendarBreadcrumbs() {
+  const { year, month, day, cursorDate } = useCalendar();
+
+  const monthName = format(new Date(year, month, 1), 'MMMM');
+
+  return (
+    <div className="breadcrumbs">
+      <span>{year}</span>
+      <span> / </span>
+      <span>{monthName}</span>
+      <span> / </span>
+      <span>{day}</span>
+    </div>
+  );
+}
+```
+
+### Week Start Configuration Display
+
+```tsx
+function WeekStartIndicator() {
+  const { weekStartsOn } = useCalendar();
+
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  return (
+    <p className="text-sm text-gray-600">
+      Week starts on: {dayNames[weekStartsOn]}
+    </p>
+  );
+}
+```
+
+## Combining Metadata
+
+You can combine multiple metadata properties for advanced features:
+
+```tsx
+function AdvancedCalendarInfo() {
+  const {
+    cursorDate,
+    year,
+    month,
+    weeksInMonth,
+    startWeekdayInMonth,
+    today,
+    weekStartsOn,
+  } = useCalendar();
+
+  const monthName = format(new Date(year, month, 1), 'MMMM');
+  const firstDayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][startWeekdayInMonth];
+
+  return (
+    <div className="calendar-info">
+      <h3>{monthName} {year}</h3>
+      <ul>
+        <li>Total weeks: {weeksInMonth}</li>
+        <li>Starts on: {firstDayName}</li>
+        <li>Today is in week {today.weekIndex + 1}, day {today.dateIndex + 1}</li>
+        <li>Week starts on: {['Sunday', 'Monday'][weekStartsOn]}</li>
+      </ul>
+    </div>
+  );
+}
+```
+
+## When to Use getDateCellByIndex
+
+The `getDateCellByIndex` method is mainly used internally, but can be useful for:
+
+1. **Custom grid rendering** - Building your own calendar grid structure
+2. **Event positioning** - Placing events at specific grid coordinates
+3. **Grid-based interactions** - Click handlers for calendar cells
+4. **Testing** - Accessing specific cells in tests
+
+For most use cases, iterating over `body.value` is simpler and more straightforward.
+
+## Related
+
+- [body](/api/body) - Main calendar grid data
+- [headers](/api/headers) - Weekday header data
+- [useCalendar](/api/use-calendar) - Main hook documentation

@@ -1,0 +1,308 @@
+# navigation
+
+The `navigation` object provides methods to control calendar movement and date selection.
+
+## Type
+
+```tsx
+navigation: {
+  toNext: () => void;
+  toPrev: () => void;
+  setToday: () => void;
+  setDate: (date: Date) => void;
+}
+```
+
+## Methods
+
+### `toNext()`
+
+Moves the calendar forward by one unit.
+
+**Behavior by view type:**
+- Month view: Next month
+- Week view: Next week
+- Day view: Next day
+
+```tsx
+const { navigation } = useCalendar();
+
+<button onClick={navigation.toNext}>
+  Next →
+</button>
+```
+
+### `toPrev()`
+
+Moves the calendar backward by one unit.
+
+**Behavior by view type:**
+- Month view: Previous month
+- Week view: Previous week
+- Day view: Previous day
+
+```tsx
+const { navigation } = useCalendar();
+
+<button onClick={navigation.toPrev}>
+  ← Previous
+</button>
+```
+
+### `setToday()`
+
+Jumps the calendar to today's date.
+
+```tsx
+const { navigation } = useCalendar();
+
+<button onClick={navigation.setToday}>
+  Today
+</button>
+```
+
+### `setDate(date)`
+
+Jumps the calendar to a specific date.
+
+**Parameters:**
+- `date` (Date): The target date to navigate to
+
+```tsx
+const { navigation } = useCalendar();
+
+// Jump to a specific date
+const goToNewYear = () => {
+  navigation.setDate(new Date(2024, 0, 1)); // January 1, 2024
+};
+
+// Jump to selected date
+const handleDateClick = (date: Date) => {
+  setSelectedDate(date);
+  navigation.setDate(date);
+};
+```
+
+## Usage Examples
+
+### Basic Navigation
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
+
+function Calendar() {
+  const { navigation, cursorDate } = useCalendar();
+
+  return (
+    <div className="calendar-header">
+      <button onClick={navigation.toPrev}>←</button>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      <button onClick={navigation.toNext}>→</button>
+    </div>
+  );
+}
+```
+
+### With Today Button
+
+```tsx
+function Calendar() {
+  const { navigation, cursorDate } = useCalendar();
+
+  return (
+    <div>
+      <div className="flex justify-between">
+        <button onClick={navigation.toPrev}>← Previous</button>
+        <button onClick={navigation.setToday}>Today</button>
+        <button onClick={navigation.toNext}>Next →</button>
+      </div>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+    </div>
+  );
+}
+```
+
+### Date Selection with Auto-Navigation
+
+Automatically navigate to the month containing a selected date:
+
+```tsx
+function SelectableCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { body, navigation } = useCalendar({
+    defaultDate: selectedDate ?? new Date(),
+  });
+
+  const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
+    // If clicking outside month, navigate to that month
+    if (!isCurrentMonth) {
+      navigation.setDate(date);
+    }
+    setSelectedDate(date);
+  };
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }) => (
+        <tr key={key}>
+          {days.map(({ key, value, isCurrentMonth }) => (
+            <td key={key}>
+              <button
+                onClick={() => handleDateClick(value, isCurrentMonth)}
+              >
+                {format(value, 'd')}
+              </button>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
+
+### Keyboard Navigation
+
+```tsx
+function KeyboardNavigableCalendar() {
+  const { navigation } = useCalendar();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          navigation.toPrev();
+          break;
+        case 'ArrowRight':
+          navigation.toNext();
+          break;
+        case 'Home':
+          navigation.setToday();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigation]);
+
+  return (
+    <div>
+      <p>Use ← → keys to navigate, Home for today</p>
+      {/* Calendar UI */}
+    </div>
+  );
+}
+```
+
+### Month Selector
+
+```tsx
+function CalendarWithMonthSelector() {
+  const { navigation, cursorDate } = useCalendar();
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+
+  const goToMonth = (month: number) => {
+    const newDate = new Date(cursorDate);
+    newDate.setMonth(month);
+    navigation.setDate(newDate);
+    setShowMonthPicker(false);
+  };
+
+  return (
+    <div>
+      <button onClick={() => setShowMonthPicker(true)}>
+        {format(cursorDate, 'MMMM yyyy')}
+      </button>
+
+      {showMonthPicker && (
+        <div className="month-picker">
+          {Array.from({ length: 12 }, (_, i) => (
+            <button key={i} onClick={() => goToMonth(i)}>
+              {format(new Date(2024, i, 1), 'MMM')}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Styled Navigation
+
+#### Tailwind CSS
+
+```tsx
+<div className="flex items-center justify-between py-4">
+  <button
+    onClick={navigation.toPrev}
+    className="rounded-lg p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    aria-label="Previous month"
+  >
+    ←
+  </button>
+
+  <h2 className="text-base font-semibold text-gray-900">
+    {format(cursorDate, 'MMMM yyyy')}
+  </h2>
+
+  <button
+    onClick={navigation.toNext}
+    className="rounded-lg p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    aria-label="Next month"
+  >
+    →
+  </button>
+</div>
+```
+
+#### Vanilla CSS
+
+```tsx
+<div className="calendar-navigation">
+  <button
+    onClick={navigation.toPrev}
+    className="calendar-nav-button"
+    aria-label="Previous month"
+  >
+    ←
+  </button>
+  <h2 className="calendar-title">
+    {format(cursorDate, 'MMMM yyyy')}
+  </h2>
+  <button
+    onClick={navigation.toNext}
+    className="calendar-nav-button"
+    aria-label="Next month"
+  >
+    →
+  </button>
+</div>
+```
+
+## Behavior with View Types
+
+Navigation behavior adapts to the current view:
+
+```tsx
+const { navigation, view } = useCalendar();
+
+// In month view: next/prev moves by month
+view.showMonthView();
+navigation.toNext(); // → Next month
+
+// In week view: next/prev moves by week
+view.showWeekView();
+navigation.toNext(); // → Next week
+
+// In day view: next/prev moves by day
+view.showDayView();
+navigation.toNext(); // → Next day
+```
+
+## Related
+
+- [view](/api/view) - View type controls
+- [useCalendar](/api/use-calendar) - Main hook documentation
