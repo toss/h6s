@@ -2,25 +2,15 @@ import type { MetaRecord } from "nextra";
 
 const meta: MetaRecord = {
   index: {
-    title: "Home",
     display: "hidden",
   },
-  "---": {
-    type: "separator",
+  docs: {
     title: "Documentation",
+    type: "page",
   },
-  guide: {
-    title: "Guide",
-  },
-  examples: {
-    title: "Examples",
-  },
-  "---api": {
-    type: "separator",
+  "api-docs": {
     title: "API",
-  },
-  api: {
-    title: "API Reference",
+    type: "page",
   },
 };
 
