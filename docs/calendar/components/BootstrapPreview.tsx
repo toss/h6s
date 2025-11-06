@@ -103,8 +103,12 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
       iframe.removeEventListener("load", handleLoad);
       resizeObserverRef.current?.disconnect();
       resizeObserverRef.current = null;
-      rootRef.current?.unmount();
-      rootRef.current = null;
+
+      // Defer unmount to avoid race condition with React rendering
+      setTimeout(() => {
+        rootRef.current?.unmount();
+        rootRef.current = null;
+      }, 0);
     };
   }, [children]);
 
