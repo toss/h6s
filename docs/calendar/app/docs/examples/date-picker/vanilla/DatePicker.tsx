@@ -1,12 +1,10 @@
-"use client";
-
 import { useCalendar } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
 import { format, isSameDay } from "date-fns";
 import { useMemo, useState } from "react";
 import "./DatePicker.css";
 
-export function DatePicker() {
+export default function DatePicker() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
 
