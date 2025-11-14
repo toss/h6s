@@ -1,4 +1,4 @@
-import { DatePickerSandpack } from "./DatePickerSandpack";
+import { Sandpack } from "@/components/Sandpack";
 
 # Vanilla CSS
 
@@ -8,7 +8,26 @@ Single date picker with a field trigger and floating calendar popover built usin
 
 Try editing the code below to see how the date picker changes:
 
-<DatePickerSandpack />
+<Sandpack
+  files={[
+    {
+      path: "app/docs/examples/date-picker/vanilla/DatePicker.tsx",
+      target: "/App.tsx",
+    },
+    {
+      path: "app/docs/examples/date-picker/vanilla/DatePicker.css",
+      target: "/DatePicker.css",
+    },
+  ]}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  previewOptions={{
+    style: {
+      height: 550,
+    }
+  }}
+/>
 
 ## Features
 

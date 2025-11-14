@@ -13,7 +13,6 @@ export default function DatePicker() {
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <div className="datepicker-field">
-        <label className="datepicker-field__label">Date</label>
         <Popover.Trigger asChild>
           <button type="button" className="datepicker-field__trigger">
             <span className={`datepicker-field__value ${selectedDate ? "is-selected" : ""}`}>{displayValue}</span>

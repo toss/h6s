@@ -1,54 +1,40 @@
 import type { SandpackFiles } from "@codesandbox/sandpack-react";
-import { useEffect, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
-type FileConfig = {
+export type FileConfig = {
   path: string;
   target: string;
   transform?: (code: string) => string;
 };
 
-export function useFileLoader(files: FileConfig[]) {
-  const [sandpackFiles, setSandpackFiles] = useState<SandpackFiles | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function useFileLoader(files: FileConfig[]): SandpackFiles {
+  const { data } = useSuspenseQuery({
+    queryKey: ["sandpack-files", ...files.map(f => f.path)],
+    queryFn: () => loadFiles(files),
+  });
 
-  useEffect(() => {
-    async function loadFiles() {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        // Fetch all files in parallel
-        const fetchPromises = files.map(({ path }) =>
-          fetch(`/api/read-example?path=${path}`).then((res) => {
-            if (!res.ok) {
-              throw new Error(`Failed to fetch ${path}: ${res.statusText}`);
-            }
-            return res.text();
-          })
-        );
-
-        const contents = await Promise.all(fetchPromises);
-
-        const loadedFiles: SandpackFiles = {};
-        files.forEach(({ target }, index) => {
-          loadedFiles[target] = contents[index];
-        });
-
-        setSandpackFiles(loadedFiles);
-        setIsLoading(false);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
-        console.error("Failed to load example files:", err);
-        setError(errorMessage);
-        setIsLoading(false);
-      }
-    }
-
-    loadFiles();
-  }, [files]);
-
-  return { sandpackFiles, isLoading, error };
+  return data;
 }
 
-export type { FileConfig };
+
+async function loadFiles(files: FileConfig[]): Promise<SandpackFiles> {
+  const fetchPromises = files.map(({ path }) =>
+    fetch(`/api/read-example?path=${path}`).then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch ${path}: ${res.statusText}`);
+      }
+      return res.text();
+    })
+  );
+
+  const contents = await Promise.all(fetchPromises);
+
+  const loadedFiles: SandpackFiles = {};
+  files.forEach(({ target, transform }, index) => {
+    const content = contents[index];
+    loadedFiles[target] = transform ? transform(content) : content;
+  });
+
+  return loadedFiles;
+}
