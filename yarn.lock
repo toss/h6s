@@ -6782,9 +6782,7 @@ __metadata:
     "@codesandbox/sandpack-react": "npm:^2.20.0"
     "@h6s/calendar": "workspace:*"
     "@radix-ui/react-popover": "npm:^1.1.2"
-    "@suspensive/react": "npm:^3.15.0"
     "@tailwindcss/postcss": "npm:^4.1.16"
-    "@tanstack/react-query": "npm:^5.90.7"
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:^22"
     "@types/react": "npm:^18"
@@ -10274,15 +10272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@suspensive/react@npm:^3.15.0":
-  version: 3.15.0
-  resolution: "@suspensive/react@npm:3.15.0"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10/7bb4ef6149971948a2d5b354e5b6085d803c8d6899f138d3921b20d38e9c452bd8e9b614b1afdc10f90d9a6d3652ea0f07367ff88ad4422d0a3272effd2de683
-  languageName: node
-  linkType: hard
-
 "@svgr/babel-plugin-add-jsx-attribute@npm:^6.5.1":
   version: 6.5.1
   resolution: "@svgr/babel-plugin-add-jsx-attribute@npm:6.5.1"
@@ -10756,24 +10745,6 @@ __metadata:
     postcss: "npm:^8.4.41"
     tailwindcss: "npm:4.1.16"
   checksum: 10/302d94e36278c0c6cd2f651be51d0271041c7d094881295894a5068309c07741842c63cd955301400875f54d526d83214c061ff1e4cf805ce91d28a7455384cb
-  languageName: node
-  linkType: hard
-
-"@tanstack/query-core@npm:5.90.7":
-  version: 5.90.7
-  resolution: "@tanstack/query-core@npm:5.90.7"
-  checksum: 10/bb2a2caf1558c09276ab1e30ad343b31f56ba9421bb4319c1d5dd36efcb95fc2823dbe1eb7982e7aa76c1fbe48b8fecac7e465206c8d16886f552129c487c288
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^5.90.7":
-  version: 5.90.7
-  resolution: "@tanstack/react-query@npm:5.90.7"
-  dependencies:
-    "@tanstack/query-core": "npm:5.90.7"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10/d1461cfcaad90678d81c2ec1b5ff92cd54d4a08fed7710d67b01825d697e58951530954fdd59f344511da96bf001b218b25af60141683d54e4e279c7b16d3c6a
   languageName: node
   linkType: hard
 
