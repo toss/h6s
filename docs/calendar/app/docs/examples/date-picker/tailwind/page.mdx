@@ -1,9 +1,10 @@
 import { Sandpack } from "@/components/Sandpack";
 import { loadExample } from "@/components/Sandpack/loadExample";
 
-export const tailwindFiles = loadExample('app/docs/examples/date-picker/tailwind', [
+export const files = loadExample('app/docs/examples/date-picker/tailwind', [
   'App.tsx',
   'DatePicker.tsx',
+  'public/index.html',
 ]);
 
 # Tailwind CSS
@@ -15,7 +16,7 @@ Input field that opens a date picker popover powered by `@radix-ui/react-popover
 Try editing the code below to see how the date picker changes:
 
 <Sandpack
-  files={tailwindFiles}
+  files={files}
   dependencies={{
     "@radix-ui/react-popover": "^1.1.2",
   }}

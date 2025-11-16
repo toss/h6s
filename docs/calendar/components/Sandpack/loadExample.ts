@@ -6,12 +6,16 @@ import { join } from "node:path";
  * Load example files from the file system at build time (Server Component only)
  *
  * @param basePath - Relative path from project root (e.g., 'app/docs/examples/date-calendar/bootstrap')
- * @param files - Array of file names to load (e.g., ['App.tsx', 'DateCalendar.tsx'])
+ * @param files - Array of file names to load (e.g., ['App.tsx', 'DateCalendar.tsx', 'public/index.html'])
  * @returns SandpackFiles object with file contents
  *
  * @example
  * ```tsx
- * const files = loadExample('app/docs/examples/date-calendar/bootstrap', ['App.tsx', 'DateCalendar.tsx']);
+ * const files = loadExample('app/docs/examples/date-calendar/bootstrap', [
+ *   'App.tsx',              // → /App.tsx
+ *   'DateCalendar.tsx',     // → /DateCalendar.tsx
+ *   'public/index.html',    // → /public/index.html
+ * ]);
  * return <Sandpack files={files} />;
  * ```
  */
@@ -20,7 +24,9 @@ export function loadExample(basePath: string, files: string[]): SandpackFiles {
     try {
       const fullPath = join(process.cwd(), basePath, file);
       const content = readFileSync(fullPath, "utf-8");
-      acc[`/${file}`] = content;
+      // Use file path as-is for Sandpack, just ensure it starts with /
+      const sandpackPath = file.startsWith("/") ? file : `/${file}`;
+      acc[sandpackPath] = content;
     } catch (error) {
       throw new Error(
         `Failed to load example file: ${basePath}/${file}\n${error instanceof Error ? error.message : String(error)}`

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import DateCalendar from "./DateCalendar";
 
 export default function App() {
+  // Detect system dark mode and update Bootstrap theme
   useEffect(() => {
     function updateTheme() {
       const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
