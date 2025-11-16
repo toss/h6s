@@ -1,14 +1,14 @@
 import { Sandpack } from '@/components/Sandpack';
 import { loadExample } from '@/components/Sandpack/loadExample';
 
-export const files = loadExample('app/docs/examples/date-range-calendar/tailwind', [
+export const filesBasic = loadExample('app/docs/examples/date-range-calendar/tailwind/basic', [
   'App.tsx',
   'DateRangeCalendar.tsx',
   'public/index.html',
 ]);
 
-export const filesDual = loadExample('app/docs/examples/date-range-calendar/tailwind', [
-  'AppDual.tsx',
+export const filesDual = loadExample('app/docs/examples/date-range-calendar/tailwind/dual', [
+  'App.tsx',
   'DateRangeCalendarDual.tsx',
   'public/index.html',
 ]);
@@ -17,12 +17,12 @@ export const filesDual = loadExample('app/docs/examples/date-range-calendar/tail
 
 DateRangeCalendar built with @h6s/calendar and Tailwind CSS.
 
-## Interactive Example
+## Basic
 
-Try editing the code below to customize the DateRangeCalendar component:
+DateRangeCalendar with single calendar view.
 
 <Sandpack
-  files={files}
+  files={filesBasic}
   providerOptions={{
     externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
   }}
@@ -58,3 +58,4 @@ For better UX when selecting date ranges, you can display two calendars side by 
 - Month/year navigation
 - Tailwind CSS utility classes
 - Dark mode support with `dark:` variants
+

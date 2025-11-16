@@ -1,14 +1,14 @@
 import { Sandpack } from '@/components/Sandpack';
 import { loadExample } from '@/components/Sandpack/loadExample';
 
-export const files = loadExample('app/docs/examples/date-range-calendar/bootstrap', [
+export const filesBasic = loadExample('app/docs/examples/date-range-calendar/bootstrap/basic', [
   'App.tsx',
   'DateRangeCalendar.tsx',
   'public/index.html',
 ]);
 
-export const filesDual = loadExample('app/docs/examples/date-range-calendar/bootstrap', [
-  'AppDual.tsx',
+export const filesDual = loadExample('app/docs/examples/date-range-calendar/bootstrap/dual', [
+  'App.tsx',
   'DateRangeCalendarDual.tsx',
   'public/index.html',
 ]);
@@ -17,12 +17,12 @@ export const filesDual = loadExample('app/docs/examples/date-range-calendar/boot
 
 DateRangeCalendar built with @h6s/calendar and Bootstrap 5.
 
-## Interactive Example
+## Basic
 
-Try editing the code below to customize the DateRangeCalendar component:
+DateRangeCalendar with single calendar view.
 
 <Sandpack
-  files={files}
+  files={filesBasic}
   providerOptions={{
     externalResources: [
       "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
@@ -62,3 +62,4 @@ For better UX when selecting date ranges, you can display two calendars side by 
 - Month/year navigation
 - Bootstrap 5 utility classes and components
 - Responsive design with Bootstrap grid system
+
