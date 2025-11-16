@@ -216,8 +216,8 @@
 @media (prefers-color-scheme: dark) {
   .daterangepicker-field__trigger {
     border-color: #475569;
-    background-color: #111827;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.6);
+    background-color: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
   .daterangepicker-field__value {
@@ -233,13 +233,13 @@
   }
 
   .daterangepicker-popover {
-    background-color: #111827;
-    border-color: #1f2937;
-    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.6);
+    background-color: #1e293b;
+    border-color: #475569;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
   .daterangepicker-popover__arrow {
-    fill: #111827;
+    fill: #1e293b;
   }
 
   .daterangepicker-popover__nav-button {

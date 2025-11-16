@@ -147,9 +147,9 @@
 
 @media (prefers-color-scheme: dark) {
   .datecalendar {
-    border-color: #334155;
-    background-color: #111827;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);
+    border-color: #475569;
+    background-color: #1e293b;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
   .datecalendar-selection {

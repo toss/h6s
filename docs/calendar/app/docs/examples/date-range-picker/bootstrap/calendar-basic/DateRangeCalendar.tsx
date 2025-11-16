@@ -58,7 +58,7 @@ export function DateRangeCalendar() {
   return (
     <div>
       <div style={{ maxWidth: "24rem" }}>
-        <div className="card shadow-sm border rounded-3">
+        <div className="card shadow-lg border rounded-3">
           <div className="card-body p-4">
             <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
               <div>

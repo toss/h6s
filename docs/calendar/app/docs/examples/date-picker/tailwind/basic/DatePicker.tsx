@@ -15,7 +15,7 @@ export default function DatePicker() {
         <Popover.Trigger asChild>
           <button
             type="button"
-            className="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left shadow-sm transition hover:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:border-gray-700 dark:bg-gray-900"
+            className="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left shadow-sm transition hover:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_4px_12px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)]"
           >
             <span
               className={`truncate ${selectedDate ? "text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-500"}`}
@@ -49,14 +49,14 @@ export default function DatePicker() {
           align="start"
           sideOffset={8}
           collisionPadding={12}
-          className="z-50 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200 bg-white p-5 shadow-xl outline-none data-[state=closed]:pointer-events-none data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out dark:border-gray-700 dark:bg-gray-900"
+          className="z-50 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200 bg-white p-5 shadow-xl outline-none data-[state=closed]:pointer-events-none data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]"
         >
           <DatePickerContent
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             close={() => setOpen(false)}
           />
-          <Popover.Arrow className="fill-white dark:fill-gray-900" />
+          <Popover.Arrow className="fill-white dark:fill-slate-800" />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

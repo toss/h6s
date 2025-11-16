@@ -56,7 +56,7 @@ export function DateRangeCalendar() {
   };
 
   return (
-    <div className="w-[22rem] rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-700 dark:bg-gray-900">
+    <div className="w-[22rem] rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
       <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
         <div>
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected range</p>
