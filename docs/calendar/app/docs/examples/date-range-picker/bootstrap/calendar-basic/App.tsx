@@ -1,27 +1,8 @@
-import { useEffect, useState } from "react";
+import { useBootstrapTheme } from "./useBootstrapTheme";
 import { DateRangeCalendar } from "./DateRangeCalendar";
 
 export default function App() {
-  const [isDark, setIsDark] = useState(() => 
-    typeof window !== 'undefined' && window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-
-  useEffect(() => {
-    function updateTheme() {
-      const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.setAttribute("data-bs-theme", isDarkMode ? "dark" : "light");
-      setIsDark(isDarkMode);
-    }
-
-    updateTheme();
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    mediaQuery.addEventListener("change", updateTheme);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateTheme);
-    };
-  }, []);
+  const isDark = useBootstrapTheme();
 
   return (
     <div 
