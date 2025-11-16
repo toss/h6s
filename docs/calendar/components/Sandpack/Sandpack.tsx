@@ -2,6 +2,7 @@
 
 import {
   type PreviewProps,
+  type SandpackFiles,
   SandpackLayout,
   type SandpackLayoutProps,
   SandpackPreview,
@@ -12,10 +13,11 @@ import {
 import { ErrorBoundary, Suspense } from "@suspensive/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { baseTemplate } from "./baseTemplates";
-import { type FileConfig, useFileLoader } from "./useFileLoader";
+import { type SourceFiles, useFileLoader } from "./useFileLoader";
 
 interface CustomSandpackProps extends Omit<SandpackProviderProps, "files" | "template" | "customSetup" | "options"> {
-  files: FileConfig[];
+  files?: SandpackFiles;
+  sourceFiles?: SourceFiles;
   template?: SandpackProviderProps["template"];
   dependencies?: SandpackSetup["dependencies"];
   devDependencies?: SandpackSetup["devDependencies"];
@@ -67,7 +69,7 @@ export function Sandpack(props: CustomSandpackProps) {
 }
 
 function SandpackContent(props: CustomSandpackProps) {
-  const sandpackFiles = useFileLoader(props.files);
+  const loadedSourceFiles = useFileLoader(props.sourceFiles ?? {});
 
   return (
     <div className="my-8">
@@ -75,7 +77,10 @@ function SandpackContent(props: CustomSandpackProps) {
         template="react-ts"
         theme="auto"
         {...props}
-        files={sandpackFiles}
+        files={{
+          ...loadedSourceFiles,
+          ...props.files,
+        }}
         options={{
           initMode: "user-visible",
           initModeObserverOptions: { rootMargin: "1400px 0px" },

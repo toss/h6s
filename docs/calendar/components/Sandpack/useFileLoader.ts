@@ -1,22 +1,32 @@
 import type { SandpackFiles } from "@codesandbox/sandpack-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 
-export type FileConfig = {
-  path: string;
-  target: string;
-  transform?: (code: string) => string;
+export type SourceFiles = {
+  [fileName: string]: string;
 };
 
-export function useFileLoader(files: FileConfig[]): SandpackFiles {
+export function useFileLoader(sourceFiles: SourceFiles): SandpackFiles {
+  const fileConfigs = Object.entries(sourceFiles).map(([fileName, path]) => ({
+    path,
+    target: `/${fileName}`,
+  }));
+
+  if (fileConfigs.length === 0) {
+    return {};
+  }
+
   const { data } = useSuspenseQuery({
-    queryKey: ["sandpack-files", ...files.map(f => f.path)],
-    queryFn: () => loadFiles(files),
+    queryKey: ["sandpack-files", ...fileConfigs.map((f) => f.path)],
+    queryFn: () => loadFiles(fileConfigs),
   });
 
   return data;
 }
 
+type FileConfig = {
+  path: string;
+  target: string;
+};
 
 async function loadFiles(files: FileConfig[]): Promise<SandpackFiles> {
   const fetchPromises = files.map(({ path }) =>
@@ -31,9 +41,9 @@ async function loadFiles(files: FileConfig[]): Promise<SandpackFiles> {
   const contents = await Promise.all(fetchPromises);
 
   const loadedFiles: SandpackFiles = {};
-  files.forEach(({ target, transform }, index) => {
+  files.forEach(({ target }, index) => {
     const content = contents[index];
-    loadedFiles[target] = transform ? transform(content) : content;
+    loadedFiles[target] = content;
   });
 
   return loadedFiles;
