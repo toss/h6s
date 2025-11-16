@@ -1,38 +1,52 @@
-import { DateRangeCalendar } from './DateRangeCalendar';
-import { DateRangeCalendarDual } from './DateRangeCalendarDual';
-import { CodeFromFile } from '@/components/CodeFromFile';
-import { DemoWithCode } from '@/components/DemoWithCode';
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const files = loadExample('app/docs/examples/date-range-calendar/tailwind', [
+  'App.tsx',
+  'DateRangeCalendar.tsx',
+  'public/index.html',
+]);
+
+export const filesDual = loadExample('app/docs/examples/date-range-calendar/tailwind', [
+  'AppDual.tsx',
+  'DateRangeCalendarDual.tsx',
+  'public/index.html',
+]);
 
 # Tailwind CSS
 
-DateRangePicker built with @h6s/calendar and Tailwind CSS.
+DateRangeCalendar built with @h6s/calendar and Tailwind CSS.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateRangeCalendar />}
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-range-calendar/tailwind/DateRangeCalendar.tsx"
-      lang="tsx"
-      filename="DateRangeCalendar.tsx"
-    />
-  }
+Try editing the code below to customize the DateRangeCalendar component:
+
+<Sandpack
+  files={files}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Dual Calendar
 
 For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
 
-<DemoWithCode
-  demo={<DateRangeCalendarDual />}
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-range-calendar/tailwind/DateRangeCalendarDual.tsx"
-      lang="tsx"
-      filename="DateRangeCalendarDual.tsx"
-    />
-  }
+<Sandpack
+  files={filesDual}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Features

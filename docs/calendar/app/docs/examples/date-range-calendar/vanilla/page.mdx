@@ -1,52 +1,48 @@
-import { DateRangeCalendar } from './DateRangeCalendar';
-import { DateRangeCalendarDual } from './DateRangeCalendarDual';
-import { CodeFromFile } from '@/components/CodeFromFile';
-import { DemoWithCode } from '@/components/DemoWithCode';
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const files = loadExample('app/docs/examples/date-range-calendar/vanilla', [
+  'App.tsx',
+  'App.css',
+  'DateRangeCalendar.tsx',
+  'DateRangeCalendar.css',
+]);
+
+export const filesDual = loadExample('app/docs/examples/date-range-calendar/vanilla', [
+  'AppDual.tsx',
+  'App.css',
+  'DateRangeCalendarDual.tsx',
+  'DateRangeCalendarDual.css',
+]);
 
 # Vanilla CSS
 
-DateRangePicker built with @h6s/calendar and plain CSS.
+DateRangeCalendar built with @h6s/calendar and plain CSS.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateRangeCalendar />}
-  code={
-    <>
-      <CodeFromFile
-        file="app/docs/examples/date-range-calendar/vanilla/DateRangeCalendar.tsx"
-        lang="tsx"
-        filename="DateRangeCalendar.tsx"
-      />
-      <CodeFromFile
-        file="app/docs/examples/date-range-calendar/vanilla/DateRangeCalendar.css"
-        lang="css"
-        filename="DateRangeCalendar.css"
-      />
-    </>
-  }
+Try editing the code below to customize the DateRangeCalendar component:
+
+<Sandpack
+  files={files}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Dual Calendar
 
 For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
 
-<DemoWithCode
-  demo={<DateRangeCalendarDual />}
-  code={
-    <>
-      <CodeFromFile
-        file="app/docs/examples/date-range-calendar/vanilla/DateRangeCalendarDual.tsx"
-        lang="tsx"
-        filename="DateRangeCalendarDual.tsx"
-      />
-      <CodeFromFile
-        file="app/docs/examples/date-range-calendar/vanilla/DateRangeCalendarDual.css"
-        lang="css"
-        filename="DateRangeCalendarDual.css"
-      />
-    </>
-  }
+<Sandpack
+  files={filesDual}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Features

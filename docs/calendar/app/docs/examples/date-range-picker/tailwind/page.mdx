@@ -1,22 +1,33 @@
-import { DateRangePicker } from "./DateRangePicker";
-import { CodeFromFile } from "@/components/CodeFromFile";
-import { DemoWithCode } from "@/components/DemoWithCode";
+import { Sandpack } from "@/components/Sandpack";
+import { loadExample } from "@/components/Sandpack/loadExample";
+
+export const files = loadExample('app/docs/examples/date-range-picker/tailwind', [
+  'App.tsx',
+  'DateRangePicker.tsx',
+  'public/index.html',
+]);
 
 # Tailwind CSS
 
 Input field that opens a date range picker popover with dual calendars, powered by `@radix-ui/react-popover`.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateRangePicker />}
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-range-picker/tailwind/DateRangePicker.tsx"
-      lang="tsx"
-      filename="DateRangePicker.tsx"
-    />
-  }
+Try editing the code below to see how the date range picker changes:
+
+<Sandpack
+  files={files}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Features

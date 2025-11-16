@@ -1,22 +1,30 @@
-import { DateCalendar } from './DateCalendar';
-import { CodeFromFile } from '@/components/CodeFromFile';
-import { DemoWithCode } from '@/components/DemoWithCode';
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const files = loadExample('app/docs/examples/date-calendar/tailwind', [
+  'App.tsx',
+  'DateCalendar.tsx',
+  'public/index.html',
+]);
 
 # Tailwind CSS
 
-DatePicker built with @h6s/calendar and Tailwind CSS.
+DateCalendar built with @h6s/calendar and Tailwind CSS.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateCalendar />}
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-calendar/tailwind/DateCalendar.tsx"
-      lang="tsx"
-      filename="DateCalendar.tsx"
-    />
-  }
+Try editing the code below to customize the DateCalendar component:
+
+<Sandpack
+  files={files}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  previewOptions={{
+    style: {
+      height: 580,
+    }
+  }}
 />
 
 ## Features

@@ -1,29 +1,31 @@
-import { CodeFromFile } from "@/components/CodeFromFile";
-import { DemoWithCode } from "@/components/DemoWithCode";
-import { DateRangePicker } from "./DateRangePicker";
+import { Sandpack } from "@/components/Sandpack";
+import { loadExample } from "@/components/Sandpack/loadExample";
+
+export const files = loadExample('app/docs/examples/date-range-picker/vanilla', [
+  'App.tsx',
+  'App.css',
+  'DateRangePicker.tsx',
+  'DateRangePicker.css',
+]);
 
 # Vanilla CSS
 
 Date range picker with dual calendar popover built using plain CSS and BEM-style conventions.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateRangePicker />}
-  code={
-    <>
-      <CodeFromFile
-        file="app/docs/examples/date-range-picker/vanilla/DateRangePicker.tsx"
-        lang="tsx"
-        filename="DateRangePicker.tsx"
-      />
-      <CodeFromFile
-        file="app/docs/examples/date-range-picker/vanilla/DateRangePicker.css"
-        lang="css"
-        filename="DateRangePicker.css"
-      />
-    </>
-  }
+Try editing the code below to see how the date range picker changes:
+
+<Sandpack
+  files={files}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Features

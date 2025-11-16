@@ -155,7 +155,7 @@ export function DateRangeCalendarDual() {
   };
 
   return (
-    <div className="d-flex justify-content-center my-4">
+    <div>
       <div style={{ maxWidth: "48rem" }}>
         <div className="card shadow-sm border rounded-3">
           <div className="card-body p-4">

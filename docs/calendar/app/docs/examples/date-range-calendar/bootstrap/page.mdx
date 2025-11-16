@@ -1,47 +1,56 @@
-import { DateRangeCalendar } from './DateRangeCalendar';
-import { DateRangeCalendarDual } from './DateRangeCalendarDual';
-import { CodeFromFile } from '@/components/CodeFromFile';
-import { DemoWithCode } from '@/components/DemoWithCode';
-import { BootstrapPreview } from '@/components/BootstrapPreview';
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const files = loadExample('app/docs/examples/date-range-calendar/bootstrap', [
+  'App.tsx',
+  'DateRangeCalendar.tsx',
+  'public/index.html',
+]);
+
+export const filesDual = loadExample('app/docs/examples/date-range-calendar/bootstrap', [
+  'AppDual.tsx',
+  'DateRangeCalendarDual.tsx',
+  'public/index.html',
+]);
 
 # Bootstrap 5
 
-DateRangePicker built with @h6s/calendar and Bootstrap 5.
+DateRangeCalendar built with @h6s/calendar and Bootstrap 5.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={
-    <BootstrapPreview>
-      <DateRangeCalendar />
-    </BootstrapPreview>
-  }
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-range-calendar/bootstrap/DateRangeCalendar.tsx"
-      lang="tsx"
-      filename="DateRangeCalendar.tsx"
-    />
-  }
+Try editing the code below to customize the DateRangeCalendar component:
+
+<Sandpack
+  files={files}
+  providerOptions={{
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Dual Calendar
 
 For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
 
-<DemoWithCode
-  demo={
-    <BootstrapPreview>
-      <DateRangeCalendarDual />
-    </BootstrapPreview>
-  }
-  code={
-    <CodeFromFile
-      file="app/docs/examples/date-range-calendar/bootstrap/DateRangeCalendarDual.tsx"
-      lang="tsx"
-      filename="DateRangeCalendarDual.tsx"
-    />
-  }
+<Sandpack
+  files={filesDual}
+  providerOptions={{
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
+  }}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
 />
 
 ## Features

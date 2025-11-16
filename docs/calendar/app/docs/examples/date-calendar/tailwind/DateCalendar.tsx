@@ -19,7 +19,7 @@ export function DateCalendar() {
   }
 
   return (
-    <div className="my-8 w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+    <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
       <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
         <div>
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Selected date</p>

@@ -1,29 +1,28 @@
-import { DateCalendar } from './DateCalendar';
-import { CodeFromFile } from '@/components/CodeFromFile';
-import { DemoWithCode } from '@/components/DemoWithCode';
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const files = loadExample('app/docs/examples/date-calendar/vanilla', [
+  'App.tsx',
+  'App.css',
+  'DateCalendar.tsx',
+  'DateCalendar.css',
+]);
 
 # Vanilla CSS
 
-DatePicker built with @h6s/calendar and plain CSS.
+DateCalendar built with @h6s/calendar and plain CSS.
 
-## Basic
+## Interactive Example
 
-<DemoWithCode
-  demo={<DateCalendar />}
-  code={
-    <>
-      <CodeFromFile
-        file="app/docs/examples/date-calendar/vanilla/DateCalendar.tsx"
-        lang="tsx"
-        filename="DateCalendar.tsx"
-      />
-      <CodeFromFile
-        file="app/docs/examples/date-calendar/vanilla/DateCalendar.css"
-        lang="css"
-        filename="DateCalendar.css"
-      />
-    </>
-  }
+Try editing the code below to customize the DateCalendar component:
+
+<Sandpack
+  files={files}
+  previewOptions={{
+    style: {
+      height: 580,
+    }
+  }}
 />
 
 ## Features
