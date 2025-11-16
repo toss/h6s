@@ -28,7 +28,6 @@ export function DateRangePicker() {
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <div className="daterangepicker-field">
-        <label className="daterangepicker-field__label">Date Range</label>
         <Popover.Trigger asChild>
           <button type="button" className="daterangepicker-field__trigger">
             <span className={`daterangepicker-field__value ${dateRange.start ? "is-selected" : ""}`}>
