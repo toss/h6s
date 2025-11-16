@@ -1,23 +1,35 @@
 import { Sandpack } from "@/components/Sandpack";
 import { loadExample } from "@/components/Sandpack/loadExample";
 
-export const files = loadExample('app/docs/examples/date-range-picker/vanilla/basic', [
+export const filesPicker = loadExample('app/docs/examples/date-range-picker/vanilla/basic', [
   'App.tsx',
   'App.css',
   'DateRangePicker.tsx',
   'DateRangePicker.css',
 ]);
 
+export const filesCalendarBasic = loadExample('app/docs/examples/date-range-picker/vanilla/calendar-basic', [
+  'App.tsx',
+  'App.css',
+  'DateRangeCalendar.tsx',
+  'DateRangeCalendar.css',
+]);
+
+export const filesCalendarDual = loadExample('app/docs/examples/date-range-picker/vanilla/calendar-dual', [
+  'App.tsx',
+  'App.css',
+  'DateRangeCalendarDual.tsx',
+  'DateRangeCalendarDual.css',
+]);
+
 # Vanilla CSS
+
+## Date Range Picker
 
 Date range picker with dual calendar popover built using plain CSS and BEM-style conventions.
 
-## Interactive Example
-
-Try editing the code below to see how the date range picker changes:
-
 <Sandpack
-  files={files}
+  files={filesPicker}
   dependencies={{
     "@radix-ui/react-popover": "^1.1.2",
   }}
@@ -28,16 +40,39 @@ Try editing the code below to see how the date range picker changes:
   }}
 />
 
+## Calendar Only - Basic
+
+DateRangeCalendar with single calendar view.
+
+<Sandpack
+  files={filesCalendarBasic}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
+/>
+
+## Calendar Only - Dual
+
+For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
+
+<Sandpack
+  files={filesCalendarDual}
+  previewOptions={{
+    style: {
+      height: 650,
+    }
+  }}
+/>
+
 ## Features
 
+- Date range picker with field trigger and popover
+- Calendar-only components for inline use (basic and dual layouts)
 - Field-style trigger with placeholder and clear action
 - Floating popover built with `@radix-ui/react-popover`
 - Dual calendar layout showing consecutive months
 - Date range selection with visual highlighting
-- Hover preview showing potential range
-- Synchronized month navigation
-- Calendar interaction via `@h6s/calendar`
-- Keyboard support for `Escape` to dismiss
-- Vanilla CSS with BEM-style class names
-- Dark mode support via `prefers-color-scheme`
-
+- Component-scoped CSS classes
+- Dark mode support with `@media (prefers-color-scheme: dark)`

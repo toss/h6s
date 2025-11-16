@@ -7,6 +7,9 @@ const meta: MetaRecord = {
   tailwind: {
     title: "Tailwind CSS",
   },
+  bootstrap: {
+    title: "Bootstrap 5",
+  },
 };
 
 export default meta;

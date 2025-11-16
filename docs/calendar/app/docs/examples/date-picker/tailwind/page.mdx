@@ -1,22 +1,26 @@
 import { Sandpack } from "@/components/Sandpack";
 import { loadExample } from "@/components/Sandpack/loadExample";
 
-export const files = loadExample('app/docs/examples/date-picker/tailwind/basic', [
+export const filesPicker = loadExample('app/docs/examples/date-picker/tailwind/basic', [
   'App.tsx',
   'DatePicker.tsx',
   'public/index.html',
 ]);
 
+export const filesCalendar = loadExample('app/docs/examples/date-picker/tailwind/calendar', [
+  'App.tsx',
+  'DateCalendar.tsx',
+  'public/index.html',
+]);
+
 # Tailwind CSS
+
+## Date Picker
 
 Input field that opens a date picker popover powered by `@radix-ui/react-popover`.
 
-## Interactive Example
-
-Try editing the code below to see how the date picker changes:
-
 <Sandpack
-  files={files}
+  files={filesPicker}
   dependencies={{
     "@radix-ui/react-popover": "^1.1.2",
   }}
@@ -30,8 +34,26 @@ Try editing the code below to see how the date picker changes:
   }}
 />
 
+## Calendar Only
+
+DateCalendar built with @h6s/calendar and Tailwind CSS.
+
+<Sandpack
+  files={filesCalendar}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  previewOptions={{
+    style: {
+      height: 580,
+    }
+  }}
+/>
+
 ## Features
 
+- Date picker with field trigger and popover
+- Calendar-only component for inline use
 - Field-style trigger with placeholder and clear action
 - Floating popover built with `@radix-ui/react-popover`
 - Calendar interaction via `@h6s/calendar`

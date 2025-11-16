@@ -1,25 +1,25 @@
-import { Sandpack } from "@/components/Sandpack";
-import { loadExample } from "@/components/Sandpack/loadExample";
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
 
-export const filesPicker = loadExample('app/docs/examples/date-range-picker/tailwind/basic', [
+export const filesPicker = loadExample('app/docs/examples/date-range-picker/bootstrap/basic', [
   'App.tsx',
   'DateRangePicker.tsx',
   'public/index.html',
 ]);
 
-export const filesCalendarBasic = loadExample('app/docs/examples/date-range-picker/tailwind/calendar-basic', [
+export const filesCalendarBasic = loadExample('app/docs/examples/date-range-picker/bootstrap/calendar-basic', [
   'App.tsx',
   'DateRangeCalendar.tsx',
   'public/index.html',
 ]);
 
-export const filesCalendarDual = loadExample('app/docs/examples/date-range-picker/tailwind/calendar-dual', [
+export const filesCalendarDual = loadExample('app/docs/examples/date-range-picker/bootstrap/calendar-dual', [
   'App.tsx',
   'DateRangeCalendarDual.tsx',
   'public/index.html',
 ]);
 
-# Tailwind CSS
+# Bootstrap 5
 
 ## Date Range Picker
 
@@ -31,7 +31,9 @@ Input field that opens a date range picker popover with dual calendars, powered 
     "@radix-ui/react-popover": "^1.1.2",
   }}
   providerOptions={{
-    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
   }}
   previewOptions={{
     style: {
@@ -47,7 +49,9 @@ DateRangeCalendar with single calendar view.
 <Sandpack
   files={filesCalendarBasic}
   providerOptions={{
-    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
   }}
   previewOptions={{
     style: {
@@ -63,7 +67,9 @@ For better UX when selecting date ranges, you can display two calendars side by 
 <Sandpack
   files={filesCalendarDual}
   providerOptions={{
-    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
   }}
   previewOptions={{
     style: {
@@ -76,9 +82,8 @@ For better UX when selecting date ranges, you can display two calendars side by 
 
 - Date range picker with field trigger and popover
 - Calendar-only components for inline use (basic and dual layouts)
-- Field-style trigger with placeholder and clear action
-- Floating popover built with `@radix-ui/react-popover`
-- Dual calendar layout showing consecutive months
+- Uses Bootstrap 5 utility classes and components
 - Date range selection with visual highlighting
-- Tailwind CSS utility classes
-- Dark mode support with `dark:` variants
+- Responsive design with Bootstrap grid system
+- Accessible with proper ARIA labels
+

@@ -1,7 +1,7 @@
 import { Sandpack } from '@/components/Sandpack';
 import { loadExample } from '@/components/Sandpack/loadExample';
 
-export const files = loadExample('app/docs/examples/date-calendar/bootstrap/basic', [
+export const filesCalendar = loadExample('app/docs/examples/date-picker/bootstrap/calendar', [
   'App.tsx',
   'DateCalendar.tsx',
   'public/index.html',
@@ -9,14 +9,12 @@ export const files = loadExample('app/docs/examples/date-calendar/bootstrap/basi
 
 # Bootstrap 5
 
+## Calendar Only
+
 DateCalendar built with @h6s/calendar and Bootstrap 5 components.
 
-## Interactive Example
-
-Try editing the code below to customize the DateCalendar component:
-
 <Sandpack
-  files={files}
+  files={filesCalendar}
   providerOptions={{
     externalResources: [
       "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
@@ -31,9 +29,8 @@ Try editing the code below to customize the DateCalendar component:
 
 ## Features
 
-- Single date selection
-- Month/year navigation
-- Today shortcut
-- Uses Bootstrap 5 utility classes
+- Calendar-only component for inline use
+- Uses Bootstrap 5 utility classes and components
 - Accessible with proper ARIA labels
+- Single date selection with month/year navigation
 
