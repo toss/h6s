@@ -132,7 +132,7 @@ function DateRangePickerContent({
                     key={key}
                     className={`
                       relative w-10 p-0 text-center
-                      ${isCurrentMonth && inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
+                      ${isCurrentMonth && inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900"}
                     `}
                   >
                     {isCurrentMonth ? (
@@ -148,7 +148,7 @@ function DateRangePickerContent({
                           box-border relative z-10 w-full h-10 rounded-md text-sm transition
                           text-gray-900 dark:text-gray-100
                           ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
-                          ${inRange && "text-blue-900 dark:text-blue-100"}
+                          ${inRange && "text-blue-900 dark:text-blue-300"}
                           ${selected && "!bg-blue-500 !text-white font-semibold hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-600"}
                           ${today && !selected && "border-2 border-blue-500 font-semibold text-blue-500 dark:border-blue-400 dark:text-blue-400"}
                         `}

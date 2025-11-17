@@ -46,7 +46,7 @@ export function Sandpack(props: CustomSandpackProps) {
         }}
       >
         <SandpackLayout {...props.layoutOptions}>
-          <SandpackPreview {...props.previewOptions} />
+          <SandpackPreview showRefreshButton={false} {...props.previewOptions} />
         </SandpackLayout>
       </SandpackProvider>
     </div>

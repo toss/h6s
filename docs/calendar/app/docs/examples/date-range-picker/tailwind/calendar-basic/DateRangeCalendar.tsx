@@ -51,7 +51,7 @@ export function DateRangeCalendar() {
   };
 
   return (
-    <div className="w-[22rem] rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
+    <div className="w-80 rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
       <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
         <div>
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected range</p>
@@ -79,7 +79,8 @@ export function DateRangeCalendar() {
         </button>
       </div>
 
-      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
+      <div className="w-fit">
+        <table className="border-collapse" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
@@ -101,8 +102,8 @@ export function DateRangeCalendar() {
                   <td
                     key={key}
                     className={`
-                      relative w-10 p-0 text-center
-                      ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
+                      relative w-10 min-w-10 max-w-10 p-0 text-center
+                      ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900"}
                     `}
                   >
                     <button
@@ -118,7 +119,7 @@ export function DateRangeCalendar() {
                         ${!isCurrentMonth && "text-gray-400 dark:text-gray-600"}
                         ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
                         ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
-                        ${inRange && "text-blue-900 dark:text-blue-100"}
+                        ${inRange && "text-blue-900 dark:text-blue-300"}
                         ${selected && "!bg-blue-500 !text-white font-semibold hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-600"}
                         ${today && "border-2 border-blue-500"}
                       `}
@@ -132,6 +133,7 @@ export function DateRangeCalendar() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
