@@ -56,7 +56,8 @@ export function DateRangeCalendarDual() {
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
+      <div style={{ display: "inline-block", width: "fit-content" }}>
+        <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
@@ -143,9 +144,10 @@ export function DateRangeCalendarDual() {
                 );
               })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 

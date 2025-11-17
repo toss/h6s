@@ -18,7 +18,7 @@ export default function DateCalendar() {
 
   return (
     <div>
-      <div style={{ maxWidth: "24rem" }}>
+      <div style={{ display: "inline-block", width: "fit-content" }}>
         <div className="card shadow-lg border rounded-3">
           <div className="card-body p-4">
             <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
@@ -63,66 +63,68 @@ export default function DateCalendar() {
               </button>
             </div>
 
-            <table className="table table-borderless text-center mb-0">
-              <thead>
-                <tr>
-                  {headers.weekdays.map(({ key, value }) => (
-                    <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
-                      {format(value, "EEEEEE")}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {body.value.map(({ key, value: days }) => (
-                  <tr key={key}>
-                    {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                      const isSelected = selectedDate && isSameDay(value, selectedDate);
-                      const today = isCurrentDate;
-
-                      let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
-                      const style = {
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        fontSize: "0.875rem",
-                        transition: "all 0.15s ease",
-                        borderRadius: "0.375rem",
-                        "--bs-btn-hover-bg": isSelected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
-                        "--bs-btn-hover-border-color": "transparent",
-                      } as React.CSSProperties;
-
-                      if (today) {
-                        style.border = "2px solid #0d6efd";
-                      }
-
-                      if (isSelected) {
-                        btnClass += " btn-primary";
-                      } else if (today) {
-                        btnClass += " text-body fw-semibold";
-                      } else if (isCurrentMonth) {
-                        btnClass += " text-body";
-                      } else {
-                        btnClass += " text-secondary";
-                      }
-
-                      return (
-                        <td key={key} className="p-1">
-                          <button
-                            type="button"
-                            onClick={() => handleDateSelect(value, isCurrentMonth)}
-                            className={btnClass}
-                            style={style}
-                            aria-label={format(value, "PPP")}
-                          >
-                            {format(value, "d")}
-                          </button>
-                        </td>
-                      );
-                    })}
+            <div style={{ display: "inline-block", width: "fit-content" }}>
+              <table className="table table-borderless text-center mb-0">
+                <thead>
+                  <tr>
+                    {headers.weekdays.map(({ key, value }) => (
+                      <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
+                        {format(value, "EEEEEE")}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {body.value.map(({ key, value: days }) => (
+                    <tr key={key}>
+                      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
+                        const isSelected = selectedDate && isSameDay(value, selectedDate);
+                        const today = isCurrentDate;
+
+                        let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
+                        const style = {
+                          width: "2.5rem",
+                          height: "2.5rem",
+                          fontSize: "0.875rem",
+                          transition: "all 0.15s ease",
+                          borderRadius: "0.375rem",
+                          "--bs-btn-hover-bg": isSelected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
+                          "--bs-btn-hover-border-color": "transparent",
+                        } as React.CSSProperties;
+
+                        if (today) {
+                          style.border = "2px solid #0d6efd";
+                        }
+
+                        if (isSelected) {
+                          btnClass += " btn-primary";
+                        } else if (today) {
+                          btnClass += " text-body fw-semibold";
+                        } else if (isCurrentMonth) {
+                          btnClass += " text-body";
+                        } else {
+                          btnClass += " text-secondary";
+                        }
+
+                        return (
+                          <td key={key} className="p-0" style={{ position: "relative", padding: 0 }}>
+                            <button
+                              type="button"
+                              onClick={() => handleDateSelect(value, isCurrentMonth)}
+                              className={btnClass}
+                              style={style}
+                              aria-label={format(value, "PPP")}
+                            >
+                              {format(value, "d")}
+                            </button>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
