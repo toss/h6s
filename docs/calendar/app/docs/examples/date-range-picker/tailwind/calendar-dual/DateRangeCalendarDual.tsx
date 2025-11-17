@@ -33,11 +33,6 @@ export function DateRangeCalendarDual() {
     }
   }
 
-  function handleClear() {
-    setDateRange({ start: null, end: null });
-    setHoverDate(null);
-  }
-
   function isInRange(date: Date): boolean {
     if (!dateRange.start) return false;
 
@@ -125,14 +120,6 @@ export function DateRangeCalendarDual() {
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected range</p>
           <p className="mt-1 text-base font-semibold text-gray-900 dark:text-gray-100">{formatRange()}</p>
         </div>
-        <button
-          type="button"
-          onClick={handleClear}
-          disabled={!dateRange.start}
-          className="rounded-lg border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
-        >
-          Clear
-        </button>
       </div>
 
       <div className="flex gap-6">

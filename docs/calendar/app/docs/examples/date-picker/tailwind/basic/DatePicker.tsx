@@ -32,15 +32,6 @@ export default function DatePicker() {
             </svg>
           </button>
         </Popover.Trigger>
-        {selectedDate && (
-          <button
-            type="button"
-            onClick={() => setSelectedDate(null)}
-            className="text-sm font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-          >
-            Clear selection
-          </button>
-        )}
       </div>
 
       <Popover.Portal>

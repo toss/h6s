@@ -20,10 +20,6 @@ export function DateRangePicker() {
     return `${format(dateRange.start, "PP")} - ${format(dateRange.end, "PP")}`;
   }, [dateRange]);
 
-  function handleClear() {
-    setDateRange({ start: null, end: null });
-  }
-
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <div className="flex w-full max-w-sm flex-col items-start gap-2">
@@ -47,15 +43,6 @@ export function DateRangePicker() {
             </svg>
           </button>
         </Popover.Trigger>
-        {dateRange.start && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="text-sm font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-          >
-            Clear selection
-          </button>
-        )}
       </div>
 
       <Popover.Portal>

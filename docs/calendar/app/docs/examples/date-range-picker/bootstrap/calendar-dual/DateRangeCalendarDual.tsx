@@ -33,11 +33,6 @@ export function DateRangeCalendarDual() {
     }
   }
 
-  function handleClear() {
-    setDateRange({ start: null, end: null });
-    setHoverDate(null);
-  }
-
   function isInRange(date: Date): boolean {
     if (!dateRange.start) return false;
 
@@ -164,14 +159,6 @@ export function DateRangeCalendarDual() {
                 <p className="text-body-secondary small mb-1 fw-semibold">Selected range</p>
                 <p className="text-body-emphasis fw-semibold mb-0 fs-6">{formatRange()}</p>
               </div>
-              <button
-                type="button"
-                onClick={handleClear}
-                disabled={!dateRange.start}
-                className="btn btn-primary btn-sm px-3 fw-medium"
-              >
-                Clear
-              </button>
             </div>
 
             <div className="row g-4">

@@ -52,21 +52,6 @@
   flex-shrink: 0;
 }
 
-.daterangepicker-field__clear {
-  align-self: flex-start;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #2563eb;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.daterangepicker-field__clear:hover {
-  text-decoration: underline;
-}
-
 /* Popover Styles */
 .daterangepicker-popover {
   z-index: 50;

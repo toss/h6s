@@ -43,27 +43,6 @@
   color: #111827;
 }
 
-.daterangecalendar-clear-button {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
-  background-color: transparent;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.daterangecalendar-clear-button:hover:not(:disabled) {
-  background-color: #f3f4f6;
-}
-
-.daterangecalendar-clear-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .daterangecalendar-header {
   display: flex;
   align-items: center;
@@ -181,15 +160,6 @@
 
   .daterangecalendar-selection-value {
     color: #f9fafb;
-  }
-
-  .daterangecalendar-clear-button {
-    color: #f9fafb;
-    border-color: #475569;
-  }
-
-  .daterangecalendar-clear-button:hover:not(:disabled) {
-    background-color: #1f2937;
   }
 
   .daterangecalendar-nav-button {

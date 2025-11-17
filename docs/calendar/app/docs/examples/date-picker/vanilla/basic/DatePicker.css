@@ -50,21 +50,6 @@
   color: #9ca3af;
 }
 
-.datepicker-field__clear {
-  align-self: flex-start;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #2563eb;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.datepicker-field__clear:hover {
-  text-decoration: underline;
-}
-
 .datepicker-popover {
   z-index: 50;
   width: min(22rem, calc(100vw - 2rem));

@@ -21,11 +21,6 @@ export default function DatePicker() {
             </svg>
           </button>
         </Popover.Trigger>
-        {selectedDate && (
-          <button type="button" className="datepicker-field__clear" onClick={() => setSelectedDate(null)}>
-            Clear selection
-          </button>
-        )}
       </div>
 
       <Popover.Portal>
