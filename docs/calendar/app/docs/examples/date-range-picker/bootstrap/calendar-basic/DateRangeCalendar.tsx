@@ -54,7 +54,7 @@ export function DateRangeCalendar() {
     <div>
       <div style={{ display: "inline-block", width: "fit-content" }}>
         <div className="card shadow-lg border rounded-3">
-          <div className="card-body p-4">
+          <div className="card-body p-3">
             <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
               <div>
                 <p className="text-body-secondary small mb-1 fw-semibold">Selected range</p>

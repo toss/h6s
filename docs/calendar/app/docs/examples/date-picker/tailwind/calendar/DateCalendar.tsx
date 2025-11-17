@@ -19,7 +19,7 @@ export function DateCalendar() {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
+    <div className="w-80 rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
       <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
         <div>
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Selected date</p>
@@ -59,7 +59,8 @@ export function DateCalendar() {
         </button>
       </div>
 
-      <table className="w-full">
+      <div className="w-fit">
+        <table className="border-collapse">
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
@@ -76,12 +77,12 @@ export function DateCalendar() {
                 const isSelected = selectedDate && isSameDay(value, selectedDate);
 
                 return (
-                  <td key={key} className="p-1">
+                  <td key={key} className="w-10 p-0 text-center">
                     <button
                       type="button"
                       onClick={() => handleDateSelect(value, isCurrentMonth)}
                       className={`
-                        w-10 h-10 rounded-md text-sm transition
+                        box-border w-full h-10 rounded-md text-sm transition
                         ${!isCurrentMonth && "text-gray-400 dark:text-gray-500"}
                         ${!isCurrentMonth && !isSelected && "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100"}
                         ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
@@ -99,6 +100,7 @@ export function DateCalendar() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
