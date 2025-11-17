@@ -1,5 +1,5 @@
 .daterangecalendar-dual {
-  max-width: 44rem;
+  max-width: 40rem;
   border: 1px solid #e5e7eb;
   border-radius: 1rem;
   background-color: #ffffff;
@@ -9,7 +9,7 @@
 
 .daterangecalendar-calendars {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .daterangecalendar-calendar-container {
@@ -87,10 +87,12 @@
 
 .daterangecalendar-calendar td {
   position: relative;
+  width: 2.5rem;
+  padding: 0;
 }
 
 .daterangecalendar-day {
-  width: 2.5rem;
+  width: 100%;
   height: 2.5rem;
   border: none;
   border-radius: 0.375rem;
@@ -99,6 +101,7 @@
   cursor: pointer;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .daterangecalendar-day--current-month {
