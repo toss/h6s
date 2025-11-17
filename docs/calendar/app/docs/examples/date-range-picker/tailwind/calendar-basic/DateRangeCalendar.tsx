@@ -101,7 +101,7 @@ export function DateRangeCalendar() {
                   <td
                     key={key}
                     className={`
-                      relative p-0.5
+                      relative w-10 p-0 text-center
                       ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
                     `}
                   >
@@ -114,7 +114,7 @@ export function DateRangeCalendar() {
                         }
                       }}
                       className={`
-                        relative z-10 w-10 h-10 rounded-md text-sm transition
+                        box-border relative z-10 w-full h-10 rounded-md text-sm transition
                         ${!isCurrentMonth && "text-gray-400 dark:text-gray-600"}
                         ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
                         ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}

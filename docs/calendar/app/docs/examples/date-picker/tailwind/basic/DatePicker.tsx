@@ -95,7 +95,7 @@ function DatePickerContent({
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-[20rem] border-collapse">
+        <table className="w-full border-collapse">
           <thead>
             <tr>
               {headers.weekdays.map(({ key, value }) => (
@@ -112,12 +112,12 @@ function DatePickerContent({
                   const isSelected = selectedDate && isSameDay(value, selectedDate);
 
                   return (
-                    <td key={key} className="p-1">
+                    <td key={key} className="w-10 p-0 text-center">
                       <button
                         type="button"
                         onClick={() => handleSelectDate(value)}
                         className={`
-                          w-10 h-10 rounded-md text-sm transition
+                          box-border w-full h-10 rounded-md text-sm transition
                           ${!isCurrentMonth ? "text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-gray-100"}
                           ${!isSelected && isCurrentMonth ? "hover:bg-gray-100 dark:hover:bg-gray-800" : ""}
                           ${!isSelected && !isCurrentMonth ? "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100" : ""}

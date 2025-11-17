@@ -109,7 +109,7 @@ function DateRangePickerContent({
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="w-full min-w-[20rem] border-collapse" onMouseLeave={() => setHoverDate(null)}>
+      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
@@ -131,7 +131,7 @@ function DateRangePickerContent({
                   <td
                     key={key}
                     className={`
-                      relative p-0.5
+                      relative w-10 p-0 text-center
                       ${isCurrentMonth && inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
                     `}
                   >
@@ -145,7 +145,7 @@ function DateRangePickerContent({
                           }
                         }}
                         className={`
-                          relative z-10 w-10 h-10 rounded-md text-sm transition
+                          box-border relative z-10 w-full h-10 rounded-md text-sm transition
                           text-gray-900 dark:text-gray-100
                           ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
                           ${inRange && "text-blue-900 dark:text-blue-100"}
