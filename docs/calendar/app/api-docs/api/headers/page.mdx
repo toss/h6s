@@ -38,24 +38,6 @@ function Calendar() {
 }
 ```
 
-## Formatting Options
-
-You can format the weekday headers using different `date-fns` format patterns:
-
-```tsx
-// Full weekday names
-{format(value, 'EEEE')} // Sunday, Monday, Tuesday, ...
-
-// Abbreviated (3 letters)
-{format(value, 'EEE')} // Sun, Mon, Tue, ...
-
-// Short (2 letters)
-{format(value, 'EEEEEE')} // Su, Mo, Tu, ...
-
-// Single letter
-{format(value, 'EEEEE')} // S, M, T, ...
-```
-
 ## Week Start Configuration
 
 The weekday order respects the `defaultWeekStart` option:
@@ -73,51 +55,3 @@ const { headers } = useCalendar({
 });
 // headers.weekdays[0] = Monday
 ```
-
-## Example with Styling
-
-### Tailwind CSS
-
-```tsx
-<thead>
-  <tr>
-    {headers.weekdays.map(({ key, value }) => (
-      <th
-        key={key}
-        className="p-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-      >
-        {format(value, 'EEEEEE')}
-      </th>
-    ))}
-  </tr>
-</thead>
-```
-
-### Vanilla CSS
-
-```tsx
-<thead>
-  <tr>
-    {headers.weekdays.map(({ key, value }) => (
-      <th key={key} className="calendar-weekday">
-        {format(value, 'EEEEEE')}
-      </th>
-    ))}
-  </tr>
-</thead>
-```
-
-```css
-.calendar-weekday {
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #6b7280;
-  text-align: center;
-}
-```
-
-## Related
-
-- [body](/api-docs/api/body) - Main calendar grid data
-- [useCalendar](/api-docs/api/use-calendar) - Main hook documentation
