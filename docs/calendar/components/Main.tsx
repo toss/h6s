@@ -67,7 +67,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             setTitleHover(false);
             setHasAutoPlayed(true);
           }, 2000);
-        }, 3000);
+        }, 2000);
       } else {
         checkTimer = setTimeout(startAutoPlay, 50);
       }
@@ -197,14 +197,14 @@ export function Main({ title, description, subDescription, navButtonText, items 
     duration: 3,
     repeat: Infinity,
     repeatDelay: 3,
-    delay: 1,
+    delay: 0,
   }), []);
 
   const sFilterTransition = useMemo(() => ({
     duration: 2,
     repeat: Infinity,
     repeatDelay: 3,
-    delay: 0.5,
+    delay: 0,
   }), []);
 
   const layoutTransition = useMemo(() => ({
@@ -236,11 +236,11 @@ export function Main({ title, description, subDescription, navButtonText, items 
         </div>
 
         {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto animate-fade-in">
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           <motion.h1
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="text-6xl md:text-8xl font-bold mb-6 animate-scale-in cursor-default whitespace-nowrap flex items-center justify-center py-2 -my-2"
+            className="text-6xl md:text-8xl font-bold mb-6 cursor-default whitespace-nowrap flex items-center justify-center py-2 -my-2"
             layout
             transition={layoutTransition}
           >
@@ -329,16 +329,16 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </span>
           </motion.h1>
 
-          <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-4 font-medium animate-fade-in-delay-1">
+          <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-4 font-medium">
             {description}
           </p>
 
-          <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-8 animate-fade-in-delay-2">
+          <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-8">
             {subDescription}
           </p>
 
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/docs/guide/getting-started"
               className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-600 text-white rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-500 transition-all shadow-lg hover:shadow-xl hover:scale-105"
@@ -358,13 +358,10 @@ export function Main({ title, description, subDescription, navButtonText, items 
       {/* Features Section */}
       <section className="max-w-6xl mx-auto px-6 py-20 bg-gray-50 dark:bg-transparent">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {items.map(({ title, description }, index) => (
+          {items.map(({ title, description }) => (
             <article
               key={title}
-              className="group relative flex flex-col gap-4 p-8 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all hover:shadow-xl animate-fade-in-up overflow-hidden"
-              style={{
-                animationDelay: `${1.2 + index * 0.1}s`,
-              }}
+              className="group relative flex flex-col gap-4 p-8 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all hover:shadow-xl overflow-hidden"
             >
               {/* Gradient accent */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-500 dark:to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -380,67 +377,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
           ))}
         </div>
       </section>
-
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes scale-in {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
-        }
-
-        .animate-scale-in {
-          animation: scale-in 0.8s ease-out 0.2s both;
-        }
-
-        .animate-fade-in-delay-1 {
-          animation: fade-in 0.8s ease-out 0.4s both;
-        }
-
-        .animate-fade-in-delay-2 {
-          animation: fade-in 0.8s ease-out 0.6s both;
-        }
-
-        .animate-fade-in-delay-3 {
-          animation: fade-in 0.8s ease-out 0.8s both;
-        }
-
-        .animate-fade-in-delay-4 {
-          animation: fade-in 0.8s ease-out 1s both;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out both;
-        }
-      `}</style>
     </section>
   );
 }
