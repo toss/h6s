@@ -67,7 +67,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             setTitleHover(false);
             setHasAutoPlayed(true);
           }, 2000);
-        }, 2000);
+        }, 3000);
       } else {
         checkTimer = setTimeout(startAutoPlay, 50);
       }
@@ -175,7 +175,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
     !hasAutoPlayed && !titleHover ? {
       filter: [
         "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-        "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
+        "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))",
         "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
       ],
     } : {},
@@ -193,10 +193,11 @@ export function Main({ title, description, subDescription, navButtonText, items 
     [hasAutoPlayed, titleHover]
   );
 
-  const filterTransition = useMemo(() => ({
-    duration: 2,
+  const hFilterTransition = useMemo(() => ({
+    duration: 3,
     repeat: Infinity,
     repeatDelay: 3,
+    delay: 1,
   }), []);
 
   const sFilterTransition = useMemo(() => ({
@@ -251,7 +252,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
               className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
               layout
               animate={hFilterAnimate}
-              transition={filterTransition}
+              transition={hFilterTransition}
             >
               h
             </motion.span>
