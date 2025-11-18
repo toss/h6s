@@ -1,81 +1,281 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type MainProps = {
   title: string;
   description: string;
   subDescription: string;
   navButtonText: string;
-  items: Array<{ title: string; description: string; emoji: string }>;
+  items: Array<{ title: string; description: string }>;
 };
 
 export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
-  const [isHover, setIsHover] = useState(false);
+  const [titleHover, setTitleHover] = useState(false);
+  const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
+  const middleContainerRef = useRef<HTMLSpanElement>(null);
+  const [middleWidth, setMiddleWidth] = useState<number | "auto">("auto");
+  const sixWidthRef = useRef<number | null>(null);
+  const headlessWidthRef = useRef<number | null>(null);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hiddenMeasureRef = useRef<HTMLSpanElement | null>(null);
+  
+  const middleLetters = ['e', 'a', 'd', 'l', 'e', 's'];
+  
+  useEffect(() => {
+    const measureWidth = () => {
+      if (hiddenMeasureRef.current && headlessWidthRef.current === null) {
+        const width = hiddenMeasureRef.current.scrollWidth;
+        if (width > 0) {
+          headlessWidthRef.current = width;
+        }
+      }
+    };
+    
+    measureWidth();
+    const timeout = setTimeout(measureWidth, 100);
+    
+    return () => clearTimeout(timeout);
+  }, []);
+  
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    let checkTimer: NodeJS.Timeout | null = null;
+    
+    const startAutoPlay = () => {
+      if (sixWidthRef.current !== null && headlessWidthRef.current !== null) {
+        timer = setTimeout(() => {
+          setTitleHover(true);
+          setTimeout(() => {
+            setTitleHover(false);
+            setHasAutoPlayed(true);
+          }, 2000);
+        }, 2000);
+      } else {
+        checkTimer = setTimeout(startAutoPlay, 50);
+      }
+    };
+    
+    startAutoPlay();
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+      if (checkTimer) clearTimeout(checkTimer);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
+    if (!titleHover) {
+      if (sixWidthRef.current !== null) {
+        setMiddleWidth(sixWidthRef.current);
+      } else {
+        setMiddleWidth("auto");
+      }
+    } else {
+      if (headlessWidthRef.current !== null) {
+        setMiddleWidth(headlessWidthRef.current);
+      } else {
+        setMiddleWidth("auto");
+      }
+    }
+  }, [titleHover]);
 
   return (
     <section className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      <span
+        ref={hiddenMeasureRef}
+        className="absolute opacity-0 pointer-events-none text-6xl md:text-8xl font-bold whitespace-nowrap"
+        style={{ visibility: "hidden", position: "absolute", top: "-9999px" }}
+      >
+        {middleLetters.join("")}
+      </span>
+      
+      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3),transparent_50%)] animate-pulse" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.3),transparent_50%)] animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3),transparent_50%)] animate-pulse" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.15),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.3),transparent_50%)] animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
         {/* Content */}
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto animate-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-scale-in">
-            {title}
-          </h1>
+          <motion.h1
+            onMouseEnter={() => setTitleHover(true)}
+            onMouseLeave={() => setTitleHover(false)}
+            className="text-6xl md:text-8xl font-bold mb-6 animate-scale-in cursor-default whitespace-nowrap flex items-center justify-center"
+            layout
+            transition={{
+              layout: {
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1],
+              },
+            }}
+          >
+            <span className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
+              @
+            </span>
+            
+            <motion.span
+              className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+              layout
+              animate={!hasAutoPlayed && !titleHover ? {
+                filter: [
+                  "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
+                  "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
+                  "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
+                ],
+              } : {}}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+              }}
+            >
+              h
+            </motion.span>
+            
+            <motion.span
+              ref={middleContainerRef}
+              className="inline-flex items-center overflow-hidden"
+              animate={{
+                width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
+              }}
+              transition={{
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+            >
+              <AnimatePresence mode="sync">
+                {!titleHover ? (
+                  <motion.span
+                    key="6"
+                    className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.05, ease: [0.25, 0.1, 0.25, 1] }}
+                    ref={(node: HTMLSpanElement | null) => {
+                      if (node) {
+                        const width = node.scrollWidth;
+                        const prevWidth = sixWidthRef.current;
+                        sixWidthRef.current = width;
+                        if (!titleHover) {
+                          if (prevWidth === null || prevWidth !== width) {
+                            setMiddleWidth(width);
+                          }
+                        }
+                      }
+                    }}
+                  >
+                    6
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="middle"
+                    className="inline-flex items-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.1 }}
+                    ref={(node: HTMLSpanElement | null) => {
+                      if (node) {
+                        if (animationTimeoutRef.current) {
+                          clearTimeout(animationTimeoutRef.current);
+                        }
+                        animationTimeoutRef.current = setTimeout(() => {
+                          const width = node.scrollWidth;
+                          if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
+                            headlessWidthRef.current = width;
+                            if (titleHover) {
+                              setMiddleWidth(width);
+                            }
+                          }
+                          animationTimeoutRef.current = null;
+                        }, middleLetters.length * 0.08 * 1000 + 100);
+                      }
+                    }}
+                  >
+                    {middleLetters.map((letter, idx) => (
+                      <motion.span
+                        key={`${letter}-${idx}`}
+                        className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                        initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                        animate={{ 
+                          opacity: 1, 
+                          y: 0, 
+                          scale: 1,
+                        }}
+                        exit={{ 
+                          opacity: 0, 
+                          y: 4, 
+                          scale: 0.95,
+                        }}
+                        transition={{
+                          delay: titleHover ? idx * 0.08 : 0,
+                          duration: titleHover ? 0.3 : 0.15,
+                          ease: [0.25, 0.1, 0.25, 1],
+                        }}
+                      >
+                        {letter}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.span>
+            
+            <motion.span
+              className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+              layout
+              animate={!hasAutoPlayed && !titleHover ? {
+                filter: [
+                  "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
+                  "drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))",
+                  "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
+                ],
+              } : {}}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+                delay: 0.5,
+              }}
+            >
+              s
+            </motion.span>
+            
+            <span className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
+              /calendar
+            </span>
+          </motion.h1>
 
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-medium animate-fade-in-delay-1">
+          <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-4 font-medium animate-fade-in-delay-1">
             {description}
           </p>
 
-          <p className="text-lg md:text-xl text-gray-400 mb-8 animate-fade-in-delay-2">
+          <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-8 animate-fade-in-delay-2">
             {subDescription}
           </p>
 
-          {/* h6s = headless animation */}
-          <div className="mb-8 animate-fade-in-delay-3">
-            <p className="text-xl text-gray-400 mb-2">
-              <span className="font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-                h6s
-              </span>{" "}
-              means{" "}
-              <span
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-                className="inline-block cursor-pointer transition-all duration-300"
-                style={{
-                  transform: isHover ? "scale(1.1)" : "scale(1)",
-                }}
-              >
-                {isHover ? (
-                  <strong className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-bold animate-fade-in">
-                    headless
-                  </strong>
-                ) : (
-                  <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-mono">
-                    h______s
-                  </span>
-                )}
-              </span>
-            </p>
-          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-4">
             <Link
               href="/docs/guide/getting-started"
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="px-8 py-4 bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-500 dark:to-purple-500 text-white rounded-lg font-semibold text-lg hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-600 dark:hover:to-purple-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
             >
               {navButtonText} →
             </Link>
             <Link
               href="/docs/examples/date-picker"
-              className="px-8 py-4 border-2 border-gray-600 rounded-lg font-semibold text-lg hover:bg-gray-800 transition hover:scale-105 text-gray-300"
+              className="px-8 py-4 border-2 border-gray-400 dark:border-gray-600 rounded-lg font-semibold text-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition hover:scale-105 text-gray-600 dark:text-gray-300"
             >
               View Examples
             </Link>
@@ -84,19 +284,26 @@ export function Main({ title, description, subDescription, navButtonText, items 
       </div>
 
       {/* Features Section */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
+      <section className="max-w-6xl mx-auto px-6 py-20 bg-gray-50 dark:bg-transparent">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {items.map(({ title, description, emoji }, index) => (
+          {items.map(({ title, description }, index) => (
             <article
               key={title}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-gray-600 transition-all hover:shadow-lg animate-fade-in-up"
+              className="group relative flex flex-col gap-4 p-8 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all hover:shadow-xl animate-fade-in-up overflow-hidden"
               style={{
                 animationDelay: `${1.2 + index * 0.1}s`,
               }}
             >
-              <div className="text-5xl mb-2">{emoji}</div>
-              <h3 className="text-xl font-bold text-white">{title}</h3>
-              <p className="text-gray-400 leading-relaxed whitespace-pre-line">{description}</p>
+              {/* Gradient accent */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              {/* Icon placeholder with gradient */}
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-600 to-purple-700 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-sm" />
+              </div>
+              
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white">{title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-line">{description}</p>
             </article>
           ))}
         </div>
@@ -165,4 +372,3 @@ export function Main({ title, description, subDescription, navButtonText, items 
     </section>
   );
 }
-
