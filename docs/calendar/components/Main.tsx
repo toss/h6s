@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type MainProps = {
@@ -10,6 +10,33 @@ type MainProps = {
   subDescription: string;
   navButtonText: string;
   items: Array<{ title: string; description: string }>;
+};
+
+const MIDDLE_LETTERS = ['e', 'a', 'd', 'l', 'e', 's'] as const;
+const HEADLESS_TEXT = MIDDLE_LETTERS.join("");
+
+const WIDTH_TRANSITION = {
+  duration: 0.3,
+  ease: [0.4, 0, 0.2, 1] as const,
+};
+
+const SIX_ENTER_TRANSITION = {
+  duration: 0.3,
+  delay: 0,
+  opacity: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
+  scale: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
+  y: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
+};
+
+const SIX_EXIT_TRANSITION = {
+  duration: 0.15,
+  ease: [0.4, 0, 0.2, 1] as const,
+};
+
+const LETTER_EXIT_TRANSITION = {
+  delay: 0,
+  duration: 0.3,
+  ease: [0.4, 0, 0.2, 1] as const,
 };
 
 export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
@@ -23,8 +50,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
   const headlessWidthRef = useRef<number | null>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hiddenMeasureRef = useRef<HTMLSpanElement | null>(null);
-  
-  const middleLetters = ['e', 'a', 'd', 'l', 'e', 's'];
   
   useEffect(() => {
     const measureWidth = () => {
@@ -69,6 +94,14 @@ export function Main({ title, description, subDescription, navButtonText, items 
   }, []);
 
 
+  const handleMouseEnter = useCallback(() => {
+    setTitleHover(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTitleHover(false);
+  }, []);
+
   useEffect(() => {
     if (animationTimeoutRef.current) {
       clearTimeout(animationTimeoutRef.current);
@@ -80,20 +113,116 @@ export function Main({ title, description, subDescription, navButtonText, items 
     }
     prevTitleHoverRef.current = titleHover;
 
-    if (!titleHover) {
-      if (sixWidthRef.current !== null) {
-        setMiddleWidth(sixWidthRef.current);
-      } else {
-        setMiddleWidth("auto");
-      }
-    } else {
-      if (headlessWidthRef.current !== null) {
-        setMiddleWidth(headlessWidthRef.current);
-      } else {
-        setMiddleWidth("auto");
+    const targetWidth = !titleHover 
+      ? (sixWidthRef.current ?? "auto")
+      : (headlessWidthRef.current ?? "auto");
+    
+    setMiddleWidth(prevWidth => {
+      if (prevWidth === targetWidth) return prevWidth;
+      return targetWidth;
+    });
+  }, [titleHover]);
+
+  const sixRefCallback = useCallback((node: HTMLSpanElement | null) => {
+    if (node && !titleHover) {
+      const width = node.scrollWidth;
+      const prevWidth = sixWidthRef.current;
+      if (prevWidth !== width) {
+        sixWidthRef.current = width;
+        setMiddleWidth(width);
       }
     }
   }, [titleHover]);
+
+  const headlessRefCallback = useCallback((node: HTMLSpanElement | null) => {
+    if (node) {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+      animationTimeoutRef.current = setTimeout(() => {
+        const width = node.scrollWidth;
+        if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
+          headlessWidthRef.current = width;
+          if (titleHover) {
+            setMiddleWidth(width);
+          }
+        }
+        animationTimeoutRef.current = null;
+      }, MIDDLE_LETTERS.length * 0.06 * 1000 + 80);
+    }
+  }, [titleHover]);
+
+  const sixAnimate = useMemo(() => 
+    !titleHover ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.95 },
+    [titleHover]
+  );
+
+  const letterAnimate = useMemo(() => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+  }), []);
+
+  const letterExit = useMemo(() => ({
+    opacity: 0,
+    y: 4,
+    scale: 0.95,
+    transition: LETTER_EXIT_TRANSITION,
+  }), []);
+
+  const widthAnimate = useMemo(() => ({
+    width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
+  }), [middleWidth]);
+
+  const hFilterAnimate = useMemo(() => 
+    !hasAutoPlayed && !titleHover ? {
+      filter: [
+        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
+        "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
+        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
+      ],
+    } : {},
+    [hasAutoPlayed, titleHover]
+  );
+
+  const sFilterAnimate = useMemo(() => 
+    !hasAutoPlayed && !titleHover ? {
+      filter: [
+        "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
+        "drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))",
+        "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
+      ],
+    } : {},
+    [hasAutoPlayed, titleHover]
+  );
+
+  const filterTransition = useMemo(() => ({
+    duration: 2,
+    repeat: Infinity,
+    repeatDelay: 3,
+  }), []);
+
+  const sFilterTransition = useMemo(() => ({
+    duration: 2,
+    repeat: Infinity,
+    repeatDelay: 3,
+    delay: 0.5,
+  }), []);
+
+  const layoutTransition = useMemo(() => ({
+    layout: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as const,
+    },
+  }), []);
+
+  const widthStyle = useMemo(() => ({ willChange: 'width' }), []);
+  const sixStyle = useMemo(() => ({ 
+    display: titleHover ? 'none' : 'inline-block',
+    willChange: 'transform, opacity'
+  }), [titleHover]);
+  const headlessContainerStyle = useMemo(() => ({ willChange: 'opacity' }), []);
+  const letterStyle = useMemo(() => ({ willChange: 'transform, opacity' }), []);
 
   return (
     <section className="flex flex-col min-h-screen">
@@ -102,7 +231,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
         className="absolute opacity-0 pointer-events-none text-6xl md:text-8xl font-bold whitespace-nowrap"
         style={{ visibility: "hidden", position: "absolute", top: "-9999px" }}
       >
-        {middleLetters.join("")}
+        {HEADLESS_TEXT}
       </span>
       
       <div className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -115,16 +244,11 @@ export function Main({ title, description, subDescription, navButtonText, items 
         {/* Content */}
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto animate-fade-in">
           <motion.h1
-            onMouseEnter={() => setTitleHover(true)}
-            onMouseLeave={() => setTitleHover(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             className="text-6xl md:text-8xl font-bold mb-6 animate-scale-in cursor-default whitespace-nowrap flex items-center justify-center"
             layout
-            transition={{
-              layout: {
-                duration: 0.4,
-                ease: [0.25, 0.1, 0.25, 1],
-              },
-            }}
+            transition={layoutTransition}
           >
             <span className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
               @
@@ -133,18 +257,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
             <motion.span
               className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
               layout
-              animate={!hasAutoPlayed && !titleHover ? {
-                filter: [
-                  "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-                  "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
-                  "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-                ],
-              } : {}}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatDelay: 3,
-              }}
+              animate={hFilterAnimate}
+              transition={filterTransition}
             >
               h
             </motion.span>
@@ -152,40 +266,19 @@ export function Main({ title, description, subDescription, navButtonText, items 
             <motion.span
               ref={middleContainerRef}
               className="inline-flex items-center overflow-hidden"
-              animate={{
-                width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
-              }}
-              transition={{
-                duration: 0.3,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
+              style={widthStyle}
+              animate={widthAnimate}
+              transition={WIDTH_TRANSITION}
             >
               <AnimatePresence mode="sync">
                 <motion.span
                   key={`6-${sixKey}`}
                   className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
                   initial={sixKey > 0 ? { opacity: 0, y: 12, scale: 0.85 } : false}
-                  animate={!titleHover ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.95 }}
-                  transition={!titleHover ? { 
-                    duration: 0.25,
-                    delay: 0,
-                    opacity: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
-                    scale: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
-                    y: { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
-                  } : { duration: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
-                  style={{ 
-                    display: titleHover ? 'none' : 'inline-block'
-                  }}
-                  ref={(node: HTMLSpanElement | null) => {
-                    if (node && !titleHover) {
-                      const width = node.scrollWidth;
-                      const prevWidth = sixWidthRef.current;
-                      sixWidthRef.current = width;
-                      if (prevWidth === null || prevWidth !== width) {
-                        setMiddleWidth(width);
-                      }
-                    }
-                  }}
+                  animate={sixAnimate}
+                  transition={!titleHover ? SIX_ENTER_TRANSITION : SIX_EXIT_TRANSITION}
+                  style={sixStyle}
+                  ref={sixRefCallback}
                 >
                   6
                 </motion.span>
@@ -193,57 +286,40 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   <motion.span
                     key="middle"
                     className="inline-flex items-center"
+                    style={headlessContainerStyle}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.08 }}
-                    ref={(node: HTMLSpanElement | null) => {
-                      if (node) {
-                        if (animationTimeoutRef.current) {
-                          clearTimeout(animationTimeoutRef.current);
-                        }
-                        animationTimeoutRef.current = setTimeout(() => {
-                          const width = node.scrollWidth;
-                          if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
-                            headlessWidthRef.current = width;
-                            if (titleHover) {
-                              setMiddleWidth(width);
-                            }
-                          }
-                          animationTimeoutRef.current = null;
-                        }, middleLetters.length * 0.06 * 1000 + 80);
-                      }
-                    }}
+                    transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
+                    ref={headlessRefCallback}
                   >
-                    {middleLetters.map((letter, idx) => (
+                    {MIDDLE_LETTERS.map((letter, idx) => {
+                      const letterTransition = titleHover 
+                        ? {
+                            delay: idx === 0 ? 0.05 : idx * 0.05 + 0.01,
+                            duration: 0.3,
+                            ease: [0.4, 0, 0.2, 1] as const,
+                          }
+                        : {
+                            delay: 0,
+                            duration: 0.18,
+                            ease: [0.4, 0, 0.2, 1] as const,
+                          };
+                      
+                      return (
                       <motion.span
                         key={`${letter}-${idx}`}
                         className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                        style={letterStyle}
                         initial={{ opacity: 0, y: 8, scale: 0.9 }}
-                        animate={{ 
-                          opacity: 1, 
-                          y: 0, 
-                          scale: 1,
-                        }}
-                        exit={{ 
-                          opacity: 0, 
-                          y: 4, 
-                          scale: 0.95,
-                          transition: {
-                            delay: 0,
-                            duration: 0.25,
-                            ease: [0.25, 0.1, 0.25, 1],
-                          }
-                        }}
-                        transition={{
-                          delay: titleHover ? (idx === 0 ? 0.06 : idx * 0.06 + 0.02) : 0,
-                          duration: titleHover ? 0.25 : 0.15,
-                          ease: [0.25, 0.1, 0.25, 1],
-                        }}
+                        animate={letterAnimate}
+                        exit={letterExit}
+                        transition={letterTransition}
                       >
                         {letter}
                       </motion.span>
-                    ))}
+                      );
+                    })}
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -252,19 +328,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
             <motion.span
               className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
               layout
-              animate={!hasAutoPlayed && !titleHover ? {
-                filter: [
-                  "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
-                  "drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))",
-                  "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
-                ],
-              } : {}}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatDelay: 3,
-                delay: 0.5,
-              }}
+              animate={sFilterAnimate}
+              transition={sFilterTransition}
             >
               s
             </motion.span>
