@@ -1,6 +1,12 @@
 import { Sandpack } from '@/components/Sandpack';
 import { loadExample } from '@/components/Sandpack/loadExample';
 
+export const filesBasic = loadExample('app/docs/examples/date-picker/bootstrap/basic', [
+  'App.tsx',
+  'DatePicker.tsx',
+  'useBootstrapTheme.ts',
+]);
+
 export const filesCalendar = loadExample('app/docs/examples/date-picker/bootstrap/calendar', [
   'App.tsx',
   'DateCalendar.tsx',
@@ -9,6 +15,27 @@ export const filesCalendar = loadExample('app/docs/examples/date-picker/bootstra
 ]);
 
 # Bootstrap 5
+
+## Basic
+
+DatePicker built with @h6s/calendar and Bootstrap 5 components.
+
+<Sandpack
+  files={filesBasic}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  providerOptions={{
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
+  }}
+  previewOptions={{
+    style: {
+      height: 470,
+    }
+  }}
+/>
 
 ## Calendar Only
 
@@ -30,6 +57,7 @@ DateCalendar built with @h6s/calendar and Bootstrap 5 components.
 
 ## Features
 
+- Popover-based date picker with input field
 - Calendar-only component for inline use
 - Uses Bootstrap 5 utility classes and components
 - Accessible with proper ARIA labels
