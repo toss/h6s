@@ -67,7 +67,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             setTitleHover(false);
             setHasAutoPlayed(true);
           }, 2000);
-        }, 2000);
+        }, 1000);
       } else {
         checkTimer = setTimeout(startAutoPlay, 50);
       }
