@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+[class*="--nextra-content-width"] {
+  max-width: none;
+}
+
+[class*="--nextra-content-width"] > article {
+  padding: 0;
+}

@@ -1,138 +1,31 @@
-export const metadata = {
-  title: "@h6s/calendar - Headless Calendar Hook",
-}
+import { Main } from '@/components/Main';
 
-<div className="nx-mx-auto nx-max-w-6xl nx-px-6">
+<div className="homepage-full-width">
+  <Main
+    title="@h6s/calendar"
+    description="Logic-first Calendar Hook for React"
+    subDescription="Your calendar, your way."
+    navButtonText="Get Started"
+    items={[
+      {
+        emoji: '🧠',
+        title: 'Pure Logic',
+        description: `A single hook, \`useCalendar()\`, controls everything.`,
+      },
+      {
+        emoji: '🔌',
+        title: 'Integrate Anything',
+        description: `Tailwind, Shadcn, Chakra
 
-# @h6s/calendar
+Seamlessly integrates with any design system.`,
+      },
+      {
+        emoji: '🪨',
+        title: 'Stable Core',
+        description: `Logic stays the same even when UI changes.
 
-<div className="text-center space-y-4 my-12">
-  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-    Headless Calendar Hook
-  </h1>
-  <div className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-    Pure logic, zero UI. Build any calendar with complete design freedom.
-  </div>
-</div>
-
-## One Hook. Infinite Possibilities.
-
-```tsx
-import { useCalendar } from '@h6s/calendar';
-
-const { headers, body, navigation } = useCalendar();
-```
-
-That's it. One hook gives you everything you need to build **any** calendar interface.
-
-## Why Headless?
-
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-  <div className="p-6 border rounded-lg">
-    <div className="text-3xl mb-3">🎨</div>
-    <h3 className="font-semibold mb-2">Your Design, Your Rules</h3>
-    <div className="text-sm text-gray-600 dark:text-gray-400">
-      Tailwind, CSS Modules, styled-components, Emotion - use whatever you want. Zero styling constraints.
-    </div>
-  </div>
-
-  <div className="p-6 border rounded-lg">
-    <div className="text-3xl mb-3">🪶</div>
-    <h3 className="font-semibold mb-2">Lightweight Core</h3>
-    <div className="text-sm text-gray-600 dark:text-gray-400">
-      No UI dependencies. Just React and date-fns. Small bundle, big capabilities.
-    </div>
-  </div>
-
-  <div className="p-6 border rounded-lg">
-    <div className="text-3xl mb-3">🔧</div>
-    <h3 className="font-semibold mb-2">Build Anything</h3>
-    <div className="text-sm text-gray-600 dark:text-gray-400">
-      DatePicker, DateRangePicker, custom calendars - if you can imagine it, you can build it.
-    </div>
-  </div>
-</div>
-
-## Quick Example
-
-```tsx
-import { useCalendar } from '@h6s/calendar';
-import { format } from 'date-fns';
-
-function MyCalendar() {
-  const { headers, body, navigation, cursorDate } = useCalendar();
-
-  return (
-    <div className="calendar">
-      {/* Navigation */}
-      <div className="flex justify-between items-center">
-        <button onClick={navigation.toPrev}>←</button>
-        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
-        <button onClick={navigation.toNext}>→</button>
-      </div>
-
-      {/* Calendar Grid */}
-      <table>
-        <thead>
-          <tr>
-            {headers.weekdays.map(({ key, value }) => (
-              <th key={key}>{format(value, 'EEE')}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {body.value.map(({ key, value: days }) => (
-            <tr key={key}>
-              {days.map(({ key, value, isCurrentMonth }) => (
-                <td
-                  key={key}
-                  className={!isCurrentMonth ? 'opacity-30' : ''}
-                >
-                  {format(value, 'd')}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-```
-
-## Real-World Examples
-
-See production-ready examples with popular CSS frameworks:
-
-- **[Date Calendar](/docs/examples/date-calendar)** - Single date selection calendar
-- **[Date Picker](/docs/examples/date-picker)** - Date picker with popover
-- **[Date Range Calendar](/docs/examples/date-range-calendar)** - Date range selection
-- **[Date Range Picker](/docs/examples/date-range-picker)** - Date range picker with dual calendars
-
-Each example includes implementations for:
-- ✅ Tailwind CSS
-- ✅ Vanilla CSS
-- ✅ Bootstrap 5
-
-## Get Started
-
-```bash npm2yarn
-npm install @h6s/calendar date-fns
-```
-
-<div className="flex gap-4 justify-center my-8">
-  <a href="/docs/guide/getting-started" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">
-    Get Started →
-  </a>
-  <a href="/api-docs/api/use-calendar" className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-    API Reference
-  </a>
-</div>
-
----
-
-<div className="text-center text-sm text-gray-600 dark:text-gray-400">
-  Open source • MIT License • Made with ❤️ by [toss](https://github.com/toss)
-</div>
-
+A dependency-free stable core makes maintenance simple.`,
+      },
+    ]}
+  />
 </div>
