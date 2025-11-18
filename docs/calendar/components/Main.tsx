@@ -3,6 +3,9 @@
 import Link from "next/link";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
+import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
+import { BootstrapPreview } from "./BootstrapPreview";
 
 type MainProps = {
   title: string;
@@ -54,6 +57,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
     
     return () => clearTimeout(timeout);
   }, []);
+
+
   
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -80,7 +85,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
       if (checkTimer) clearTimeout(checkTimer);
     };
   }, []);
-
 
   const handleMouseEnter = useCallback(() => {
     if (hoverDebounceRef.current) {
@@ -115,14 +119,22 @@ export function Main({ title, description, subDescription, navButtonText, items 
     currentTitleHoverRef.current = titleHover;
     prevTitleHoverRef.current = titleHover;
 
-    const targetWidth = !titleHover 
-      ? (sixWidthRef.current ?? "auto")
-      : (headlessWidthRef.current ?? "auto");
-    
-    setMiddleWidth(prevWidth => {
-      if (prevWidth === targetWidth) return prevWidth;
-      return targetWidth;
-    });
+    if (!titleHover) {
+      const targetWidth = sixWidthRef.current ?? "auto";
+      setMiddleWidth(prevWidth => {
+        if (prevWidth === targetWidth) return prevWidth;
+        return targetWidth;
+      });
+    } else {
+      // When expanding to headless, use measured width from actual rendered node
+      // Don't use hiddenMeasureRef as it may be inaccurate
+      const targetWidth = headlessWidthRef.current ?? "auto";
+      
+      setMiddleWidth(prevWidth => {
+        if (prevWidth === targetWidth) return prevWidth;
+        return targetWidth;
+      });
+    }
   }, [titleHover]);
 
   const sixRefCallback = useCallback((node: HTMLSpanElement | null) => {
@@ -138,15 +150,25 @@ export function Main({ title, description, subDescription, navButtonText, items 
 
   const headlessRefCallback = useCallback((node: HTMLSpanElement | null) => {
     if (node) {
+      // Measure immediately first
+      const width = node.scrollWidth;
+      if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
+        headlessWidthRef.current = width;
+        if (titleHover) {
+          setMiddleWidth(width);
+        }
+      }
+
+      // Then measure again after animation completes for accuracy
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current);
       }
       animationTimeoutRef.current = setTimeout(() => {
-        const width = node.scrollWidth;
-        if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
-          headlessWidthRef.current = width;
+        const finalWidth = node.scrollWidth;
+        if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - finalWidth) > 1) {
+          headlessWidthRef.current = finalWidth;
           if (titleHover) {
-            setMiddleWidth(width);
+            setMiddleWidth(finalWidth);
           }
         }
         animationTimeoutRef.current = null;
@@ -228,155 +250,146 @@ export function Main({ title, description, subDescription, navButtonText, items 
         {HEADLESS_TEXT}
       </span>
       
-      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-10 dark:opacity-20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3),transparent_50%)] animate-pulse" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.2),transparent_50%)] animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-          <motion.h1
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className="text-6xl md:text-8xl font-bold mb-6 cursor-default whitespace-nowrap flex items-center justify-center py-2 -my-2"
-            layout
-            transition={layoutTransition}
-          >
-            <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
-              @
-            </span>
-            
-            <motion.span
-              className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-              layout
-              animate={hFilterAnimate}
-              transition={hFilterTransition}
-            >
-              h
-            </motion.span>
-            
-            <motion.span
-              ref={middleContainerRef}
-              className="inline-flex items-center overflow-hidden"
-              style={widthStyle}
-              animate={widthAnimate}
-              transition={WIDTH_TRANSITION}
-            >
-              <AnimatePresence mode="sync">
-                <span
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                  style={{ display: titleHover ? 'none' : 'inline-block' }}
-                  ref={sixRefCallback}
-                >
-                  6
+        {/* Main Content - Two Column Layout */}
+        <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-20 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-16 items-center">
+            {/* Left Column - Title and Description */}
+            <div className="flex flex-col min-w-0">
+              <motion.h1
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className="text-4xl md:text-6xl font-bold mb-5 cursor-default whitespace-nowrap flex items-center py-2 overflow-visible"
+                layout
+                transition={layoutTransition}
+              >
+                <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
+                  @
                 </span>
-                {titleHover && (
-                  <motion.span
-                    key="middle"
-                    className="inline-flex items-center"
-                    style={headlessContainerStyle}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
-                    ref={headlessRefCallback}
-                  >
-                    {MIDDLE_LETTERS.map((letter, idx) => {
-                      const letterTransition = titleHover 
-                        ? {
-                            delay: idx === 0 ? 0.05 : idx * 0.05 + 0.01,
-                            duration: 0.3,
-                            ease: [0.4, 0, 0.2, 1] as const,
-                          }
-                        : {
-                            delay: 0,
-                            duration: 0.18,
-                            ease: [0.4, 0, 0.2, 1] as const,
-                          };
-                      
-                      return (
+                
+                <motion.span
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
+                  layout
+                  animate={hFilterAnimate}
+                  transition={hFilterTransition}
+                >
+                  h
+                </motion.span>
+                
+                <motion.span
+                  ref={middleContainerRef}
+                  className="inline-flex items-center overflow-hidden"
+                  style={widthStyle}
+                  animate={widthAnimate}
+                  transition={WIDTH_TRANSITION}
+                >
+                  <AnimatePresence mode="sync">
+                    <span
+                      className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
+                      style={{ display: titleHover ? 'none' : 'inline-block' }}
+                      ref={sixRefCallback}
+                    >
+                      6
+                    </span>
+                    {titleHover && (
                       <motion.span
-                        key={`${letter}-${idx}`}
-                        className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                        style={letterStyle}
-                        initial={{ opacity: 0, y: 8, scale: 0.9 }}
-                        animate={letterAnimate}
-                        exit={letterExit}
-                        transition={letterTransition}
+                        key="middle"
+                        className="inline-flex items-center"
+                        style={headlessContainerStyle}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
+                        ref={headlessRefCallback}
                       >
-                        {letter}
+                        {MIDDLE_LETTERS.map((letter, idx) => {
+                          const letterTransition = titleHover 
+                            ? {
+                                delay: idx === 0 ? 0.05 : idx * 0.05 + 0.01,
+                                duration: 0.3,
+                                ease: [0.4, 0, 0.2, 1] as const,
+                              }
+                            : {
+                                delay: 0,
+                                duration: 0.18,
+                                ease: [0.4, 0, 0.2, 1] as const,
+                              };
+                          
+                          return (
+                          <motion.span
+                            key={`${letter}-${idx}`}
+                            className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
+                            style={letterStyle}
+                            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                            animate={letterAnimate}
+                            exit={letterExit}
+                            transition={letterTransition}
+                          >
+                            {letter}
+                          </motion.span>
+                          );
+                        })}
                       </motion.span>
-                      );
-                    })}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.span>
-            
-            <motion.span
-              className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-              layout
-              animate={sFilterAnimate}
-              transition={sFilterTransition}
-            >
-              s
-            </motion.span>
-            
-            <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
-              /calendar
-            </span>
-          </motion.h1>
+                    )}
+                  </AnimatePresence>
+                </motion.span>
+                
+                <motion.span
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
+                  layout
+                  animate={sFilterAnimate}
+                  transition={sFilterTransition}
+                >
+                  s
+                </motion.span>
+                
+                <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
+                  /calendar
+                </span>
+              </motion.h1>
 
-          <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-4 font-medium">
-            {description}
-          </p>
+              <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-5 font-medium">
+                {description}
+              </p>
 
-          <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-8">
-            {subDescription}
-          </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/docs/guide/getting-started"
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-600 text-white rounded-lg font-semibold text-base hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-500 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  {navButtonText} →
+                </Link>
+                <Link
+                  href="/docs/examples/date-picker"
+                  className="px-6 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-lg font-semibold text-base hover:bg-gray-200 dark:hover:bg-gray-800 transition hover:scale-105 text-gray-600 dark:text-gray-300"
+                >
+                  View Examples
+                </Link>
+              </div>
+            </div>
 
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/docs/guide/getting-started"
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-600 text-white rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-500 transition-all shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              {navButtonText} →
-            </Link>
-            <Link
-              href="/docs/examples/date-picker"
-              className="px-8 py-4 border-2 border-gray-400 dark:border-gray-600 rounded-lg font-semibold text-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition hover:scale-105 text-gray-600 dark:text-gray-300"
-            >
-              View Examples
-            </Link>
+            {/* Right Column - Calendar Examples */}
+            <div className="flex flex-col gap-6 items-center lg:items-end">
+              <div className="w-full max-w-sm">
+                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Tailwind CSS</div>
+                <TailwindCalendar />
+              </div>
+              <div className="w-full max-w-sm">
+                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Bootstrap 5</div>
+                <BootstrapPreview>
+                  <BootstrapDateCalendar />
+                </BootstrapPreview>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto px-6 py-20 bg-gray-50 dark:bg-transparent">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {items.map(({ title, description }) => (
-            <article
-              key={title}
-              className="group relative flex flex-col gap-4 p-8 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all hover:shadow-xl overflow-hidden"
-            >
-              {/* Gradient accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-500 dark:to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-              
-              {/* Icon placeholder with gradient */}
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-500 dark:to-blue-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-sm" />
-              </div>
-              
-              <h3 className="text-xl font-bold text-gray-800 dark:text-white">{title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-line">{description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
     </section>
   );
 }
