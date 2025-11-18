@@ -15,6 +15,8 @@ type MainProps = {
 export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
   const [titleHover, setTitleHover] = useState(false);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
+  const [sixKey, setSixKey] = useState(0);
+  const prevTitleHoverRef = useRef<boolean>(false);
   const middleContainerRef = useRef<HTMLSpanElement>(null);
   const [middleWidth, setMiddleWidth] = useState<number | "auto">("auto");
   const sixWidthRef = useRef<number | null>(null);
@@ -72,6 +74,11 @@ export function Main({ title, description, subDescription, navButtonText, items 
       clearTimeout(animationTimeoutRef.current);
       animationTimeoutRef.current = null;
     }
+
+    if (!titleHover && prevTitleHoverRef.current) {
+      setSixKey(prev => prev + 1);
+    }
+    prevTitleHoverRef.current = titleHover;
 
     if (!titleHover) {
       if (sixWidthRef.current !== null) {
@@ -149,42 +156,47 @@ export function Main({ title, description, subDescription, navButtonText, items 
                 width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
               }}
               transition={{
-                duration: 0.4,
+                duration: 0.3,
                 ease: [0.25, 0.1, 0.25, 1],
               }}
             >
               <AnimatePresence mode="sync">
-                {!titleHover ? (
-                  <motion.span
-                    key="6"
-                    className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.05, ease: [0.25, 0.1, 0.25, 1] }}
-                    ref={(node: HTMLSpanElement | null) => {
-                      if (node) {
-                        const width = node.scrollWidth;
-                        const prevWidth = sixWidthRef.current;
-                        sixWidthRef.current = width;
-                        if (!titleHover) {
-                          if (prevWidth === null || prevWidth !== width) {
-                            setMiddleWidth(width);
-                          }
-                        }
+                <motion.span
+                  key={`6-${sixKey}`}
+                  className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                  initial={sixKey > 0 ? { opacity: 0, y: 12, scale: 0.85 } : false}
+                  animate={!titleHover ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.95 }}
+                  transition={!titleHover ? { 
+                    duration: 0.25,
+                    delay: 0,
+                    opacity: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+                    scale: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+                    y: { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+                  } : { duration: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+                  style={{ 
+                    display: titleHover ? 'none' : 'inline-block'
+                  }}
+                  ref={(node: HTMLSpanElement | null) => {
+                    if (node && !titleHover) {
+                      const width = node.scrollWidth;
+                      const prevWidth = sixWidthRef.current;
+                      sixWidthRef.current = width;
+                      if (prevWidth === null || prevWidth !== width) {
+                        setMiddleWidth(width);
                       }
-                    }}
-                  >
-                    6
-                  </motion.span>
-                ) : (
+                    }
+                  }}
+                >
+                  6
+                </motion.span>
+                {titleHover && (
                   <motion.span
                     key="middle"
                     className="inline-flex items-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.08 }}
                     ref={(node: HTMLSpanElement | null) => {
                       if (node) {
                         if (animationTimeoutRef.current) {
@@ -199,7 +211,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                             }
                           }
                           animationTimeoutRef.current = null;
-                        }, middleLetters.length * 0.08 * 1000 + 100);
+                        }, middleLetters.length * 0.06 * 1000 + 80);
                       }
                     }}
                   >
@@ -217,10 +229,15 @@ export function Main({ title, description, subDescription, navButtonText, items 
                           opacity: 0, 
                           y: 4, 
                           scale: 0.95,
+                          transition: {
+                            delay: 0,
+                            duration: 0.25,
+                            ease: [0.25, 0.1, 0.25, 1],
+                          }
                         }}
                         transition={{
-                          delay: titleHover ? idx * 0.08 : 0,
-                          duration: titleHover ? 0.3 : 0.15,
+                          delay: titleHover ? (idx === 0 ? 0.06 : idx * 0.06 + 0.02) : 0,
+                          duration: titleHover ? 0.25 : 0.15,
                           ease: [0.25, 0.1, 0.25, 1],
                         }}
                       >
