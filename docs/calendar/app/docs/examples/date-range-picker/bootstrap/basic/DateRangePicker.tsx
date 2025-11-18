@@ -52,7 +52,7 @@ export default function DateRangePicker() {
           className="card shadow-lg border rounded-3"
           style={{ zIndex: 1050, maxWidth: "calc(100vw - 2rem)" }}
         >
-          <div className="card-body p-3">
+          <div className="card-body p-3 d-flex flex-column">
             <DateRangePickerContent dateRange={dateRange} setDateRange={setDateRange} close={() => setOpen(false)} />
           </div>
         </Popover.Content>
@@ -206,51 +206,49 @@ function DateRangePickerContent({
   };
 
   return (
-    <div>
-      <div className="d-flex gap-4 overflow-x-auto pb-2">
-        <div style={{ flexShrink: 0 }}>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <button
-              type="button"
-              onClick={() => {
-                const newDate = subMonths(leftCalendar.cursorDate, 1);
-                leftCalendar.navigation.setDate(newDate);
-                rightCalendar.navigation.setDate(addMonths(newDate, 1));
-              }}
-              className="btn btn-link text-body p-2 text-decoration-none"
-              aria-label="Previous month"
-            >
-              <span style={{ fontSize: "1.25rem" }}>←</span>
-            </button>
-            <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
-              {format(leftCalendar.cursorDate, "MMMM yyyy")}
-            </h2>
-            <div style={{ width: "2.25rem" }} />
-          </div>
-          {renderCalendar(leftCalendar)}
+    <div className="d-flex gap-4 overflow-x-auto">
+      <div className="d-flex flex-column" style={{ flexShrink: 0 }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <button
+            type="button"
+            onClick={() => {
+              const newDate = subMonths(leftCalendar.cursorDate, 1);
+              leftCalendar.navigation.setDate(newDate);
+              rightCalendar.navigation.setDate(addMonths(newDate, 1));
+            }}
+            className="btn btn-link text-body p-2 text-decoration-none"
+            aria-label="Previous month"
+          >
+            <span style={{ fontSize: "1.25rem" }}>←</span>
+          </button>
+          <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
+            {format(leftCalendar.cursorDate, "MMMM yyyy")}
+          </h2>
+          <div style={{ width: "2.25rem" }} />
         </div>
+        {renderCalendar(leftCalendar)}
+      </div>
 
-        <div style={{ flexShrink: 0 }}>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div style={{ width: "2.25rem" }} />
-            <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
-              {format(rightCalendar.cursorDate, "MMMM yyyy")}
-            </h2>
-            <button
-              type="button"
-              onClick={() => {
-                const newDate = addMonths(leftCalendar.cursorDate, 1);
-                leftCalendar.navigation.setDate(newDate);
-                rightCalendar.navigation.setDate(addMonths(newDate, 1));
-              }}
-              className="btn btn-link text-body p-2 text-decoration-none"
-              aria-label="Next month"
-            >
-              <span style={{ fontSize: "1.25rem" }}>→</span>
-            </button>
-          </div>
-          {renderCalendar(rightCalendar)}
+      <div className="d-flex flex-column" style={{ flexShrink: 0 }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div style={{ width: "2.25rem" }} />
+          <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
+            {format(rightCalendar.cursorDate, "MMMM yyyy")}
+          </h2>
+          <button
+            type="button"
+            onClick={() => {
+              const newDate = addMonths(leftCalendar.cursorDate, 1);
+              leftCalendar.navigation.setDate(newDate);
+              rightCalendar.navigation.setDate(addMonths(newDate, 1));
+            }}
+            className="btn btn-link text-body p-2 text-decoration-none"
+            aria-label="Next month"
+          >
+            <span style={{ fontSize: "1.25rem" }}>→</span>
+          </button>
         </div>
+        {renderCalendar(rightCalendar)}
       </div>
     </div>
   );

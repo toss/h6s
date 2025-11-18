@@ -164,7 +164,7 @@ export function DateRangeCalendarDual() {
             </div>
 
             <div className="row g-4">
-              <div className="col-6">
+              <div className="col-6 d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-center py-3">
                   <button
                     type="button"
@@ -188,7 +188,7 @@ export function DateRangeCalendarDual() {
                 {renderCalendar(leftCalendar)}
               </div>
 
-              <div className="col-6">
+              <div className="col-6 d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-center py-3">
                   <div style={{ width: "2.125rem" }} />
 

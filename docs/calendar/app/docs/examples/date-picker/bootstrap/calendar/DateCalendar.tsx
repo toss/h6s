@@ -21,50 +21,51 @@ export default function DateCalendar() {
       <div style={{ display: "inline-block", width: "fit-content" }}>
         <div className="card shadow-lg border rounded-3">
           <div className="card-body p-3">
-            <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
-              <div>
-                <p className="text-body-secondary small mb-1 fw-medium">Selected date</p>
-                <p className="text-body-emphasis fw-semibold mb-0 fs-6">
-                  {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
-                </p>
+            <div className="d-flex flex-column">
+              <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
+                <div>
+                  <p className="text-body-secondary small mb-1 fw-medium">Selected date</p>
+                  <p className="text-body-emphasis fw-semibold mb-0 fs-6">
+                    {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const today = new Date();
+                    navigation.setToday();
+                    setSelectedDate(today);
+                  }}
+                  className="btn btn-primary btn-sm px-3 fw-medium"
+                >
+                  Today
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const today = new Date();
-                  navigation.setToday();
-                  setSelectedDate(today);
-                }}
-                className="btn btn-primary btn-sm px-3 fw-medium"
-              >
-                Today
-              </button>
-            </div>
 
-            <div className="d-flex justify-content-between align-items-center py-3">
-              <button
-                type="button"
-                onClick={navigation.toPrev}
-                className="btn btn-link text-body p-2 text-decoration-none"
-                aria-label="Previous month"
-              >
-                <span style={{ fontSize: "1.25rem" }}>←</span>
-              </button>
+              <div className="d-flex justify-content-between align-items-center py-3">
+                <button
+                  type="button"
+                  onClick={navigation.toPrev}
+                  className="btn btn-link text-body p-2 text-decoration-none"
+                  aria-label="Previous month"
+                >
+                  <span style={{ fontSize: "1.25rem" }}>←</span>
+                </button>
 
-              <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">{format(cursorDate, "MMMM yyyy")}</h2>
+                <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">{format(cursorDate, "MMMM yyyy")}</h2>
 
-              <button
-                type="button"
-                onClick={navigation.toNext}
-                className="btn btn-link text-body p-2 text-decoration-none"
-                aria-label="Next month"
-              >
-                <span style={{ fontSize: "1.25rem" }}>→</span>
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={navigation.toNext}
+                  className="btn btn-link text-body p-2 text-decoration-none"
+                  aria-label="Next month"
+                >
+                  <span style={{ fontSize: "1.25rem" }}>→</span>
+                </button>
+              </div>
 
-            <div style={{ display: "inline-block", width: "fit-content" }}>
-              <table className="table table-borderless text-center mb-0">
+              <div style={{ display: "inline-block", width: "fit-content" }}>
+                <table className="table table-borderless text-center mb-0">
                 <thead>
                   <tr>
                     {headers.weekdays.map(({ key, value }) => (
@@ -124,6 +125,7 @@ export default function DateCalendar() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         </div>
