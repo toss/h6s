@@ -1,6 +1,6 @@
 # body
 
-The `body` property provides the main calendar grid data - the core structure for rendering your calendar UI.
+Main calendar grid data for rendering the calendar days.
 
 ## Type
 
@@ -21,104 +21,86 @@ body: {
 
 ## Structure
 
-The `body` contains a nested array structure:
+The `body` contains a nested array:
 - **Outer array**: Represents weeks
 - **Inner array**: Represents days within each week
-
-The structure adapts based on the calendar view type:
-- **Month view**: 4-6 weeks with 7 days each
-- **Week view**: 1 week with 7 days
-- **Day view**: 1 day
 
 ## Usage
 
 ```tsx
-import { useCalendar } from '@h6s/calendar';
-import { format } from 'date-fns';
+const { body } = useCalendar();
 
-function Calendar() {
-  const { body } = useCalendar();
-
-  return (
-    <tbody>
-      {body.value.map(({ key, value: days }) => (
-        <tr key={key}>
-          {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
-            <td
-              key={key}
-              className={!isCurrentMonth ? 'opacity-30' : ''}
-            >
-              <button className={isCurrentDate ? 'font-bold' : ''}>
-                {format(value, 'd')}
-              </button>
-            </td>
-          ))}
-        </tr>
+<tbody>
+  {body.value.map(({ key, value: days }) => (
+    <tr key={key}>
+      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
+        <td
+          key={key}
+          className={cn(
+            !isCurrentMonth && 'opacity-30',
+            isCurrentDate && 'font-bold'
+          )}
+        >
+          {format(value, 'd')}
+        </td>
       ))}
-    </tbody>
-  );
-}
+    </tr>
+  ))}
+</tbody>
 ```
 
 ## Properties
 
 ### `value`
 - **Type**: `Date`
-- **Description**: The date object for this calendar cell
-- **Usage**: Format and display the date
+- The date object for this calendar cell
 
 ### `isCurrentDate`
 - **Type**: `boolean`
-- **Description**: `true` if this cell represents today's date
-- **Usage**: Highlight today in your calendar
+- `true` if this cell represents today's date
 
 ### `isCurrentMonth`
 - **Type**: `boolean`
-- **Description**: `true` if this date belongs to the currently displayed month
-- **Usage**: Dim or hide dates from previous/next months
+- `true` if this date belongs to the currently displayed month
 
 ### `isWeekend`
 - **Type**: `boolean`
-- **Description**: `true` if this is Saturday or Sunday
-- **Usage**: Apply weekend-specific styling
+- `true` if this is Saturday or Sunday
 
 ## View Type Behavior
 
-The `body` structure adapts to the current view type:
+The structure adapts based on the current view type:
+
+- **Month view**: 4-6 weeks with 7 days each
+- **Week view**: 1 week with 7 days
+- **Day view**: 1 day
 
 ```tsx
 const { body, view } = useCalendar();
 
-// Month view: Multiple weeks
 if (view.isMonthView) {
   console.log(body.value.length); // 4-6 weeks
 }
 
-// Week view: Single week
 if (view.isWeekView) {
   console.log(body.value.length); // 1 week
   console.log(body.value[0].value.length); // 7 days
 }
 
-// Day view: Single day
 if (view.isDayView) {
   console.log(body.value.length); // 1 week
   console.log(body.value[0].value.length); // 1 day
 }
 ```
 
-## Performance Tips
+## Performance
 
-The `key` properties are optimized for React's reconciliation:
+Always use the provided `key` properties for React list rendering:
 
 ```tsx
-// ✅ Good - use provided keys
+// ✅ Good
 {body.value.map(({ key, value: days }) => (
-  <tr key={key}>
-    {days.map(({ key, value }) => (
-      <td key={key}>{format(value, 'd')}</td>
-    ))}
-  </tr>
+  <tr key={key}>...</tr>
 ))}
 
 // ❌ Bad - don't use array index

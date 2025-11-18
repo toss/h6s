@@ -1,12 +1,50 @@
-# API Reference
+# useCalendar
 
-Complete API reference for `useCalendar` hook and its return values.
+The main hook that provides calendar state, navigation controls, and render data.
 
-## useCalendar
+## Import
 
-The main hook that provides calendar state and navigation controls.
+```tsx
+import { useCalendar } from '@h6s/calendar';
+```
 
-### Parameters
+## Usage
+
+```tsx
+function MyCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+
+  return (
+    <div>
+      <div>
+        <button onClick={navigation.toPrev}>←</button>
+        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <button onClick={navigation.toNext}>→</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            {headers.weekdays.map(({ key, value }) => (
+              <th key={key}>{format(value, 'EEE')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.value.map(({ key, value: days }) => (
+            <tr key={key}>
+              {days.map(({ key, value }) => (
+                <td key={key}>{format(value, 'd')}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+## Parameters
 
 ```tsx
 function useCalendar(options?: UseCalendarOptions)
@@ -16,58 +54,26 @@ interface UseCalendarOptions {
   defaultWeekStart?: WeekDayType;
   defaultViewType?: CalendarViewType;
 }
-
-type WeekDayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-enum CalendarViewType {
-  Month = 'month',
-  Week = 'week',
-  Day = 'day',
-}
 ```
 
-#### Options
+### Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `defaultDate` | `Date \| number \| string` | `new Date()` | The initial date to display in the calendar |
-| `defaultWeekStart` | `WeekDayType` (0-6) | `0` (Sunday) | First day of the week. 0 = Sunday, 1 = Monday, etc. |
-| `defaultViewType` | `CalendarViewType` | `CalendarViewType.Month` | Initial view type (Month, Week, or Day) |
+| `defaultDate` | `Date \| number \| string` | `new Date()` | Initial date to display |
+| `defaultWeekStart` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | First day of week (0 = Sunday) |
+| `defaultViewType` | `CalendarViewType` | `CalendarViewType.Month` | Initial view type |
 
-### Return Value
+## Return Value
 
-The `useCalendar` hook returns an object with the following properties:
+The hook returns an object with the following structure:
 
 ```tsx
-interface CalendarReturn {
-  // Calendar metadata
-  cursorDate: Date;
-  year: number;
-  month: number;
-  day: number;
-  weekStartsOn: WeekDayType;
-  startWeekdayInMonth: number;
-  weeksInMonth: number;
-  weekdays: Array<{ value: Date }>;
-  today: { weekIndex: number; dateIndex: number };
-
+{
   // Render data
-  headers: {
-    weekdays: Array<{ key: string; value: Date }>;
-  };
-  body: {
-    value: Array<{
-      key: string;
-      value: Array<{
-        key: string;
-        value: Date;
-        isCurrentDate: boolean;
-        isCurrentMonth: boolean;
-        isWeekend: boolean;
-      }>;
-    }>;
-  };
-
+  headers: { weekdays: Array<{ key: string; value: Date }> };
+  body: { value: Array<{ key: string; value: Array<Day> }> };
+  
   // Navigation
   navigation: {
     toNext: () => void;
@@ -75,232 +81,45 @@ interface CalendarReturn {
     setToday: () => void;
     setDate: (date: Date) => void;
   };
-
+  
   // View controls
   view: {
     type: CalendarViewType;
-    setViewType: (type: CalendarViewType) => void;
-    setWeekStartsOn: (day: WeekDayType) => void;
     isMonthView: boolean;
     isWeekView: boolean;
     isDayView: boolean;
     showMonthView: () => void;
     showWeekView: () => void;
     showDayView: () => void;
+    setViewType: (type: CalendarViewType) => void;
+    setWeekStartsOn: (day: WeekDayType) => void;
   };
-
-  // Utility
+  
+  // Metadata
+  cursorDate: Date;
+  year: number;
+  month: number;
+  day: number;
+  weekStartsOn: WeekDayType;
+  weeksInMonth: number;
+  today: { weekIndex: number; dateIndex: number };
+  
+  // Utilities
   getDateCellByIndex: (weekIndex: number, dayIndex: number) => { value: Date };
 }
 ```
 
-## Return Value Details
+## API Reference
 
-### Calendar Metadata
+For detailed information about each part of the return value:
 
-Properties that describe the current calendar state:
-
-#### `cursorDate`
-- Type: `Date`
-- The current date being displayed in the calendar
-
-#### `year`
-- Type: `number`
-- Year of the current cursor date
-
-#### `month`
-- Type: `number`
-- Month of the current cursor date (0-11, where 0 = January)
-
-#### `day`
-- Type: `number`
-- Day of month of the current cursor date
-
-#### `weekStartsOn`
-- Type: `WeekDayType` (0-6)
-- The first day of the week (0 = Sunday, 1 = Monday, etc.)
-
-#### `startWeekdayInMonth`
-- Type: `number`
-- Which day of the week the month starts on (0-6)
-
-#### `weeksInMonth`
-- Type: `number`
-- Number of weeks in the current month view (typically 4-6)
-
-#### `weekdays`
-- Type: `Array<{ value: Date }>`
-- Array of 7 dates representing the weekday headers
-
-#### `today`
-- Type: `{ weekIndex: number; dateIndex: number }`
-- Position of today's date in the calendar grid
-
-### Render Data
-
-#### `headers`
-```tsx
-headers: {
-  weekdays: Array<{
-    key: string;        // Unique key for React rendering
-    value: Date;        // Date object for the weekday
-  }>;
-}
-```
-
-Use this for rendering calendar headers (Sun, Mon, Tue, etc.).
-
-**Example:**
-```tsx
-<thead>
-  <tr>
-    {headers.weekdays.map(({ key, value }) => (
-      <th key={key}>{format(value, 'EEE')}</th>
-    ))}
-  </tr>
-</thead>
-```
-
-#### `body`
-```tsx
-body: {
-  value: Array<{
-    key: string;        // Unique key for the week row
-    value: Array<{
-      key: string;              // Unique key for the day cell
-      value: Date;              // Date object for this cell
-      isCurrentDate: boolean;   // Is this today's date?
-      isCurrentMonth: boolean;  // Is this date in the current month?
-      isWeekend: boolean;       // Is this a weekend day?
-    }>;
-  }>;
-}
-```
-
-Main calendar grid data. The structure changes based on the view type:
-- **Month view**: Full month grid (4-6 weeks)
-- **Week view**: Single week (1 week)
-- **Day view**: Single day (1 cell)
-
-**Example:**
-```tsx
-<tbody>
-  {body.value.map(({ key, value: days }) => (
-    <tr key={key}>
-      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
-        <td
-          key={key}
-          className={cn(
-            !isCurrentMonth && 'text-gray-400',
-            isCurrentDate && 'font-bold bg-blue-100'
-          )}
-        >
-          {format(value, 'd')}
-        </td>
-      ))}
-    </tr>
-  ))}
-</tbody>
-```
-
-### Navigation
-
-Methods to navigate through the calendar:
-
-#### `navigation.toNext()`
-- Type: `() => void`
-- Move forward by one unit (month/week/day depending on view type)
-
-#### `navigation.toPrev()`
-- Type: `() => void`
-- Move backward by one unit (month/week/day depending on view type)
-
-#### `navigation.setToday()`
-- Type: `() => void`
-- Jump to today's date
-
-#### `navigation.setDate(date)`
-- Type: `(date: Date) => void`
-- Jump to a specific date
-
-**Example:**
-```tsx
-<div>
-  <button onClick={navigation.toPrev}>Previous</button>
-  <button onClick={navigation.setToday}>Today</button>
-  <button onClick={navigation.toNext}>Next</button>
-</div>
-```
-
-### View Controls
-
-Methods and state for controlling the calendar view:
-
-#### `view.type`
-- Type: `CalendarViewType`
-- Current view type: `'month'`, `'week'`, or `'day'`
-
-#### `view.setViewType(type)`
-- Type: `(type: CalendarViewType) => void`
-- Set the view type programmatically
-
-#### `view.setWeekStartsOn(day)`
-- Type: `(day: WeekDayType) => void`
-- Change which day the week starts on
-
-#### View Type Helpers
-
-Boolean flags and setter methods:
-
-```tsx
-view.isMonthView    // boolean: true if in month view
-view.isWeekView     // boolean: true if in week view
-view.isDayView      // boolean: true if in day view
-
-view.showMonthView()  // () => void: switch to month view
-view.showWeekView()   // () => void: switch to week view
-view.showDayView()    // () => void: switch to day view
-```
-
-**Example:**
-```tsx
-<div>
-  <button
-    onClick={view.showMonthView}
-    disabled={view.isMonthView}
-  >
-    Month
-  </button>
-  <button
-    onClick={view.showWeekView}
-    disabled={view.isWeekView}
-  >
-    Week
-  </button>
-  <button
-    onClick={view.showDayView}
-    disabled={view.isDayView}
-  >
-    Day
-  </button>
-</div>
-```
-
-### Utilities
-
-#### `getDateCellByIndex(weekIndex, dayIndex)`
-- Type: `(weekIndex: number, dayIndex: number) => { value: Date }`
-- Get a specific date cell by its position in the calendar grid
-- Parameters:
-  - `weekIndex`: Week row index (0-based)
-  - `dayIndex`: Day column index (0-6)
-- Returns: Object with `value` property containing the Date
-
-This is mainly used internally but can be useful for custom implementations.
+- **[headers](/api-docs/api/headers)** - Weekday header data
+- **[body](/api-docs/api/body)** - Calendar grid data
+- **[navigation](/api-docs/api/navigation)** - Navigation methods
+- **[view](/api-docs/api/view)** - View type controls
+- **[utilities](/api-docs/api/utilities)** - Metadata and utility methods
 
 ## Type Exports
-
-All types are exported from the package:
 
 ```tsx
 import {

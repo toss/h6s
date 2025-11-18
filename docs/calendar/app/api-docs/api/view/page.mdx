@@ -1,23 +1,20 @@
 # view
 
-The `view` object provides controls for switching between different calendar view types and managing view-related settings.
+Controls for switching between different calendar view types.
 
 ## Type
 
 ```tsx
 view: {
-  // Current state
   type: CalendarViewType;
   isMonthView: boolean;
   isWeekView: boolean;
   isDayView: boolean;
-
-  // Setters
-  setViewType: (type: CalendarViewType) => void;
-  setWeekStartsOn: (day: WeekDayType) => void;
   showMonthView: () => void;
   showWeekView: () => void;
   showDayView: () => void;
+  setViewType: (type: CalendarViewType) => void;
+  setWeekStartsOn: (day: WeekDayType) => void;
 }
 
 enum CalendarViewType {
@@ -47,22 +44,17 @@ type WeekDayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 ## Properties
 
 ### `type`
-
-Current view type as a string.
+Current view type as a string: `'month'`, `'week'`, or `'day'`.
 
 ```tsx
 const { view } = useCalendar();
-
 console.log(view.type); // 'month' | 'week' | 'day'
 ```
 
 ### Boolean Helpers
-
-Convenience boolean flags for checking current view:
+Convenience flags for checking the current view:
 
 ```tsx
-const { view } = useCalendar();
-
 view.isMonthView  // true if in month view
 view.isWeekView   // true if in week view
 view.isDayView    // true if in day view
@@ -72,12 +64,10 @@ view.isDayView    // true if in day view
 
 ### `setViewType(type)`
 
-Set view type programmatically using the enum:
+Set view type programmatically:
 
 ```tsx
 import { CalendarViewType } from '@h6s/calendar';
-
-const { view } = useCalendar();
 
 view.setViewType(CalendarViewType.Month);
 view.setViewType(CalendarViewType.Week);
@@ -89,8 +79,6 @@ view.setViewType(CalendarViewType.Day);
 Convenience methods to switch views:
 
 ```tsx
-const { view } = useCalendar();
-
 view.showMonthView();  // Switch to month view
 view.showWeekView();   // Switch to week view
 view.showDayView();    // Switch to day view
@@ -101,8 +89,6 @@ view.showDayView();    // Switch to day view
 Change which day the week starts on:
 
 ```tsx
-const { view } = useCalendar();
-
 view.setWeekStartsOn(0);  // Sunday (default)
 view.setWeekStartsOn(1);  // Monday
 view.setWeekStartsOn(6);  // Saturday
@@ -117,36 +103,29 @@ view.setWeekStartsOn(6);  // Saturday
 - `5` = Friday
 - `6` = Saturday
 
-## Usage Examples
-
-### View Type Switcher
+## Usage Example
 
 ```tsx
-import { useCalendar } from '@h6s/calendar';
-
-function Calendar() {
+function ViewSwitcher() {
   const { view } = useCalendar();
 
   return (
-    <div className="view-switcher">
+    <div>
       <button
         onClick={view.showMonthView}
         disabled={view.isMonthView}
-        className={view.isMonthView ? 'active' : ''}
       >
         Month
       </button>
       <button
         onClick={view.showWeekView}
         disabled={view.isWeekView}
-        className={view.isWeekView ? 'active' : ''}
       >
         Week
       </button>
       <button
         onClick={view.showDayView}
         disabled={view.isDayView}
-        className={view.isDayView ? 'active' : ''}
       >
         Day
       </button>
@@ -155,79 +134,27 @@ function Calendar() {
 }
 ```
 
-### Week Start Day Selector
+## View Type Impact
+
+The `body` structure and navigation behavior adapt to the view type:
 
 ```tsx
-function CalendarWithWeekStartSelector() {
-  const { view } = useCalendar();
+const { body, view, navigation } = useCalendar();
 
-  return (
-    <select
-      value={view.weekStartsOn}
-      onChange={(e) => view.setWeekStartsOn(Number(e.target.value))}
-    >
-      <option value={0}>Sunday</option>
-      <option value={1}>Monday</option>
-      <option value={6}>Saturday</option>
-    </select>
-  );
-}
-```
+// Month view
+view.showMonthView();
+console.log(body.value.length); // 4-6 weeks
+navigation.toNext(); // → Moves to next month
 
-### Conditional Rendering Based on View
+// Week view
+view.showWeekView();
+console.log(body.value.length); // 1 week
+navigation.toNext(); // → Moves to next week
 
-```tsx
-function AdaptiveCalendar() {
-  const { view, body } = useCalendar();
-
-  return (
-    <div>
-      {view.isMonthView && (
-        <div className="month-grid">
-          {/* Full month calendar grid */}
-        </div>
-      )}
-
-      {view.isWeekView && (
-        <div className="week-schedule">
-          {/* Week schedule with hourly slots */}
-        </div>
-      )}
-
-      {view.isDayView && (
-        <div className="day-agenda">
-          {/* Detailed day agenda */}
-        </div>
-      )}
-    </div>
-  );
-}
-```
-
-## View Type Impact on Body Data
-
-The `body` structure changes based on the view type:
-
-```tsx
-const { body, view } = useCalendar();
-
-// Month view: 4-6 weeks
-if (view.isMonthView) {
-  console.log(body.value.length); // 4-6 weeks
-  console.log(body.value[0].value.length); // 7 days per week
-}
-
-// Week view: 1 week
-if (view.isWeekView) {
-  console.log(body.value.length); // 1 week
-  console.log(body.value[0].value.length); // 7 days
-}
-
-// Day view: 1 day
-if (view.isDayView) {
-  console.log(body.value.length); // 1 week (for structure consistency)
-  console.log(body.value[0].value.length); // 1 day
-}
+// Day view
+view.showDayView();
+console.log(body.value[0].value.length); // 1 day
+navigation.toNext(); // → Moves to next day
 ```
 
 ## Default View Type
@@ -241,26 +168,5 @@ const { view } = useCalendar({
   defaultViewType: CalendarViewType.Week
 });
 
-// Calendar starts in week view
 console.log(view.isWeekView); // true
-```
-
-## Navigation Behavior
-
-Navigation methods (`toNext`, `toPrev`) adapt to the current view type:
-
-```tsx
-const { navigation, view } = useCalendar();
-
-// Month view
-view.showMonthView();
-navigation.toNext(); // → Moves to next month
-
-// Week view
-view.showWeekView();
-navigation.toNext(); // → Moves to next week
-
-// Day view
-view.showDayView();
-navigation.toNext(); // → Moves to next day
 ```
