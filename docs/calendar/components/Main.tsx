@@ -33,7 +33,6 @@ const LETTER_EXIT_TRANSITION = {
 
 export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
   const [titleHover, setTitleHover] = useState(false);
-  const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
   const prevTitleHoverRef = useRef<boolean>(false);
   const middleContainerRef = useRef<HTMLSpanElement>(null);
   const [middleWidth, setMiddleWidth] = useState<number | "auto">("auto");
@@ -72,7 +71,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
           setTitleHover(true);
           setTimeout(() => {
             setTitleHover(false);
-            setHasAutoPlayed(true);
           }, 2000);
         }, 1000);
       } else {
@@ -195,42 +193,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
     width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
   }), [middleWidth]);
 
-  const hFilterAnimate = useMemo(() => 
-    !hasAutoPlayed && !titleHover ? {
-      filter: [
-        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-        "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))",
-        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-      ],
-    } : {},
-    [hasAutoPlayed, titleHover]
-  );
-
-  const sFilterAnimate = useMemo(() => 
-    !hasAutoPlayed && !titleHover ? {
-      filter: [
-        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-        "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
-        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
-      ],
-    } : {},
-    [hasAutoPlayed, titleHover]
-  );
-
-  const hFilterTransition = useMemo(() => ({
-    duration: 3,
-    repeat: Infinity,
-    repeatDelay: 3,
-    delay: 0,
-  }), []);
-
-  const sFilterTransition = useMemo(() => ({
-    duration: 2,
-    repeat: Infinity,
-    repeatDelay: 3,
-    delay: 0,
-  }), []);
-
   const layoutTransition = useMemo(() => ({
     layout: {
       duration: 0.3,
@@ -275,14 +237,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   @
                 </span>
                 
-                <motion.span
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                  layout
-                  animate={hFilterAnimate}
-                  transition={hFilterTransition}
-                >
+                <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block">
                   h
-                </motion.span>
+                </span>
                 
                 <motion.span
                   ref={middleContainerRef}
@@ -342,14 +299,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   </AnimatePresence>
                 </motion.span>
                 
-                <motion.span
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                  layout
-                  animate={sFilterAnimate}
-                  transition={sFilterTransition}
-                >
+                <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block">
                   s
-                </motion.span>
+                </span>
                 
                 <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
                   /calendar
