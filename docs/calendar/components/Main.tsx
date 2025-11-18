@@ -20,19 +20,6 @@ const WIDTH_TRANSITION = {
   ease: [0.4, 0, 0.2, 1] as const,
 };
 
-const SIX_ENTER_TRANSITION = {
-  duration: 0.3,
-  delay: 0,
-  opacity: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
-  scale: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
-  y: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
-};
-
-const SIX_EXIT_TRANSITION = {
-  duration: 0.15,
-  ease: [0.4, 0, 0.2, 1] as const,
-};
-
 const LETTER_EXIT_TRANSITION = {
   delay: 0,
   duration: 0.3,
@@ -42,7 +29,6 @@ const LETTER_EXIT_TRANSITION = {
 export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
   const [titleHover, setTitleHover] = useState(false);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
-  const [sixKey, setSixKey] = useState(0);
   const prevTitleHoverRef = useRef<boolean>(false);
   const middleContainerRef = useRef<HTMLSpanElement>(null);
   const [middleWidth, setMiddleWidth] = useState<number | "auto">("auto");
@@ -50,6 +36,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
   const headlessWidthRef = useRef<number | null>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hiddenMeasureRef = useRef<HTMLSpanElement | null>(null);
+  const hoverDebounceRef = useRef<NodeJS.Timeout | null>(null);
+  const currentTitleHoverRef = useRef<boolean>(false);
   
   useEffect(() => {
     const measureWidth = () => {
@@ -95,11 +83,27 @@ export function Main({ title, description, subDescription, navButtonText, items 
 
 
   const handleMouseEnter = useCallback(() => {
-    setTitleHover(true);
+    if (hoverDebounceRef.current) {
+      clearTimeout(hoverDebounceRef.current);
+      hoverDebounceRef.current = null;
+    }
+    hoverDebounceRef.current = setTimeout(() => {
+      currentTitleHoverRef.current = true;
+      setTitleHover(true);
+      hoverDebounceRef.current = null;
+    }, 30);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setTitleHover(false);
+    if (hoverDebounceRef.current) {
+      clearTimeout(hoverDebounceRef.current);
+      hoverDebounceRef.current = null;
+    }
+    hoverDebounceRef.current = setTimeout(() => {
+      currentTitleHoverRef.current = false;
+      setTitleHover(false);
+      hoverDebounceRef.current = null;
+    }, 50);
   }, []);
 
   useEffect(() => {
@@ -108,9 +112,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
       animationTimeoutRef.current = null;
     }
 
-    if (!titleHover && prevTitleHoverRef.current) {
-      setSixKey(prev => prev + 1);
-    }
+    currentTitleHoverRef.current = titleHover;
     prevTitleHoverRef.current = titleHover;
 
     const targetWidth = !titleHover 
@@ -151,11 +153,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
       }, MIDDLE_LETTERS.length * 0.06 * 1000 + 80);
     }
   }, [titleHover]);
-
-  const sixAnimate = useMemo(() => 
-    !titleHover ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.95 },
-    [titleHover]
-  );
 
   const letterAnimate = useMemo(() => ({
     opacity: 1,
@@ -217,10 +214,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
   }), []);
 
   const widthStyle = useMemo(() => ({ willChange: 'width' }), []);
-  const sixStyle = useMemo(() => ({ 
-    display: titleHover ? 'none' : 'inline-block',
-    willChange: 'transform, opacity'
-  }), [titleHover]);
   const headlessContainerStyle = useMemo(() => ({ willChange: 'opacity' }), []);
   const letterStyle = useMemo(() => ({ willChange: 'transform, opacity' }), []);
 
@@ -246,7 +239,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
           <motion.h1
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="text-6xl md:text-8xl font-bold mb-6 animate-scale-in cursor-default whitespace-nowrap flex items-center justify-center"
+            className="text-6xl md:text-8xl font-bold mb-6 animate-scale-in cursor-default whitespace-nowrap flex items-center justify-center py-2 -my-2"
             layout
             transition={layoutTransition}
           >
@@ -271,17 +264,13 @@ export function Main({ title, description, subDescription, navButtonText, items 
               transition={WIDTH_TRANSITION}
             >
               <AnimatePresence mode="sync">
-                <motion.span
-                  key={`6-${sixKey}`}
+                <span
                   className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
-                  initial={sixKey > 0 ? { opacity: 0, y: 12, scale: 0.85 } : false}
-                  animate={sixAnimate}
-                  transition={!titleHover ? SIX_ENTER_TRANSITION : SIX_EXIT_TRANSITION}
-                  style={sixStyle}
+                  style={{ display: titleHover ? 'none' : 'inline-block' }}
                   ref={sixRefCallback}
                 >
                   6
-                </motion.span>
+                </span>
                 {titleHover && (
                   <motion.span
                     key="middle"
