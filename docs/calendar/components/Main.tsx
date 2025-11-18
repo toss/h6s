@@ -5,7 +5,9 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
 import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
+import { DateRangeCalendarDual as VanillaRangeCalendarDual } from "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
+import "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual.css";
 
 type MainProps = {
   title: string;
@@ -259,7 +261,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
 
         {/* Main Content - Two Column Layout */}
         <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-20 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
             {/* Left Column - Title and Description */}
             <div className="flex flex-col min-w-0">
               <motion.h1
@@ -375,16 +377,30 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </div>
 
             {/* Right Column - Calendar Examples */}
-            <div className="flex flex-col gap-6 items-center lg:items-end">
-              <div className="w-full max-w-sm">
-                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Tailwind CSS</div>
-                <TailwindCalendar />
+            <div className="flex flex-col gap-4">
+              {/* Top row: Single calendars */}
+              <div className="flex flex-wrap gap-4 items-start">
+                {/* Tailwind CSS */}
+                <div className="flex flex-col flex-1">
+                  <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Tailwind CSS</div>
+                  <TailwindCalendar />
+                </div>
+                
+                {/* Bootstrap 5 */}
+                <div className="flex flex-col flex-1">
+                  <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Bootstrap 5</div>
+                  <BootstrapPreview>
+                    <BootstrapDateCalendar />
+                  </BootstrapPreview>
+                </div>
               </div>
-              <div className="w-full max-w-sm">
-                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Bootstrap 5</div>
-                <BootstrapPreview>
-                  <BootstrapDateCalendar />
-                </BootstrapPreview>
+              
+              {/* Bottom: Vanilla CSS Range Picker Dual */}
+              <div className="flex flex-col">
+                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Vanilla CSS</div>
+                <div className="flex justify-start">
+                  <VanillaRangeCalendarDual />
+                </div>
               </div>
             </div>
           </div>
