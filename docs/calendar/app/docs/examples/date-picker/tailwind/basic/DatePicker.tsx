@@ -122,7 +122,7 @@ function DatePickerContent({
                           ${!isSelected && isCurrentMonth ? "hover:bg-gray-100 dark:hover:bg-gray-800" : ""}
                           ${!isSelected && !isCurrentMonth ? "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100" : ""}
                           ${isCurrentDate ? "border-2 border-blue-500 font-semibold text-blue-500 dark:border-blue-400 dark:text-blue-400" : "border border-transparent"}
-                          ${isSelected ? "bg-blue-500 text-white hover:!bg-blue-600 dark:bg-blue-600 dark:hover:!bg-blue-700" : ""}
+                          ${isSelected ? "bg-blue-500 text-white hover:!bg-blue-600 dark:bg-blue-600 dark:hover:!bg-blue-600" : ""}
                         `}
                       >
                         {format(value, "d")}

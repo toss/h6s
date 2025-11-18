@@ -109,7 +109,7 @@ export function DateRangeCalendarDual() {
                       : undefined;
 
                   if (today) {
-                    style.border = "2px solid #0d6efd";
+                    style.border = "2px solid #3b82f6";
                   }
 
                   if (selected) {

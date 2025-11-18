@@ -125,9 +125,9 @@ function DatePickerContent({
                     "--bs-btn-hover-border-color": "transparent",
                   } as React.CSSProperties;
 
-                  if (today) {
-                    style.border = "2px solid #0d6efd";
-                  }
+                        if (today) {
+                          style.border = "2px solid #3b82f6";
+                        }
 
                   if (isSelected) {
                     btnClass += " btn-primary";

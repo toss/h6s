@@ -185,9 +185,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
   const sFilterAnimate = useMemo(() => 
     !hasAutoPlayed && !titleHover ? {
       filter: [
-        "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
-        "drop-shadow(0 0 8px rgba(147, 51, 234, 0.5))",
-        "drop-shadow(0 0 0px rgba(147, 51, 234, 0))",
+        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
+        "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))",
+        "drop-shadow(0 0 0px rgba(59, 130, 246, 0))",
       ],
     } : {},
     [hasAutoPlayed, titleHover]
@@ -232,7 +232,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-10 dark:opacity-20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3),transparent_50%)] animate-pulse" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.15),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.3),transparent_50%)] animate-pulse" style={{ animationDelay: "1s" }} />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.2),transparent_50%)] animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
         {/* Content */}
@@ -244,12 +244,12 @@ export function Main({ title, description, subDescription, navButtonText, items 
             layout
             transition={layoutTransition}
           >
-            <span className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
               @
             </span>
             
             <motion.span
-              className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+              className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
               layout
               animate={hFilterAnimate}
               transition={hFilterTransition}
@@ -266,7 +266,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             >
               <AnimatePresence mode="sync">
                 <span
-                  className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
                   style={{ display: titleHover ? 'none' : 'inline-block' }}
                   ref={sixRefCallback}
                 >
@@ -299,7 +299,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                       return (
                       <motion.span
                         key={`${letter}-${idx}`}
-                        className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+                        className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
                         style={letterStyle}
                         initial={{ opacity: 0, y: 8, scale: 0.9 }}
                         animate={letterAnimate}
@@ -316,7 +316,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </motion.span>
             
             <motion.span
-              className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent inline-block"
+              className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
               layout
               animate={sFilterAnimate}
               transition={sFilterTransition}
@@ -324,7 +324,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
               s
             </motion.span>
             
-            <span className="bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
               /calendar
             </span>
           </motion.h1>
@@ -341,7 +341,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-4">
             <Link
               href="/docs/guide/getting-started"
-              className="px-8 py-4 bg-gradient-to-r from-blue-700 to-purple-700 dark:from-blue-500 dark:to-purple-500 text-white rounded-lg font-semibold text-lg hover:from-blue-800 hover:to-purple-800 dark:hover:from-blue-600 dark:hover:to-purple-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-600 text-white rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-500 transition-all shadow-lg hover:shadow-xl hover:scale-105"
             >
               {navButtonText} →
             </Link>
@@ -367,10 +367,10 @@ export function Main({ title, description, subDescription, navButtonText, items 
               }}
             >
               {/* Gradient accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-500 dark:to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
               
               {/* Icon placeholder with gradient */}
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-600 to-purple-700 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-500 dark:to-blue-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-sm" />
               </div>
               

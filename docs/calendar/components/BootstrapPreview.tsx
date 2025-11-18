@@ -17,6 +17,22 @@ const IFRAME_HTML = `
         margin: 0;
         background: transparent;
       }
+      :root {
+        --bs-primary: #3b82f6;
+        --bs-primary-rgb: 59, 130, 246;
+        --bs-primary-emphasis: #2563eb;
+        --bs-primary-bg-subtle: #dbeafe;
+        --bs-primary-border-subtle: #93c5fd;
+        --bs-primary-text-emphasis: #1e40af;
+      }
+      [data-bs-theme="dark"] {
+        --bs-primary: #3b82f6;
+        --bs-primary-rgb: 59, 130, 246;
+        --bs-primary-emphasis: #60a5fa;
+        --bs-primary-bg-subtle: #1e3a8a;
+        --bs-primary-border-subtle: #1e40af;
+        --bs-primary-text-emphasis: #93c5fd;
+      }
     </style>
   </head>
   <body>
