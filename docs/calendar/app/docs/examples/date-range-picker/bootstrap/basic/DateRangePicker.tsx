@@ -10,7 +10,7 @@ type DateRange = {
   end: Date | null;
 };
 
-export function DateRangePicker() {
+export default function DateRangePicker() {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [open, setOpen] = useState(false);
 
@@ -22,19 +22,17 @@ export function DateRangePicker() {
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <div className="flex w-full max-w-sm flex-col items-start gap-2">
+      <div style={{ maxWidth: "24rem" }}>
         <Popover.Trigger asChild>
           <button
             type="button"
-            className="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left shadow-sm transition hover:border-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_4px_12px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)]"
+            className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center"
+            style={{ textAlign: "left" }}
           >
-            <span
-              className={`truncate ${dateRange.start ? "text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-500"}`}
-            >
-              {displayValue}
-            </span>
+            <span className={`${dateRange.start ? "text-body" : "text-body-secondary"}`}>{displayValue}</span>
             <svg
-              className="h-5 w-5 text-gray-400 dark:text-gray-500"
+              className="text-body-secondary"
+              style={{ width: "1.25rem", height: "1.25rem", flexShrink: 0 }}
               viewBox="0 0 20 20"
               fill="currentColor"
               aria-hidden="true"
@@ -51,10 +49,12 @@ export function DateRangePicker() {
           align="start"
           sideOffset={8}
           collisionPadding={12}
-          className="z-50 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200 bg-white p-5 shadow-xl outline-none data-[state=closed]:pointer-events-none data-[state=closed]:opacity-0 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]"
+          className="card shadow-lg border rounded-3"
+          style={{ zIndex: 1050, maxWidth: "calc(100vw - 2rem)" }}
         >
-          <DateRangePickerContent dateRange={dateRange} setDateRange={setDateRange} close={() => setOpen(false)} />
-          <Popover.Arrow className="fill-white dark:fill-slate-800" />
+          <div className="card-body p-3">
+            <DateRangePickerContent dateRange={dateRange} setDateRange={setDateRange} close={() => setOpen(false)} />
+          </div>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
@@ -86,6 +86,7 @@ function DateRangePickerContent({
     } else {
       if (isAfter(date, dateRange.start)) {
         setDateRange({ start: dateRange.start, end: date });
+        close();
       } else {
         setDateRange({ start: date, end: null });
       }
@@ -109,68 +110,106 @@ function DateRangePickerContent({
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="w-full min-w-[20rem] border-collapse" onMouseLeave={() => setHoverDate(null)}>
-        <thead>
-          <tr>
-            {calendar.headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="p-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-                {format(value, "EEEEEE")}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {calendar.body.value.map(({ key, value: days }) => (
-            <tr key={key}>
-              {days.map(({ key, value, isCurrentMonth }) => {
-                const inRange = isInRange(value);
-                const selected = isSelected(value);
-                const today = isToday(value);
-
-                return (
-                  <td
-                    key={key}
-                    className={`
-                      relative p-0.5
-                      ${isCurrentMonth && inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-8 before:-translate-y-1/2 before:bg-blue-100 before:dark:bg-blue-900/30"}
-                    `}
-                  >
-                    {isCurrentMonth ? (
-                      <button
-                        type="button"
-                        onClick={() => handleDateSelect(value)}
-                        onMouseEnter={() => {
-                          if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
-                            setHoverDate(value);
-                          }
-                        }}
-                        className={`
-                          relative z-10 w-10 h-10 rounded-md text-sm transition
-                          text-gray-900 dark:text-gray-100
-                          ${!selected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
-                          ${inRange && "text-blue-900 dark:text-blue-100"}
-                          ${selected && "!bg-blue-500 !text-white font-semibold hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-600"}
-                          ${today && !selected && "border-2 border-blue-500 font-semibold text-blue-500 dark:border-blue-400 dark:text-blue-400"}
-                        `}
-                      >
-                        {format(value, "d")}
-                      </button>
-                    ) : null}
-                  </td>
-                );
-              })}
+      <div style={{ display: "inline-block", width: "fit-content" }}>
+        <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
+          <thead>
+            <tr>
+              {calendar.headers.weekdays.map(({ key, value }) => (
+                <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
+                  {format(value, "EEEEEE")}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {calendar.body.value.map(({ key, value: days }) => (
+              <tr key={key}>
+                {days.map(({ key, value, isCurrentMonth }) => {
+                  const inRange = isInRange(value);
+                  const selected = isSelected(value);
+                  const today = isToday(value);
+
+                  let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
+                  const style = {
+                    width: "2.5rem",
+                    height: "2.5rem",
+                    fontSize: "0.875rem",
+                    transition: "all 0.15s ease",
+                    borderRadius: "0.375rem",
+                    position: "relative",
+                    zIndex: 2,
+                    "--bs-btn-hover-bg": selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
+                    "--bs-btn-hover-border-color": "transparent",
+                  } as React.CSSProperties;
+
+                  const cellStyle: React.CSSProperties = {
+                    position: "relative",
+                    padding: "0",
+                  };
+
+                  const rangeStyle: React.CSSProperties | undefined =
+                    isCurrentMonth && inRange
+                      ? {
+                          content: '""',
+                          position: "absolute",
+                          top: "50%",
+                          left: 0,
+                          right: 0,
+                          height: "2rem",
+                          transform: "translateY(-50%)",
+                          backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
+                          zIndex: 0,
+                        }
+                      : undefined;
+
+                  if (today) {
+                    style.border = "2px solid #0d6efd";
+                  }
+
+                  if (selected) {
+                    btnClass += " btn-primary fw-semibold";
+                  } else if (inRange) {
+                    btnClass += " text-primary-emphasis";
+                    style.fontWeight = 500;
+                  } else if (isCurrentMonth) {
+                    btnClass += " text-body";
+                  }
+
+                  return (
+                    <td key={key} className="p-0" style={cellStyle}>
+                      {isCurrentMonth && inRange && <div style={rangeStyle} />}
+                      {isCurrentMonth ? (
+                        <button
+                          type="button"
+                          onClick={() => handleDateSelect(value)}
+                          onMouseEnter={() => {
+                            if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
+                              setHoverDate(value);
+                            }
+                          }}
+                          className={btnClass}
+                          style={style}
+                          aria-label={format(value, "PPP")}
+                        >
+                          {format(value, "d")}
+                        </button>
+                      ) : null}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-6 overflow-x-auto pb-2">
-        <div className="flex-shrink-0">
-          <div className="flex items-center justify-between pb-4">
+    <div>
+      <div className="d-flex gap-4 overflow-x-auto pb-2">
+        <div style={{ flexShrink: 0 }}>
+          <div className="d-flex justify-content-between align-items-center mb-3">
             <button
               type="button"
               onClick={() => {
@@ -178,23 +217,23 @@ function DateRangePickerContent({
                 leftCalendar.navigation.setDate(newDate);
                 rightCalendar.navigation.setDate(addMonths(newDate, 1));
               }}
-              className="rounded-lg p-2 text-lg text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
+              className="btn btn-link text-body p-2 text-decoration-none"
               aria-label="Previous month"
             >
-              ←
+              <span style={{ fontSize: "1.25rem" }}>←</span>
             </button>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+            <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
               {format(leftCalendar.cursorDate, "MMMM yyyy")}
             </h2>
-            <div className="w-9" />
+            <div style={{ width: "2.25rem" }} />
           </div>
           {renderCalendar(leftCalendar)}
         </div>
 
-        <div className="flex-shrink-0">
-          <div className="flex items-center justify-between pb-4">
-            <div className="w-9" />
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+        <div style={{ flexShrink: 0 }}>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div style={{ width: "2.25rem" }} />
+            <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
               {format(rightCalendar.cursorDate, "MMMM yyyy")}
             </h2>
             <button
@@ -204,10 +243,10 @@ function DateRangePickerContent({
                 leftCalendar.navigation.setDate(newDate);
                 rightCalendar.navigation.setDate(addMonths(newDate, 1));
               }}
-              className="rounded-lg p-2 text-lg text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
+              className="btn btn-link text-body p-2 text-decoration-none"
               aria-label="Next month"
             >
-              →
+              <span style={{ fontSize: "1.25rem" }}>→</span>
             </button>
           </div>
           {renderCalendar(rightCalendar)}
