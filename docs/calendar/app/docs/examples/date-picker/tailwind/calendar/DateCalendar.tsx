@@ -63,7 +63,7 @@ export function DateCalendar() {
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="w-[calc(100%/7)] p-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <th key={key} className="w-[calc(100%/7)] px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -81,7 +81,7 @@ export function DateCalendar() {
                       type="button"
                       onClick={() => handleDateSelect(value, isCurrentMonth)}
                       className={`
-                        box-border w-full aspect-square rounded-md text-xs font-medium transition-all duration-150
+                        box-border w-full h-9 rounded-md text-xs font-medium transition-all duration-150
                         ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                         ${!isCurrentMonth && !isSelected && "hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"}
                         ${isCurrentMonth && "text-slate-900 dark:text-slate-100"}

@@ -89,7 +89,7 @@ export function DateRangeCalendar() {
                 <thead>
                   <tr>
                     {headers.weekdays.map(({ key, value }) => (
-                      <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
+                      <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
                         {format(value, "EEEEEE")}
                       </th>
                     ))}
@@ -105,9 +105,11 @@ export function DateRangeCalendar() {
 
                         let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
                         const style = {
-                          width: "2.5rem",
-                          height: "2.5rem",
-                          fontSize: "0.875rem",
+                          width: "2.25rem",
+                          height: "2.25rem",
+                          fontSize: "0.75rem",
+                          lineHeight: "1",
+                          padding: "0",
                           transition: "all 0.15s ease",
                           borderRadius: "0.375rem",
                           position: "relative",

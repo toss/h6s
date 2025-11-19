@@ -109,7 +109,7 @@ function DatePickerContent({
           <thead>
             <tr>
               {headers.weekdays.map(({ key, value }) => (
-                <th key={key} className="fw-medium text-body-secondary py-2" style={{ fontSize: "0.875rem" }}>
+                <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
                   {format(value, "EEEEEE")}
                 </th>
               ))}
