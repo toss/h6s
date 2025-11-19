@@ -54,7 +54,7 @@
 }
 
 .daterangecalendar-nav-button {
-  padding: 0.5rem;
+  padding: 0;
   border: 1px solid #000000;
   border-radius: 0;
   background: transparent;
@@ -62,6 +62,7 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 400;
+  line-height: 1;
   transition: all 0.15s ease;
   min-width: 2rem;
   height: 2rem;
@@ -97,6 +98,10 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.15em;
+}
+
+.daterangecalendar-calendar tbody tr {
+  height: 2.5rem;
 }
 
 .daterangecalendar-calendar td {
