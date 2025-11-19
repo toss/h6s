@@ -1,8 +1,10 @@
 "use client";
 
 import {
+  type CodeEditorProps,
   type PreviewProps,
   type SandpackFiles,
+  SandpackCodeEditor,
   SandpackLayout,
   type SandpackLayoutProps,
   SandpackPreview,
@@ -20,15 +22,20 @@ interface CustomSandpackProps extends Omit<SandpackProviderProps, "files" | "tem
   providerOptions?: SandpackProviderProps["options"];
   layoutOptions?: SandpackLayoutProps;
   previewOptions?: PreviewProps;
+  codeEditorOptions?: CodeEditorProps;
+  height?: number;
 }
 
 export function Sandpack(props: CustomSandpackProps) {
+  const { height, previewOptions, codeEditorOptions, ...restProps } = props;
+  const heightStyle = height ? { style: { height } } : {};
+
   return (
     <div className="my-8">
       <SandpackProvider
         template="react-ts"
         theme="auto"
-        {...props}
+        {...restProps}
         options={{
           initMode: "user-visible",
           initModeObserverOptions: { rootMargin: "1400px 0px" },
@@ -46,7 +53,8 @@ export function Sandpack(props: CustomSandpackProps) {
         }}
       >
         <SandpackLayout {...props.layoutOptions}>
-          <SandpackPreview showRefreshButton={false} {...props.previewOptions} />
+          <SandpackPreview showRefreshButton={false} {...heightStyle} {...previewOptions} />
+          <SandpackCodeEditor showLineNumbers showTabs {...heightStyle} {...codeEditorOptions} />
         </SandpackLayout>
       </SandpackProvider>
     </div>
