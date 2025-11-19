@@ -20,9 +20,8 @@ export function DateCalendar() {
 
   return (
     <div className="w-80 rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm shadow-slate-200/50 dark:border-slate-700 dark:from-slate-900 dark:to-slate-800 dark:shadow-lg dark:shadow-slate-900/50">
-      <div className="flex items-start justify-between border-b border-slate-200 pb-3 dark:border-slate-700">
+      <div className="flex items-start justify-between border-b border-slate-200 pb-2 dark:border-slate-700">
         <div>
-          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Selected date</p>
           <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
             {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
           </p>
@@ -39,7 +38,7 @@ export function DateCalendar() {
         </button>
       </div>
 
-      <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between py-2">
         <button
           type="button"
           onClick={navigation.toPrev}

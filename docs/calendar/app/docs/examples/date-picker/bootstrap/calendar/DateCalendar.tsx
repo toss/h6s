@@ -22,9 +22,8 @@ export default function DateCalendar() {
         <div className="card border rounded-3">
           <div className="card-body p-3">
             <div className="d-flex flex-column">
-              <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
+              <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
                 <div>
-                  <p className="text-body-secondary small mb-1 fw-medium">Selected date</p>
                   <p className="text-body-emphasis fw-semibold mb-0 fs-6">
                     {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
                   </p>
@@ -42,7 +41,7 @@ export default function DateCalendar() {
                 </button>
               </div>
 
-              <div className="d-flex justify-content-between align-items-center py-3">
+              <div className="d-flex justify-content-between align-items-center py-2">
                 <button
                   type="button"
                   onClick={navigation.toPrev}

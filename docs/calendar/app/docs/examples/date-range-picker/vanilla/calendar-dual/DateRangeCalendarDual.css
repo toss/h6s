@@ -3,7 +3,7 @@
   border: none;
   border-radius: 0;
   background: #fafafa;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: none;
 }
 
@@ -25,7 +25,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem;
   border-bottom: 2px solid #000000;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .daterangecalendar-selection-value {
-  margin: 0.25rem 0 0;
+  margin: 0;
   font-size: 1.25rem;
   font-weight: 400;
   color: #000000;
