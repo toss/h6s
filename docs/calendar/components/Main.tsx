@@ -343,19 +343,19 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </div>
 
             {/* Right Column - Calendar Examples with Background */}
-            <div className="relative bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-start justify-start pt-8 lg:pt-10 px-6 lg:px-12 overflow-hidden">
+            <div className="relative bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-start justify-start overflow-hidden" style={{ paddingTop: '32px', paddingLeft: '32px' }}>
               {/* Subtle Background Elements */}
               <div className="absolute inset-0 opacity-40 dark:opacity-10">
                 <div className="absolute top-20 right-20 w-72 h-72 bg-blue-100 dark:bg-blue-950 rounded-full blur-3xl" />
                 <div className="absolute bottom-20 left-20 w-72 h-72 bg-purple-100 dark:bg-purple-950 rounded-full blur-3xl" />
               </div>
 
-              <div className="relative z-10 w-full flex flex-col gap-3">
+              <div className="relative z-10 w-full flex flex-col" style={{ gap: '12px' }}>
                 {/* Top row: Tailwind CSS and Bootstrap 5 */}
-                <div className="flex items-start gap-3">
+                <div className="flex items-start" style={{ gap: '12px' }}>
                   {/* Tailwind CSS */}
-                  <div className="relative flex-1">
-                    <div className="mb-1 flex items-center justify-between">
+                  <div className="relative">
+                    <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
                       <Link
                         href="/docs/examples/date-picker/tailwind"
                         className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
@@ -369,8 +369,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   </div>
                   
                   {/* Bootstrap 5 */}
-                  <div className="relative flex-1">
-                    <div className="mb-1 flex items-center justify-between">
+                  <div className="relative">
+                    <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
                       <Link
                         href="/docs/examples/date-picker/bootstrap"
                         className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
@@ -388,7 +388,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                 
                 {/* Bottom: Vanilla CSS Range Picker Dual */}
                 <div className="relative w-fit">
-                  <div className="mb-1 flex items-center justify-between">
+                  <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
                     <Link
                       href="/docs/examples/date-range-picker/vanilla"
                       className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
