@@ -43,6 +43,17 @@ export function DateRangeCalendarDual() {
     return isAfter(date, dateRange.start) && isAfter(end, date);
   }
 
+  function isRangeStart(date: Date): boolean {
+    if (!dateRange.start) return false;
+    return isSameDay(date, dateRange.start);
+  }
+
+  function isRangeEnd(date: Date): boolean {
+    const end = dateRange.end || (hoverDate && dateRange.start && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
+    if (!end) return false;
+    return isSameDay(date, end);
+  }
+
   function isSelected(date: Date): boolean {
     if (dateRange.start && isSameDay(date, dateRange.start)) return true;
     if (dateRange.end && isSameDay(date, dateRange.end)) return true;
@@ -74,6 +85,8 @@ export function DateRangeCalendarDual() {
                 const inRange = isInRange(value);
                 const selected = isSelected(value);
                 const today = isToday(value);
+                const rangeStart = isRangeStart(value);
+                const rangeEnd = isRangeEnd(value);
 
                 const buttonClassNames = [
                   "daterangecalendar-day",
@@ -86,7 +99,13 @@ export function DateRangeCalendarDual() {
                   .filter(Boolean)
                   .join(" ");
 
-                const cellClassNames = isCurrentMonth && inRange ? "daterangecalendar-cell--in-range" : "";
+                const cellClassNames = [
+                  isCurrentMonth && (inRange || rangeStart || rangeEnd) && "daterangecalendar-cell--in-range",
+                  rangeStart && "daterangecalendar-cell--range-start",
+                  rangeEnd && "daterangecalendar-cell--range-end",
+                ]
+                  .filter(Boolean)
+                  .join(" ");
 
                 return (
                   <td key={key} className={cellClassNames}>
