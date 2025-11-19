@@ -320,7 +320,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   {navButtonText} →
                 </Link>
                 <Link
-                  href="/docs/examples/date-picker"
+                  href="/docs/examples/date-picker/vanilla"
                   className="px-6 py-3 border-2 border-gray-400 dark:border-gray-600 rounded-lg font-semibold text-base hover:bg-gray-200 dark:hover:bg-gray-800 transition hover:scale-105 text-gray-600 dark:text-gray-300"
                 >
                   View Examples
