@@ -13,9 +13,13 @@ const IFRAME_HTML = `
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="${BOOTSTRAP_CDN_URL}" />
     <style>
+      html {
+        overflow-x: hidden;
+      }
       body {
         margin: 0;
         background: transparent;
+        overflow-x: hidden;
       }
       :root {
         --bs-primary: #3b82f6;
@@ -70,14 +74,46 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
       return;
     }
 
-    const adjustHeight = () => {
+    const adjustSize = () => {
       const doc = iframe.contentDocument;
       if (!doc) {
         return;
       }
+      const root = doc.getElementById("bootstrap-root");
+      if (!root) {
+        return;
+      }
       const { body, documentElement } = doc;
-      const height = Math.max(body?.scrollHeight ?? 0, documentElement?.scrollHeight ?? 0, 0);
+      
+      // Use getBoundingClientRect for more accurate measurements
+      const rootRect = root.getBoundingClientRect();
+      const bodyRect = body?.getBoundingClientRect();
+      
+      const height = Math.max(
+        rootRect.height,
+        body?.scrollHeight ?? 0,
+        documentElement?.scrollHeight ?? 0,
+        0
+      );
+      
+      // Get the actual content width from the first child or root itself
+      const firstChild = root.firstElementChild as HTMLElement;
+      const contentWidth = firstChild 
+        ? Math.max(firstChild.getBoundingClientRect().width, firstChild.scrollWidth)
+        : rootRect.width;
+      
+      const width = Math.max(
+        contentWidth,
+        rootRect.width,
+        root.scrollWidth,
+        bodyRect?.width ?? 0,
+        body?.scrollWidth ?? 0,
+        documentElement?.scrollWidth ?? 0,
+        0
+      );
+      
       iframe.style.height = height ? `${height}px` : "0px";
+      iframe.style.width = width ? `${Math.ceil(width)}px` : "auto";
     };
 
     const handleLoad = () => {
@@ -89,10 +125,10 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
       const root = doc.getElementById("bootstrap-root");
       if (root) {
         setMountNode(root);
-        adjustHeight();
+        adjustSize();
 
         resizeObserverRef.current?.disconnect();
-        resizeObserverRef.current = new ResizeObserver(() => adjustHeight());
+        resizeObserverRef.current = new ResizeObserver(() => adjustSize());
         resizeObserverRef.current.observe(root);
         if (doc.body) {
           resizeObserverRef.current.observe(doc.body);
@@ -120,12 +156,13 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
         srcDoc={IFRAME_HTML}
         title={title}
         style={{
-          width: "100%",
+          width: "fit-content",
+          overflow: "hidden",
         }}
         sandbox="allow-scripts allow-same-origin"
       />
       {mountNode && createPortal(
-        <div style={{ display: 'inline-block', width: 'fit-content' }}>
+        <div style={{ display: 'inline-block', width: 'fit-content', overflow: 'hidden' }}>
           {children}
         </div>,
         mountNode

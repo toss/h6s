@@ -222,7 +222,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
 
         {/* Main Content - Two Column Layout */}
         <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-20 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 items-center">
             {/* Left Column - Title and Description */}
             <div className="flex flex-col min-w-0">
               <motion.h1
@@ -328,27 +328,31 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </div>
 
             {/* Right Column - Calendar Examples */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2.5">
               {/* Top row: Single calendars */}
-              <div className="flex flex-wrap gap-4 items-start">
+              <div className="flex flex-wrap items-start" style={{ gap: '0.5rem' }}>
                 {/* Tailwind CSS */}
-                <div className="flex flex-col flex-1">
-                  <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Tailwind CSS</div>
-                  <TailwindCalendar />
+                <div className="flex flex-col" style={{ transform: 'scale(0.85)', transformOrigin: 'top left', marginBottom: '-15%' }}>
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Tailwind CSS</div>
+                  <div>
+                    <TailwindCalendar />
+                  </div>
                 </div>
                 
                 {/* Bootstrap 5 */}
-                <div className="flex flex-col flex-1">
-                  <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Bootstrap 5</div>
-                  <BootstrapPreview>
-                    <BootstrapDateCalendar />
-                  </BootstrapPreview>
+                <div className="flex flex-col" style={{ transform: 'scale(0.85)', transformOrigin: 'top left', marginBottom: '-15%' }}>
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Bootstrap 5</div>
+                  <div style={{ overflow: 'hidden' }}>
+                    <BootstrapPreview>
+                      <BootstrapDateCalendar />
+                    </BootstrapPreview>
+                  </div>
                 </div>
               </div>
               
               {/* Bottom: Vanilla CSS Range Picker Dual */}
-              <div className="flex flex-col">
-                <div className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">Vanilla CSS</div>
+              <div className="flex flex-col" style={{ transform: 'scale(0.85)', transformOrigin: 'top left', marginBottom: '-15%' }}>
+                <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Vanilla CSS</div>
                 <div className="flex justify-start">
                   <VanillaRangeCalendarDual />
                 </div>
