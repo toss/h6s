@@ -7,7 +7,6 @@ import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-pick
 import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
 import { DateRangeCalendarDual as VanillaRangeCalendarDual } from "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
-import "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual.css";
 
 type MainProps = {
   title: string;
