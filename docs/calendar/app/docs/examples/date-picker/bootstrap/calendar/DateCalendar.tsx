@@ -89,12 +89,10 @@ export default function DateCalendar() {
                           fontSize: "0.875rem",
                           transition: "all 0.15s ease",
                           borderRadius: "0.375rem",
-                          "--bs-btn-hover-bg": isSelected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
-                          "--bs-btn-hover-border-color": "transparent",
                         } as React.CSSProperties;
 
                         if (today) {
-                          style.border = "2px solid #3b82f6";
+                          style.border = "2px solid var(--bs-primary)";
                         }
 
                         if (isSelected) {

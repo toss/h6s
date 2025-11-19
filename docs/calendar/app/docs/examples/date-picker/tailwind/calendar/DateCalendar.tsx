@@ -19,11 +19,11 @@ export function DateCalendar() {
   }
 
   return (
-    <div className="w-80 rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-white to-purple-50 p-5 shadow-lg shadow-purple-200/50 dark:border-purple-800 dark:bg-gradient-to-br dark:from-purple-950/50 dark:via-slate-800 dark:to-purple-950/50 dark:shadow-[0_8px_24px_rgba(147,51,234,0.3),0_0_0_1px_rgba(147,51,234,0.1)]">
-      <div className="flex items-start justify-between border-b border-purple-200 pb-4 dark:border-purple-800">
+    <div className="w-80 rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm shadow-slate-200/50 dark:border-slate-700 dark:from-slate-900 dark:to-slate-800 dark:shadow-lg dark:shadow-slate-900/50">
+      <div className="flex items-start justify-between border-b border-slate-200 pb-3 dark:border-slate-700">
         <div>
-          <p className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wide">Selected date</p>
-          <p className="text-lg font-bold text-purple-900 dark:text-purple-100 mt-1">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Selected date</p>
+          <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
             {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
           </p>
         </div>
@@ -33,38 +33,38 @@ export function DateCalendar() {
             navigation.setToday();
             setSelectedDate(new Date());
           }}
-          className="rounded-lg border-2 border-purple-300 px-3 py-1 text-sm font-semibold text-purple-700 shadow-sm transition hover:bg-purple-100 hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:border-purple-700 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:hover:border-purple-600 dark:focus:ring-purple-400"
+          className="rounded-md border border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 dark:focus:ring-slate-400"
         >
           Today
         </button>
       </div>
 
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between py-3">
         <button
           type="button"
           onClick={navigation.toPrev}
-          className="rounded-lg p-2 text-purple-700 transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:focus:ring-purple-400"
+          className="rounded-md p-1.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200 dark:focus:ring-slate-400"
           aria-label="Previous month"
         >
           ←
         </button>
-        <h2 className="text-base font-bold text-purple-900 dark:text-purple-100">{format(cursorDate, "MMMM yyyy")}</h2>
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{format(cursorDate, "MMMM yyyy")}</h2>
         <button
           type="button"
           onClick={navigation.toNext}
-          className="rounded-lg p-2 text-purple-700 transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:focus:ring-purple-400"
+          className="rounded-md p-1.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200 dark:focus:ring-slate-400"
           aria-label="Next month"
         >
           →
         </button>
       </div>
 
-      <div className="w-fit">
-        <table className="border-collapse">
+      <div className="w-full">
+        <table className="w-full border-collapse">
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="p-2 text-sm font-semibold text-purple-600 dark:text-purple-400">
+              <th key={key} className="w-[calc(100%/7)] p-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -77,18 +77,18 @@ export function DateCalendar() {
                 const isSelected = selectedDate && isSameDay(value, selectedDate);
 
                 return (
-                  <td key={key} className="w-10 p-0 text-center">
+                  <td key={key} className="w-[calc(100%/7)] p-0 text-center">
                     <button
                       type="button"
                       onClick={() => handleDateSelect(value, isCurrentMonth)}
                       className={`
-                        box-border w-full h-10 rounded-lg text-sm font-medium transition-all duration-200
-                        ${!isCurrentMonth && "text-purple-300 dark:text-purple-700"}
-                        ${!isCurrentMonth && !isSelected && "hover:bg-purple-100 hover:text-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-300"}
-                        ${isCurrentMonth && "text-purple-900 dark:text-purple-100"}
-                        ${isCurrentMonth && !isSelected && "hover:bg-purple-100 dark:hover:bg-purple-900/30"}
-                        ${isCurrentDate && "border-2 border-purple-500 font-bold text-purple-600 dark:border-purple-400 dark:text-purple-400"}
-                        ${isSelected && "bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-md shadow-purple-500/50 hover:!from-purple-600 hover:!to-purple-700 dark:from-purple-500 dark:to-purple-600 dark:text-white dark:hover:!from-purple-600 dark:hover:!to-purple-700"}
+                        box-border w-full aspect-square rounded-md text-xs font-medium transition-all duration-150
+                        ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
+                        ${!isCurrentMonth && !isSelected && "hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"}
+                        ${isCurrentMonth && "text-slate-900 dark:text-slate-100"}
+                        ${isCurrentMonth && !isSelected && "hover:bg-slate-100 dark:hover:bg-slate-700"}
+                        ${isCurrentDate && "border-2 border-slate-600 font-bold text-slate-700 dark:border-slate-400 dark:text-slate-300"}
+                        ${isSelected && "bg-slate-600 text-white shadow-md shadow-slate-600/30 hover:bg-slate-700 dark:bg-slate-500 dark:shadow-slate-500/30 dark:hover:bg-slate-400"}
                       `}
                     >
                       {format(value, "d")}

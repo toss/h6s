@@ -1,10 +1,10 @@
 .daterangecalendar-dual {
   max-width: 40rem;
-  border: 2px solid #d1fae5;
-  border-radius: 1.5rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: none;
+  border-radius: 0;
+  background: #fafafa;
   padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12), 0 2px 8px rgba(16, 185, 129, 0.08);
+  box-shadow: none;
 }
 
 .daterangecalendar-calendars {
@@ -26,23 +26,24 @@
   align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #d1fae5;
+  border-bottom: 2px solid #000000;
 }
 
 .daterangecalendar-selection-label {
   margin: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b7280;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .daterangecalendar-selection-value {
   margin: 0.25rem 0 0;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #065f46;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
 }
 
 .daterangecalendar-header {
@@ -54,28 +55,33 @@
 
 .daterangecalendar-nav-button {
   padding: 0.5rem;
-  border: none;
-  border-radius: 0.75rem;
-  background: none;
-  color: #065f46;
+  border: 1px solid #000000;
+  border-radius: 0;
+  background: transparent;
+  color: #000000;
   cursor: pointer;
-  font-size: 1.125rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: all 0.15s ease;
+  min-width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .daterangecalendar-nav-button:hover {
-  background-color: #d1fae5;
-  color: #047857;
-  transform: scale(1.1);
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .daterangecalendar-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #065f46;
-  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .daterangecalendar-calendar {
@@ -85,12 +91,12 @@
 
 .daterangecalendar-weekday {
   padding: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b7280;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.15em;
 }
 
 .daterangecalendar-calendar td {
@@ -102,42 +108,45 @@
 .daterangecalendar-day {
   width: 100%;
   height: 2.5rem;
-  border: none;
-  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0;
   background: none;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   position: relative;
   z-index: 2;
   box-sizing: border-box;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .daterangecalendar-day--current-month {
-  color: #065f46;
+  color: #000000;
+  font-weight: 400;
 }
 
 .daterangecalendar-day--outside {
-  color: #86efac;
-  opacity: 0.5;
+  color: #d1d5db;
+  opacity: 0.4;
 }
 
 .daterangecalendar-day:hover {
-  background-color: #d1fae5;
-  transform: scale(1.1);
-  font-weight: 600;
+  border-color: #000000;
+  background-color: transparent;
+  font-weight: 500;
+  color: #000000;
 }
 
 .daterangecalendar-day--selected:hover {
-  background-color: #10b981;
-  transform: scale(1.05);
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
 }
 
 .daterangecalendar-day--today {
-  border: 2px solid #10b981;
-  font-weight: 700;
-  color: #047857;
+  border: 2px solid #000000;
+  font-weight: 500;
+  color: #000000;
 }
 
 .daterangecalendar-calendar td.daterangecalendar-cell--in-range::before {
@@ -148,116 +157,130 @@
   right: 0;
   height: 2rem;
   transform: translateY(-50%);
-  background-color: #d1fae5;
+  background-color: #e5e7eb;
   border-radius: 0;
   z-index: 0;
 }
 
 /* Range 시작: 왼쪽만 둥글게 */
 .daterangecalendar-calendar td.daterangecalendar-cell--range-start::before {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 /* Range 끝: 오른쪽만 둥글게 */
 .daterangecalendar-calendar td.daterangecalendar-cell--range-end::before {
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 /* Range 시작이면서 끝인 경우 (하루만 선택) */
 .daterangecalendar-calendar td.daterangecalendar-cell--range-start.daterangecalendar-cell--range-end::before {
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 .daterangecalendar-day--in-range {
-  color: #047857;
-  font-weight: 600;
+  color: #000000;
+  font-weight: 500;
 }
 
 .daterangecalendar-day--selected {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background-color: #000000;
   color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  font-weight: 500;
+  border-color: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
   .daterangecalendar-dual {
-    border-color: #065f46;
-    background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.1);
+    background: #0a0a0a;
   }
 
   .daterangecalendar-selection {
-    border-color: #065f46;
+    border-color: #ffffff;
   }
 
   .daterangecalendar-selection-label {
-    color: #6ee7b7;
+    color: #9ca3af;
   }
 
   .daterangecalendar-selection-value {
-    color: #d1fae5;
+    color: #ffffff;
   }
 
   .daterangecalendar-nav-button {
-    color: #6ee7b7;
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .daterangecalendar-nav-button:hover {
-    background-color: #065f46;
-    color: #a7f3d0;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .daterangecalendar-title {
-    color: #d1fae5;
+    color: #ffffff;
   }
 
   .daterangecalendar-weekday {
-    color: #6ee7b7;
+    color: #9ca3af;
   }
 
   .daterangecalendar-day--current-month {
-    color: #d1fae5;
+    color: #ffffff;
   }
 
   .daterangecalendar-day--outside {
-    color: #047857;
+    color: #4b5563;
     opacity: 0.4;
   }
 
   .daterangecalendar-day:hover {
-    background-color: #065f46;
+    border-color: #ffffff;
+    background-color: transparent;
+    color: #ffffff;
   }
 
   .daterangecalendar-day--selected:hover {
-    background-color: #10b981;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  .daterangecalendar-day--today {
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .daterangecalendar-calendar td.daterangecalendar-cell--in-range::before {
-    background-color: #065f46;
+    background-color: #374151;
     border-radius: 0;
   }
 
   /* Range 시작: 왼쪽만 둥글게 */
   .daterangecalendar-calendar td.daterangecalendar-cell--range-start::before {
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   /* Range 끝: 오른쪽만 둥글게 */
   .daterangecalendar-calendar td.daterangecalendar-cell--range-end::before {
-    border-top-right-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   /* Range 시작이면서 끝인 경우 (하루만 선택) */
   .daterangecalendar-calendar td.daterangecalendar-cell--range-start.daterangecalendar-cell--range-end::before {
-    border-radius: 0.5rem;
+    border-radius: 0;
   }
 
   .daterangecalendar-day--in-range {
-    color: #6ee7b7;
+    color: #ffffff;
+  }
+
+  .daterangecalendar-day--selected {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
   }
 }
