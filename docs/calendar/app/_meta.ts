@@ -9,6 +9,7 @@ const meta: MetaRecord = {
       toc: false,
       pagination: false,
       breadcrumb: false,
+      timestamp: false,
     }
   },
   docs: {
