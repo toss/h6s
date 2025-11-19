@@ -19,7 +19,7 @@ export default function DateCalendar() {
   return (
     <div>
       <div style={{ display: "inline-block", width: "fit-content" }}>
-        <div className="card shadow-lg border rounded-3">
+        <div className="card border rounded-3">
           <div className="card-body p-3">
             <div className="d-flex flex-column">
               <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
