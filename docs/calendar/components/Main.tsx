@@ -215,10 +215,10 @@ export function Main({ title, description, subDescription, navButtonText, items 
       
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Main Content - Two Column Layout with Clear Separation */}
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
+        <div className="relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] min-h-screen">
             {/* Left Column - Title and Description */}
-            <div className="flex items-center justify-center bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-8 lg:px-12 py-20">
+            <div className="flex items-center justify-center bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-6 lg:px-12 py-20">
               <div className="max-w-[600px] w-full">
                 <motion.h1
                   onMouseEnter={handleMouseEnter}
@@ -343,7 +343,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </div>
 
             {/* Right Column - Calendar Examples with Background */}
-            <div className="relative bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-start justify-start pt-8 lg:pt-10 px-8 lg:px-12 overflow-hidden">
+            <div className="relative bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-start justify-start pt-8 lg:pt-10 px-6 lg:px-12 overflow-hidden">
               {/* Subtle Background Elements */}
               <div className="absolute inset-0 opacity-40 dark:opacity-10">
                 <div className="absolute top-20 right-20 w-72 h-72 bg-blue-100 dark:bg-blue-950 rounded-full blur-3xl" />
