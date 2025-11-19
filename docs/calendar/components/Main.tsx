@@ -213,12 +213,12 @@ export function Main({ title, description, subDescription, navButtonText, items 
         {HEADLESS_TEXT}
       </span>
       
-      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Main Content - Two Column Layout with Clear Separation */}
-        <div className="relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] min-h-screen">
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-900">
+        {/* Main Content - Two Column Layout */}
+        <div className="relative z-10 w-full h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] min-h-screen relative">
             {/* Left Column - Title and Description */}
-            <div className="flex items-center justify-center bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-6 lg:px-12 py-20">
+            <div className="flex items-center justify-center px-6 lg:px-12 py-20 relative z-20">
               <div className="max-w-[600px] w-full">
                 <motion.h1
                   onMouseEnter={handleMouseEnter}
@@ -342,61 +342,28 @@ export function Main({ title, description, subDescription, navButtonText, items 
               </div>
             </div>
 
-            {/* Right Column - Calendar Examples with Background */}
-            <div className="relative bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-start justify-start overflow-hidden" style={{ paddingTop: '32px', paddingLeft: '32px' }}>
-              {/* Subtle Background Elements */}
-              <div className="absolute inset-0 opacity-40 dark:opacity-10">
-                <div className="absolute top-20 right-20 w-72 h-72 bg-blue-100 dark:bg-blue-950 rounded-full blur-3xl" />
-                <div className="absolute bottom-20 left-20 w-72 h-72 bg-purple-100 dark:bg-purple-950 rounded-full blur-3xl" />
-              </div>
-
-              <div className="relative z-10 w-full flex flex-col" style={{ gap: '12px' }}>
-                {/* Top row: Tailwind CSS and Bootstrap 5 */}
-                <div className="flex items-start" style={{ gap: '12px' }}>
-                  {/* Tailwind CSS */}
-                  <div className="relative">
-                    <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
-                      <Link
-                        href="/docs/examples/date-picker/tailwind"
-                        className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                      >
-                        Tailwind CSS →
-                      </Link>
-                    </div>
-                    <div style={{ transform: 'scale(0.95)', transformOrigin: 'top center' }}>
+            {/* Right Column - Calendar Examples in rounded box */}
+            <div className="hidden lg:flex absolute top-0 right-0 bottom-0 left-1/2 overflow-visible z-30 items-start justify-start">
+              {/* Rounded box attached to top and right, only bottom-left corner rounded, floating above background */}
+              <div className="bg-white dark:bg-gray-800 shadow-2xl" style={{ marginTop: '0', marginRight: '0', marginBottom: '32px', marginLeft: '32px', borderTopLeftRadius: '0', borderTopRightRadius: '0', borderBottomRightRadius: '0', borderBottomLeftRadius: '32px', width: 'calc(100% - 32px)' }}>
+                <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: '12px' }}>
+                  {/* Top row: Tailwind CSS and Bootstrap 5 */}
+                  <div className="flex items-start" style={{ gap: '24px' }}>
+                    {/* Tailwind CSS */}
+                    <div className="relative">
                       <TailwindCalendar />
                     </div>
-                  </div>
-                  
-                  {/* Bootstrap 5 */}
-                  <div className="relative">
-                    <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
-                      <Link
-                        href="/docs/examples/date-picker/bootstrap"
-                        className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                      >
-                        Bootstrap 5 →
-                      </Link>
-                    </div>
-                    <div style={{ transform: 'scale(0.95)', transformOrigin: 'top center', overflow: 'hidden' }}>
+                    
+                    {/* Bootstrap 5 */}
+                    <div className="relative">
                       <BootstrapPreview>
                         <BootstrapDateCalendar />
                       </BootstrapPreview>
                     </div>
                   </div>
-                </div>
-                
-                {/* Bottom: Vanilla CSS Range Picker Dual */}
-                <div className="relative w-fit">
-                  <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
-                    <Link
-                      href="/docs/examples/date-range-picker/vanilla"
-                      className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                    >
-                      Vanilla CSS →
-                    </Link>
-                  </div>
-                  <div style={{ transform: 'scale(0.95)', transformOrigin: 'top left' }}>
+                  
+                  {/* Bottom: Vanilla CSS Range Picker Dual */}
+                  <div className="relative w-fit">
                     <VanillaRangeCalendarDual />
                   </div>
                 </div>
