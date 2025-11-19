@@ -13,17 +13,25 @@ export default function DatePicker() {
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <div style={{ maxWidth: "24rem" }}>
+      <div style={{ maxWidth: "20rem" }}>
         <Popover.Trigger asChild>
           <button
             type="button"
             className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center"
-            style={{ textAlign: "left" }}
+            style={{ 
+              textAlign: "left",
+              fontSize: "0.875rem",
+              padding: "0.375rem 0.75rem",
+              "--bs-btn-hover-bg": "var(--bs-secondary-bg-subtle)",
+              "--bs-btn-hover-border-color": "var(--bs-secondary-border-subtle)",
+              "--bs-btn-active-bg": "var(--bs-secondary-bg-subtle)",
+              "--bs-btn-active-border-color": "var(--bs-secondary-border-subtle)",
+            } as React.CSSProperties}
           >
             <span className={`${selectedDate ? "text-body" : "text-body-secondary"}`}>{displayValue}</span>
             <svg
               className="text-body-secondary"
-              style={{ width: "1.25rem", height: "1.25rem", flexShrink: 0 }}
+              style={{ width: "1rem", height: "1rem", flexShrink: 0 }}
               viewBox="0 0 20 20"
               fill="currentColor"
               aria-hidden="true"

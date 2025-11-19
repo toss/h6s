@@ -1,6 +1,6 @@
 .datepicker-field {
   width: 100%;
-  max-width: 24rem;
+  max-width: 20rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -12,52 +12,69 @@
   justify-content: space-between;
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid #d1d5db;
+  border-radius: 0;
+  border: 1px solid #000000;
   background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+  box-shadow: none;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.15s ease;
 }
 
 .datepicker-field__trigger:hover {
-  border-color: #3b82f6;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .datepicker-field__trigger:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
+  outline: 1px solid #000000;
+  outline-offset: 1px;
 }
 
 .datepicker-field__value {
   flex: 1;
-  margin-right: 0.75rem;
-  font-size: 1rem;
-  color: #6b7280;
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #374151;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.datepicker-field__trigger:hover .datepicker-field__value {
+  color: #ffffff;
+}
+
 .datepicker-field__value.is-selected {
-  color: #111827;
+  color: #000000;
+  font-weight: 500;
+}
+
+.datepicker-field__trigger:hover .datepicker-field__value.is-selected {
+  color: #ffffff;
 }
 
 .datepicker-field__icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #9ca3af;
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.datepicker-field__trigger:hover .datepicker-field__icon {
+  color: #ffffff;
 }
 
 .datepicker-popover {
   z-index: 50;
   width: min(22rem, calc(100vw - 2rem));
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
+  border-radius: 0;
+  border: 1px solid #000000;
   background-color: #ffffff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
-  padding: 1.25rem;
+  box-shadow: none;
+  padding: 1rem;
   outline: none;
 }
 
@@ -78,26 +95,35 @@
 }
 
 .datepicker-popover__nav-button {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.75rem;
-  border: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0;
+  border: 1px solid #000000;
   background-color: transparent;
-  color: #1f2937;
-  font-size: 1.25rem;
+  color: #000000;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .datepicker-popover__nav-button:hover {
-  background-color: #f3f4f6;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .datepicker-popover__month {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .datepicker-popover__table-wrapper {
@@ -110,92 +136,125 @@
 }
 
 .datepicker-popover__weekday {
-  padding: 0.5rem;
+  padding: 0.375rem;
   text-align: center;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .datepicker-popover__cell {
-  padding: 0.25rem 0;
+  padding: 0;
   text-align: center;
 }
 
 .datepicker-popover__day {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.5rem;
-  border: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0;
+  border: 1px solid transparent;
   background-color: transparent;
   font-size: 0.875rem;
+  font-weight: 400;
   color: #111827;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.15s ease;
 }
 
 .datepicker-popover__day:hover {
-  background-color: #f3f4f6;
+  border-color: #000000;
+  background-color: transparent;
+  font-weight: 500;
+  color: #000000;
 }
 
 .datepicker-popover__day--today {
-  border: 2px solid #3b82f6;
+  border: 1px solid #000000;
   font-weight: 600;
+  color: #000000;
 }
 
 .datepicker-popover__day--selected {
-  background-color: #3b82f6;
+  background-color: #000000;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
+  border-color: #000000;
 }
 
 .datepicker-popover__day--selected:hover {
-  background-color: #2563eb;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .datepicker-popover__day--outside {
   color: #9ca3af;
+  opacity: 0.5;
 }
 
 .datepicker-popover__day--outside:hover {
-  color: #111827;
+  border-color: #000000;
+  background-color: transparent;
+  color: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
   .datepicker-field__trigger {
-    border-color: #475569;
-    background-color: #1e293b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    border-color: #ffffff;
+    background-color: #111827;
+  }
+
+  .datepicker-field__trigger:hover {
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .datepicker-field__value {
-    color: #94a3b8;
+    color: #d1d5db;
+  }
+
+  .datepicker-field__trigger:hover .datepicker-field__value {
+    color: #000000;
   }
 
   .datepicker-field__value.is-selected {
-    color: #f8fafc;
+    color: #ffffff;
+  }
+
+  .datepicker-field__trigger:hover .datepicker-field__value.is-selected {
+    color: #000000;
   }
 
   .datepicker-field__icon {
-    color: #94a3b8;
+    color: #9ca3af;
+  }
+
+  .datepicker-field__trigger:hover .datepicker-field__icon {
+    color: #000000;
   }
 
   .datepicker-popover {
-    background-color: #1e293b;
-    border-color: #475569;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    background-color: #111827;
+    border-color: #ffffff;
+  }
+
+  .datepicker-popover__arrow {
+    fill: #111827;
   }
 
   .datepicker-popover__nav-button {
-    color: #f9fafb;
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .datepicker-popover__nav-button:hover {
-    background-color: #1f2937;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .datepicker-popover__month {
-    color: #f9fafb;
+    color: #ffffff;
   }
 
   .datepicker-popover__weekday {
@@ -203,26 +262,39 @@
   }
 
   .datepicker-popover__day {
-    color: #f9fafb;
+    color: #f3f4f6;
+  }
+
+  .datepicker-popover__day:hover {
+    border-color: #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+  .datepicker-popover__day--today {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .datepicker-popover__day--selected {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+  }
+
+  .datepicker-popover__day--selected:hover {
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .datepicker-popover__day--outside {
     color: #6b7280;
+    opacity: 0.5;
   }
 
-  .datepicker-popover__day:hover {
-    background-color: #1f2937;
-  }
-
-  .datepicker-popover__day--selected {
-    background-color: #2563eb;
-  }
-
-  .datepicker-popover__day--selected:hover {
-    background-color: #1d4ed8;
-  }
-
-  .datepicker-popover__arrow {
-    fill: #1e293b;
+  .datepicker-popover__day--outside:hover {
+    border-color: #ffffff;
+    background-color: transparent;
+    color: #ffffff;
   }
 }
