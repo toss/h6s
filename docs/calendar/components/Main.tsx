@@ -324,21 +324,6 @@ export function Main({ title, description, subDescription, navButtonText, items 
                     View Examples
                   </Link>
                 </div>
-
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🎨</span>
-                    <span>Works with any design system</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">⚡</span>
-                    <span>Lightweight & performant</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🔧</span>
-                    <span>Fully customizable</span>
-                  </div>
-                </div>
               </div>
             </div>
 
