@@ -1,5 +1,5 @@
 .daterangecalendar-dual {
-  max-width: 40rem;
+  width: 100%;
   border: 0.5px solid #d4d4d8;
   border-radius: 0.75rem;
   background: linear-gradient(to bottom right, #fafafa, #ffffff);

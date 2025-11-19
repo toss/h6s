@@ -343,9 +343,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
             </div>
 
             {/* Right Column - Calendar Examples in rounded box */}
-            <div className="hidden lg:flex absolute top-0 right-0 bottom-0 left-1/2 overflow-visible z-30 items-start justify-start">
+            <div className="hidden lg:flex absolute top-0 right-0 bottom-0 left-1/2 overflow-visible z-30 items-start justify-end">
               {/* Rounded box attached to top and right, only bottom-left corner rounded, floating above background */}
-              <div className="bg-white dark:bg-gray-800 shadow-2xl" style={{ marginTop: '0', marginRight: '0', marginBottom: '32px', marginLeft: '32px', borderTopLeftRadius: '0', borderTopRightRadius: '0', borderBottomRightRadius: '0', borderBottomLeftRadius: '32px', width: 'calc(100% - 32px)' }}>
+              <div className="bg-white dark:bg-gray-800 shadow-2xl" style={{ marginTop: '0', marginRight: '0', marginBottom: '32px', marginLeft: '0', borderTopLeftRadius: '0', borderTopRightRadius: '0', borderBottomRightRadius: '0', borderBottomLeftRadius: '32px', width: '100%', maxWidth: '44rem' }}>
                 <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: '12px' }}>
                   {/* Top row: Tailwind CSS and Bootstrap 5 */}
                   <div className="flex items-start" style={{ gap: '24px' }}>
@@ -363,7 +363,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   </div>
                   
                   {/* Bottom: Vanilla CSS Range Picker Dual */}
-                  <div className="relative w-fit">
+                  <div className="relative w-full">
                     <VanillaRangeCalendarDual />
                   </div>
                 </div>
