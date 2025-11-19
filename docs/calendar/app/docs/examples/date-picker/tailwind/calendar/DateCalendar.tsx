@@ -19,11 +19,11 @@ export function DateCalendar() {
   }
 
   return (
-    <div className="w-80 rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-600 dark:bg-slate-800 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)]">
-      <div className="flex items-start justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
+    <div className="w-80 rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-white to-purple-50 p-5 shadow-lg shadow-purple-200/50 dark:border-purple-800 dark:bg-gradient-to-br dark:from-purple-950/50 dark:via-slate-800 dark:to-purple-950/50 dark:shadow-[0_8px_24px_rgba(147,51,234,0.3),0_0_0_1px_rgba(147,51,234,0.1)]">
+      <div className="flex items-start justify-between border-b border-purple-200 pb-4 dark:border-purple-800">
         <div>
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Selected date</p>
-          <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <p className="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wide">Selected date</p>
+          <p className="text-lg font-bold text-purple-900 dark:text-purple-100 mt-1">
             {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
           </p>
         </div>
@@ -33,7 +33,7 @@ export function DateCalendar() {
             navigation.setToday();
             setSelectedDate(new Date());
           }}
-          className="rounded-lg border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
+          className="rounded-lg border-2 border-purple-300 px-3 py-1 text-sm font-semibold text-purple-700 shadow-sm transition hover:bg-purple-100 hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:border-purple-700 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:hover:border-purple-600 dark:focus:ring-purple-400"
         >
           Today
         </button>
@@ -43,16 +43,16 @@ export function DateCalendar() {
         <button
           type="button"
           onClick={navigation.toPrev}
-          className="rounded-lg p-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
+          className="rounded-lg p-2 text-purple-700 transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:focus:ring-purple-400"
           aria-label="Previous month"
         >
           ←
         </button>
-        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{format(cursorDate, "MMMM yyyy")}</h2>
+        <h2 className="text-base font-bold text-purple-900 dark:text-purple-100">{format(cursorDate, "MMMM yyyy")}</h2>
         <button
           type="button"
           onClick={navigation.toNext}
-          className="rounded-lg p-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus:ring-blue-400"
+          className="rounded-lg p-2 text-purple-700 transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:text-purple-300 dark:hover:bg-purple-900/50 dark:focus:ring-purple-400"
           aria-label="Next month"
         >
           →
@@ -64,7 +64,7 @@ export function DateCalendar() {
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="p-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+              <th key={key} className="p-2 text-sm font-semibold text-purple-600 dark:text-purple-400">
                 {format(value, "EEEEEE")}
               </th>
             ))}
@@ -82,13 +82,13 @@ export function DateCalendar() {
                       type="button"
                       onClick={() => handleDateSelect(value, isCurrentMonth)}
                       className={`
-                        box-border w-full h-10 rounded-md text-sm transition
-                        ${!isCurrentMonth && "text-gray-400 dark:text-gray-500"}
-                        ${!isCurrentMonth && !isSelected && "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100"}
-                        ${isCurrentMonth && "text-gray-900 dark:text-gray-100"}
-                        ${isCurrentMonth && !isSelected && "hover:bg-gray-100 dark:hover:bg-gray-800"}
-                        ${isCurrentDate && "border-2 border-blue-500 font-bold text-blue-500 dark:border-blue-400 dark:text-blue-400"}
-                        ${isSelected && "bg-blue-500 text-white hover:!bg-blue-600 dark:bg-blue-600 dark:hover:!bg-blue-600"}
+                        box-border w-full h-10 rounded-lg text-sm font-medium transition-all duration-200
+                        ${!isCurrentMonth && "text-purple-300 dark:text-purple-700"}
+                        ${!isCurrentMonth && !isSelected && "hover:bg-purple-100 hover:text-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-300"}
+                        ${isCurrentMonth && "text-purple-900 dark:text-purple-100"}
+                        ${isCurrentMonth && !isSelected && "hover:bg-purple-100 dark:hover:bg-purple-900/30"}
+                        ${isCurrentDate && "border-2 border-purple-500 font-bold text-purple-600 dark:border-purple-400 dark:text-purple-400"}
+                        ${isSelected && "bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-md shadow-purple-500/50 hover:!from-purple-600 hover:!to-purple-700 dark:from-purple-500 dark:to-purple-600 dark:text-white dark:hover:!from-purple-600 dark:hover:!to-purple-700"}
                       `}
                     >
                       {format(value, "d")}
