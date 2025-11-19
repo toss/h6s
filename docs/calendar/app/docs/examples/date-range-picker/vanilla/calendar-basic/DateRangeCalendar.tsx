@@ -55,7 +55,6 @@ export function DateRangeCalendar() {
     <div className="daterangecalendar-basic">
       <div className="daterangecalendar-selection">
         <div>
-          <p className="daterangecalendar-selection-label">Selected range</p>
           <p className="daterangecalendar-selection-value">{formatRange()}</p>
         </div>
       </div>

@@ -23,7 +23,6 @@ export function DateCalendar() {
     <div className="datecalendar">
       <div className="datecalendar-selection">
         <div>
-          <p className="datecalendar-selection-label">Selected date</p>
           <p className="datecalendar-selection-value">{selectedDate ? format(selectedDate, "PPP") : "Pick a date"}</p>
         </div>
         <button

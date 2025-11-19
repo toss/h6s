@@ -24,7 +24,7 @@ export default function DateCalendar() {
             <div className="d-flex flex-column">
               <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
                 <div>
-                  <p className="text-body-emphasis fw-semibold mb-0 fs-6">
+                  <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>
                     {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
                   </p>
                 </div>
@@ -35,7 +35,8 @@ export default function DateCalendar() {
                     navigation.setToday();
                     setSelectedDate(today);
                   }}
-                  className="btn btn-primary btn-sm px-3 fw-medium"
+                  className="btn btn-primary btn-sm px-2 py-1 fw-medium"
+                  style={{ fontSize: "0.75rem" }}
                 >
                   Today
                 </button>

@@ -58,8 +58,7 @@ export function DateRangeCalendar() {
             <div className="d-flex flex-column">
               <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
                 <div>
-                  <p className="text-body-secondary small mb-1 fw-medium">Selected range</p>
-                  <p className="text-body-emphasis fw-semibold mb-0 fs-6">{formatRange()}</p>
+                  <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>{formatRange()}</p>
                 </div>
               </div>
 

@@ -22,7 +22,7 @@ export function DateCalendar() {
     <div className="w-80 rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm shadow-slate-200/50 dark:border-slate-700 dark:from-slate-900 dark:to-slate-800 dark:shadow-lg dark:shadow-slate-900/50">
       <div className="flex items-start justify-between border-b border-slate-200 pb-2 dark:border-slate-700">
         <div>
-          <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
           </p>
         </div>
@@ -32,7 +32,7 @@ export function DateCalendar() {
             navigation.setToday();
             setSelectedDate(new Date());
           }}
-          className="rounded-md border border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 dark:focus:ring-slate-400"
+          className="rounded-md border border-slate-300 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 dark:focus:ring-slate-400"
         >
           Today
         </button>
