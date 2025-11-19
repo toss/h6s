@@ -14,16 +14,6 @@ const config = {
     defaultMenuCollapseLevel: 1,
     toggleButton: false,
   },
-  main: function Main({ children }: { children: React.ReactNode }) {
-    const route = useFSRoute();
-    const isHomePage = route === "/" || route === "/en" || route === "/ko";
-    
-    return (
-      <div className={isHomePage ? "homepage-full-width" : ""}>
-        {children}
-      </div>
-    );
-  },
   search: {
     placeholder: "Search documentation...",
   },
