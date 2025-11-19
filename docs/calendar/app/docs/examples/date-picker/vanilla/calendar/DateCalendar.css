@@ -1,10 +1,10 @@
 .datecalendar {
   max-width: 20rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  background-color: #ffffff;
-  padding: 1.25rem;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+  border: none;
+  border-radius: 0;
+  background: #fafafa;
+  padding: 1.5rem;
+  box-shadow: none;
 }
 
 .datecalendar-selection {
@@ -12,37 +12,41 @@
   align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 2px solid #000000;
 }
 
 .datecalendar-selection-label {
   margin: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 400;
   color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .datecalendar-selection-value {
   margin: 0.25rem 0 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
 }
 
 .datecalendar-today-button {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #000000;
   background-color: transparent;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+  border: 1px solid #000000;
+  border-radius: 0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.15s ease;
 }
 
 .datecalendar-today-button:hover {
-  background-color: #f3f4f6;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .datecalendar-header {
@@ -54,24 +58,33 @@
 
 .datecalendar-nav-button {
   padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: none;
-  color: #1f2937;
+  border: 1px solid #000000;
+  border-radius: 0;
+  background: transparent;
+  color: #000000;
   cursor: pointer;
-  font-size: 1.125rem;
-  transition: background-color 0.2s;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: all 0.15s ease;
+  min-width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .datecalendar-nav-button:hover {
-  background-color: #f3f4f6;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .datecalendar-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .datecalendar-calendar {
@@ -81,10 +94,12 @@
 
 .datecalendar-weekday {
   padding: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 400;
   color: #6b7280;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }
 
 .datecalendar-calendar tbody tr {
@@ -93,67 +108,70 @@
 
 .datecalendar-calendar td {
   position: relative;
-  padding: 0.125rem 0;
+  padding: 0;
 }
 
 .datecalendar-day {
   width: 2.5rem;
   height: 2.5rem;
-  border: none;
-  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  border-radius: 0;
   background: none;
   font-size: 0.875rem;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
   position: relative;
   z-index: 2;
 }
 
 .datecalendar-day--outside {
-  color: #9ca3af;
+  color: #d1d5db;
+  opacity: 0.4;
 }
 
 .datecalendar-day--outside:hover:not(.datecalendar-day--selected) {
-  background-color: #f3f4f6;
-  color: #111827;
+  border-color: #000000;
+  background-color: transparent;
+  color: #000000;
 }
 
 .datecalendar-day--current-month {
-  color: #111827;
+  color: #000000;
 }
 
 .datecalendar-day--current-month:hover:not(.datecalendar-day--selected) {
-  background-color: #f3f4f6;
+  border-color: #000000;
+  background-color: transparent;
+  font-weight: 500;
+  color: #000000;
 }
 
 .datecalendar-day--today {
-  border: 2px solid #3b82f6;
-}
-
-.datecalendar-day--today:not(.datecalendar-day--selected) {
-  font-weight: 600;
+  border: 2px solid #000000;
+  font-weight: 500;
+  color: #000000;
 }
 
 .datecalendar-day--selected {
-  background-color: #3b82f6;
+  background-color: #000000;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
+  border-color: #000000;
 }
 
 .datecalendar-day--selected:hover {
-  background-color: #2563eb;
+  background-color: #000000;
   color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   .datecalendar {
-    border-color: #475569;
-    background-color: #1e293b;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    background: #0a0a0a;
   }
 
   .datecalendar-selection {
-    border-color: #334155;
+    border-color: #ffffff;
   }
 
   .datecalendar-selection-label {
@@ -161,28 +179,31 @@
   }
 
   .datecalendar-selection-value {
-    color: #f9fafb;
+    color: #ffffff;
   }
 
   .datecalendar-today-button {
-    color: #f9fafb;
-    border-color: #475569;
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .datecalendar-today-button:hover {
-    background-color: #1f2937;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .datecalendar-nav-button {
-    color: #f9fafb;
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .datecalendar-nav-button:hover {
-    background-color: #1f2937;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .datecalendar-title {
-    color: #f9fafb;
+    color: #ffffff;
   }
 
   .datecalendar-weekday {
@@ -190,37 +211,39 @@
   }
 
   .datecalendar-day--outside {
-    color: #6b7280;
+    color: #4b5563;
+    opacity: 0.4;
   }
 
   .datecalendar-day--outside:hover:not(.datecalendar-day--selected) {
-    background-color: #374151;
-    color: #f9fafb;
+    border-color: #ffffff;
+    background-color: transparent;
+    color: #ffffff;
   }
 
   .datecalendar-day--current-month {
-    color: #f9fafb;
+    color: #ffffff;
   }
 
   .datecalendar-day--current-month:hover:not(.datecalendar-day--selected) {
-    background-color: #1f2937;
+    border-color: #ffffff;
+    background-color: transparent;
+    color: #ffffff;
   }
 
   .datecalendar-day--today {
-    border: 2px solid #3b82f6;
-  }
-
-  .datecalendar-day--today:not(.datecalendar-day--selected) {
-    font-weight: 600;
+    border-color: #ffffff;
+    color: #ffffff;
   }
 
   .datecalendar-day--selected {
-    background-color: #2563eb;
-    color: #ffffff;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
   }
 
   .datecalendar-day--selected:hover {
-    background-color: #1d4ed8;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
   }
 }
