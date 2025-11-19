@@ -62,7 +62,7 @@ export function DateRangeCalendar() {
                 </div>
               </div>
 
-              <div className="d-flex justify-content-between align-items-center py-3">
+              <div className="d-flex justify-content-between align-items-center py-1">
                 <button
                   type="button"
                   onClick={navigation.toPrev}
@@ -72,7 +72,7 @@ export function DateRangeCalendar() {
                   <span style={{ fontSize: "1.25rem" }}>←</span>
                 </button>
 
-                <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">{format(cursorDate, "MMMM yyyy")}</h2>
+                <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>{format(cursorDate, "MMMM yyyy")}</h2>
 
                 <button
                   type="button"

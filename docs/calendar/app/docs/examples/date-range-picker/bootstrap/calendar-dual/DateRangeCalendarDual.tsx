@@ -166,7 +166,7 @@ export function DateRangeCalendarDual() {
 
             <div className="row g-4">
               <div className="col-6 d-flex flex-column">
-                <div className="d-flex justify-content-between align-items-center py-3">
+                <div className="d-flex justify-content-between align-items-center py-1">
                   <button
                     type="button"
                     onClick={() => {
@@ -180,7 +180,7 @@ export function DateRangeCalendarDual() {
                     <span style={{ fontSize: "1.25rem" }}>←</span>
                   </button>
 
-                  <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
+                  <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>
                     {format(leftCalendar.cursorDate, "MMMM yyyy")}
                   </h2>
 
@@ -190,10 +190,10 @@ export function DateRangeCalendarDual() {
               </div>
 
               <div className="col-6 d-flex flex-column">
-                <div className="d-flex justify-content-between align-items-center py-3">
+                <div className="d-flex justify-content-between align-items-center py-1">
                   <div style={{ width: "2.125rem" }} />
 
-                  <h2 className="mb-0 fw-semibold text-body-emphasis fs-6">
+                  <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>
                     {format(rightCalendar.cursorDate, "MMMM yyyy")}
                   </h2>
 

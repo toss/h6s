@@ -83,16 +83,16 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
       if (!root) {
         return;
       }
-      const { body, documentElement } = doc;
-      
+      const { body } = doc;
+
       // Use getBoundingClientRect for more accurate measurements
       const rootRect = root.getBoundingClientRect();
       const bodyRect = body?.getBoundingClientRect();
-      
+
+      // Use only getBoundingClientRect for accurate height (scrollHeight can be larger than actual content)
       const height = Math.max(
         rootRect.height,
-        body?.scrollHeight ?? 0,
-        documentElement?.scrollHeight ?? 0,
+        bodyRect?.height ?? 0,
         0
       );
       
@@ -108,7 +108,6 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
         root.scrollWidth,
         bodyRect?.width ?? 0,
         body?.scrollWidth ?? 0,
-        documentElement?.scrollWidth ?? 0,
         0
       );
       

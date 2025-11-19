@@ -346,16 +346,30 @@ export function Main({ title, description, subDescription, navButtonText, items 
             <div className="hidden lg:flex absolute top-0 right-0 bottom-0 left-1/2 overflow-visible z-30 items-start justify-end">
               {/* Rounded box attached to top and right, only bottom-left corner rounded, floating above background */}
               <div className="bg-white dark:bg-gray-800 shadow-2xl" style={{ marginTop: '0', marginRight: '0', marginBottom: '32px', marginLeft: '0', borderTopLeftRadius: '0', borderTopRightRadius: '0', borderBottomRightRadius: '0', borderBottomLeftRadius: '32px', width: '100%', maxWidth: '44rem' }}>
-                <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: '12px' }}>
+                <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: '4' }}>
                   {/* Top row: Tailwind CSS and Bootstrap 5 */}
-                  <div className="flex items-start" style={{ gap: '24px' }}>
+                  <div className="flex items-start" style={{ gap: '24px', height: '420px' }}>
                     {/* Tailwind CSS */}
-                    <div className="relative">
+                    <div className="flex flex-col" style={{ gap: '8px' }}>
+                      {/* Tailwind CSS Badge */}
+                      <Link
+                        href="/docs/examples/date-picker/tailwind"
+                        className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-md shadow-cyan-500/20 dark:shadow-cyan-500/30 border border-white/20 dark:border-cyan-400/30 w-fit"
+                      >
+                        Tailwind CSS
+                      </Link>
                       <TailwindCalendar />
                     </div>
-                    
+
                     {/* Bootstrap 5 */}
-                    <div className="relative">
+                    <div className="flex flex-col" style={{ gap: '8px' }}>
+                      {/* Bootstrap 5 Badge */}
+                      <Link
+                        href="/docs/examples/date-picker/bootstrap"
+                        className="bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-500 dark:to-purple-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-md shadow-purple-600/20 dark:shadow-purple-500/30 border border-white/20 dark:border-purple-400/30 w-fit"
+                      >
+                        Bootstrap 5
+                      </Link>
                       <BootstrapPreview>
                         <BootstrapDateCalendar />
                       </BootstrapPreview>
@@ -363,7 +377,14 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   </div>
                   
                   {/* Bottom: Vanilla CSS Range Picker Dual */}
-                  <div className="relative w-full">
+                  <div className="flex flex-col w-full" style={{ gap: '8px', height: '416px' }}>
+                    {/* Vanilla CSS Badge */}
+                    <Link
+                      href="/docs/examples/date-range-picker/vanilla"
+                      className="bg-gradient-to-r from-zinc-600 to-zinc-700 dark:from-zinc-500 dark:to-zinc-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-md shadow-zinc-600/20 dark:shadow-zinc-500/30 border border-white/15 dark:border-zinc-400/30 w-fit"
+                    >
+                      Vanilla CSS
+                    </Link>
                     <VanillaRangeCalendarDual />
                   </div>
                 </div>
