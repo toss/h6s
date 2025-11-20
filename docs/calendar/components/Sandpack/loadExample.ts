@@ -1,6 +1,6 @@
-import type { SandpackFiles } from "@codesandbox/sandpack-react";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import type { SandpackFiles } from "@codesandbox/sandpack-react";
 
 /**
  * Load example files from the file system at build time (Server Component only)
@@ -29,7 +29,7 @@ export function loadExample(basePath: string, files: string[]): SandpackFiles {
       acc[sandpackPath] = content;
     } catch (error) {
       throw new Error(
-        `Failed to load example file: ${basePath}/${file}\n${error instanceof Error ? error.message : String(error)}`
+        `Failed to load example file: ${basePath}/${file}\n${error instanceof Error ? error.message : String(error)}`,
       );
     }
     return acc;

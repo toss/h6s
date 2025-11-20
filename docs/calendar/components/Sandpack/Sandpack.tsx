@@ -3,8 +3,8 @@
 import {
   type CodeEditorProps,
   type PreviewProps,
-  type SandpackFiles,
   SandpackCodeEditor,
+  type SandpackFiles,
   SandpackLayout,
   type SandpackLayoutProps,
   SandpackPreview,

@@ -1,5 +1,5 @@
-import React from "react";
 import { useFSRoute } from "nextra/hooks";
+import React from "react";
 
 const config = {
   logo: () => <strong>@h6s/calendar</strong>,
@@ -20,4 +20,3 @@ const config = {
 };
 
 export default config;
-

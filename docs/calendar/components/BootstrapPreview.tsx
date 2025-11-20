@@ -90,27 +90,23 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
       const bodyRect = body?.getBoundingClientRect();
 
       // Use only getBoundingClientRect for accurate height (scrollHeight can be larger than actual content)
-      const height = Math.max(
-        rootRect.height,
-        bodyRect?.height ?? 0,
-        0
-      );
-      
+      const height = Math.max(rootRect.height, bodyRect?.height ?? 0, 0);
+
       // Get the actual content width from the first child or root itself
       const firstChild = root.firstElementChild as HTMLElement;
-      const contentWidth = firstChild 
+      const contentWidth = firstChild
         ? Math.max(firstChild.getBoundingClientRect().width, firstChild.scrollWidth)
         : rootRect.width;
-      
+
       const width = Math.max(
         contentWidth,
         rootRect.width,
         root.scrollWidth,
         bodyRect?.width ?? 0,
         body?.scrollWidth ?? 0,
-        0
+        0,
       );
-      
+
       iframe.style.height = height ? `${height}px` : "0px";
       iframe.style.width = width ? `${Math.ceil(width)}px` : "auto";
     };
@@ -160,13 +156,11 @@ export function BootstrapPreview({ children, title = "Bootstrap Preview" }: Boot
         }}
         sandbox="allow-scripts allow-same-origin"
       />
-      {mountNode && createPortal(
-        <div style={{ display: 'inline-block', width: 'fit-content', overflow: 'hidden' }}>
-          {children}
-        </div>,
-        mountNode
-      )}
+      {mountNode &&
+        createPortal(
+          <div style={{ display: "inline-block", width: "fit-content", overflow: "hidden" }}>{children}</div>,
+          mountNode,
+        )}
     </>
   );
 }
-

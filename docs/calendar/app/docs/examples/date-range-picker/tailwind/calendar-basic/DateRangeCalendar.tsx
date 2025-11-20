@@ -80,40 +80,43 @@ export function DateRangeCalendar() {
 
       <div className="w-full">
         <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
-        <thead>
-          <tr>
-            {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="w-[calc(100%/7)] px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden">
-                {format(value, "EEEEEE")}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {body.value.map(({ key, value: days }) => (
-            <tr key={key}>
-              {days.map(({ key, value, isCurrentMonth }) => {
-                const inRange = isInRange(value);
-                const selected = isSelected(value);
-                const today = isToday(value);
+          <thead>
+            <tr>
+              {headers.weekdays.map(({ key, value }) => (
+                <th
+                  key={key}
+                  className="w-[calc(100%/7)] px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden"
+                >
+                  {format(value, "EEEEEE")}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {body.value.map(({ key, value: days }) => (
+              <tr key={key}>
+                {days.map(({ key, value, isCurrentMonth }) => {
+                  const inRange = isInRange(value);
+                  const selected = isSelected(value);
+                  const today = isToday(value);
 
-                return (
-                  <td
-                    key={key}
-                    className={`
+                  return (
+                    <td
+                      key={key}
+                      className={`
                       relative w-[calc(100%/7)] p-0 text-center
                       ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-[1.8rem] before:-translate-y-1/2 before:bg-slate-200 before:dark:bg-slate-700"}
                     `}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleDateSelect(value)}
-                      onMouseEnter={() => {
-                        if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
-                          setHoverDate(value);
-                        }
-                      }}
-                      className={`
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleDateSelect(value)}
+                        onMouseEnter={() => {
+                          if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
+                            setHoverDate(value);
+                          }
+                        }}
+                        className={`
                         box-border relative z-10 w-full h-9 rounded-md text-xs font-medium transition-all duration-150
                         ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                         ${isCurrentMonth && !selected && "text-slate-900 dark:text-slate-100"}
@@ -122,16 +125,16 @@ export function DateRangeCalendar() {
                         ${selected && "!bg-slate-600 !text-white shadow-md shadow-slate-600/30 hover:!bg-slate-700 dark:!bg-slate-500 dark:shadow-slate-500/30 dark:hover:!bg-slate-400"}
                         ${today && "border-2 border-slate-600 font-bold text-slate-700 dark:border-slate-400 dark:text-slate-300"}
                       `}
-                    >
-                      {format(value, "d")}
-                    </button>
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                      >
+                        {format(value, "d")}
+                      </button>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

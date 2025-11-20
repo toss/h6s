@@ -61,7 +61,11 @@ export function DateRangeCalendarDual() {
           <thead>
             <tr>
               {calendar.headers.weekdays.map(({ key, value }) => (
-                <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
+                <th
+                  key={key}
+                  className="fw-medium text-body-secondary px-1 py-2"
+                  style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}
+                >
                   {format(value, "EEEEEE")}
                 </th>
               ))}
@@ -160,7 +164,9 @@ export function DateRangeCalendarDual() {
           <div className="card-body p-3">
             <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
               <div>
-                <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>{formatRange()}</p>
+                <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>
+                  {formatRange()}
+                </p>
               </div>
             </div>
 

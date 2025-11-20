@@ -58,7 +58,9 @@ export function DateRangeCalendar() {
             <div className="d-flex flex-column">
               <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
                 <div>
-                  <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>{formatRange()}</p>
+                  <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>
+                    {formatRange()}
+                  </p>
                 </div>
               </div>
 
@@ -72,7 +74,9 @@ export function DateRangeCalendar() {
                   <span style={{ fontSize: "1.25rem" }}>←</span>
                 </button>
 
-                <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>{format(cursorDate, "MMMM yyyy")}</h2>
+                <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>
+                  {format(cursorDate, "MMMM yyyy")}
+                </h2>
 
                 <button
                   type="button"
@@ -86,96 +90,104 @@ export function DateRangeCalendar() {
 
               <div style={{ display: "inline-block", width: "fit-content" }}>
                 <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
-                <thead>
-                  <tr>
-                    {headers.weekdays.map(({ key, value }) => (
-                      <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
-                        {format(value, "EEEEEE")}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {body.value.map(({ key, value: days }) => (
-                    <tr key={key}>
-                      {days.map(({ key, value, isCurrentMonth }) => {
-                        const inRange = isInRange(value);
-                        const selected = isSelected(value);
-                        const today = isToday(value);
-
-                        let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
-                        const style = {
-                          width: "2.25rem",
-                          height: "2.25rem",
-                          fontSize: "0.75rem",
-                          lineHeight: "1",
-                          padding: "0",
-                          transition: "all 0.15s ease",
-                          borderRadius: "0.375rem",
-                          position: "relative",
-                          zIndex: 2,
-                          "--bs-btn-hover-bg": selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
-                          "--bs-btn-hover-border-color": "transparent",
-                        } as React.CSSProperties;
-
-                        const cellStyle: React.CSSProperties = {
-                          position: "relative",
-                          padding: "0",
-                        };
-
-                        const rangeStyle: React.CSSProperties | undefined = inRange
-                          ? {
-                              content: '""',
-                              position: "absolute",
-                              top: "50%",
-                              left: 0,
-                              right: 0,
-                              height: "2rem",
-                              transform: "translateY(-50%)",
-                              backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
-                              zIndex: 0,
-                            }
-                          : undefined;
-
-                        if (today) {
-                          style.border = "2px solid #3b82f6";
-                        }
-
-                        if (selected) {
-                          btnClass += " btn-primary fw-semibold";
-                        } else if (inRange) {
-                          btnClass += " text-primary-emphasis";
-                          style.fontWeight = 500;
-                        } else if (isCurrentMonth) {
-                          btnClass += " text-body";
-                        } else {
-                          btnClass += " text-secondary";
-                        }
-
-                        return (
-                          <td key={key} className="p-0" style={cellStyle}>
-                            {inRange && <div style={rangeStyle} />}
-                            <button
-                              type="button"
-                              onClick={() => handleDateSelect(value)}
-                              onMouseEnter={() => {
-                                if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
-                                  setHoverDate(value);
-                                }
-                              }}
-                              className={btnClass}
-                              style={style}
-                              aria-label={format(value, "PPP")}
-                            >
-                              {format(value, "d")}
-                            </button>
-                          </td>
-                        );
-                      })}
+                  <thead>
+                    <tr>
+                      {headers.weekdays.map(({ key, value }) => (
+                        <th
+                          key={key}
+                          className="fw-medium text-body-secondary px-1 py-2"
+                          style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}
+                        >
+                          {format(value, "EEEEEE")}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {body.value.map(({ key, value: days }) => (
+                      <tr key={key}>
+                        {days.map(({ key, value, isCurrentMonth }) => {
+                          const inRange = isInRange(value);
+                          const selected = isSelected(value);
+                          const today = isToday(value);
+
+                          let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
+                          const style = {
+                            width: "2.25rem",
+                            height: "2.25rem",
+                            fontSize: "0.75rem",
+                            lineHeight: "1",
+                            padding: "0",
+                            transition: "all 0.15s ease",
+                            borderRadius: "0.375rem",
+                            position: "relative",
+                            zIndex: 2,
+                            "--bs-btn-hover-bg": selected ? "#3b82f6" : "light-dark(#f3f4f6, #374151)",
+                            "--bs-btn-hover-border-color": "transparent",
+                          } as React.CSSProperties;
+
+                          const cellStyle: React.CSSProperties = {
+                            position: "relative",
+                            padding: "0",
+                          };
+
+                          const rangeStyle: React.CSSProperties | undefined = inRange
+                            ? {
+                                content: '""',
+                                position: "absolute",
+                                top: "50%",
+                                left: 0,
+                                right: 0,
+                                height: "2rem",
+                                transform: "translateY(-50%)",
+                                backgroundColor: "light-dark(#dbeafe, #1e3a8a)",
+                                zIndex: 0,
+                              }
+                            : undefined;
+
+                          if (today) {
+                            style.border = "2px solid #3b82f6";
+                          }
+
+                          if (selected) {
+                            btnClass += " btn-primary fw-semibold";
+                          } else if (inRange) {
+                            btnClass += " text-primary-emphasis";
+                            style.fontWeight = 500;
+                          } else if (isCurrentMonth) {
+                            btnClass += " text-body";
+                          } else {
+                            btnClass += " text-secondary";
+                          }
+
+                          return (
+                            <td key={key} className="p-0" style={cellStyle}>
+                              {inRange && <div style={rangeStyle} />}
+                              <button
+                                type="button"
+                                onClick={() => handleDateSelect(value)}
+                                onMouseEnter={() => {
+                                  if (
+                                    dateRange.start &&
+                                    !dateRange.end &&
+                                    !isSameDay(value, hoverDate || new Date(0))
+                                  ) {
+                                    setHoverDate(value);
+                                  }
+                                }}
+                                className={btnClass}
+                                style={style}
+                                aria-label={format(value, "PPP")}
+                              >
+                                {format(value, "d")}
+                              </button>
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

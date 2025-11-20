@@ -49,7 +49,8 @@ export function DateRangeCalendarDual() {
   }
 
   function isRangeEnd(date: Date): boolean {
-    const end = dateRange.end || (hoverDate && dateRange.start && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
+    const end =
+      dateRange.end || (hoverDate && dateRange.start && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
     if (!end) return false;
     return isSameDay(date, end);
   }

@@ -61,7 +61,10 @@ export function DateRangeCalendarDual() {
           <thead>
             <tr>
               {calendar.headers.weekdays.map(({ key, value }) => (
-                <th key={key} className="w-9 px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden">
+                <th
+                  key={key}
+                  className="w-9 px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden"
+                >
                   {format(value, "EEEEEE")}
                 </th>
               ))}

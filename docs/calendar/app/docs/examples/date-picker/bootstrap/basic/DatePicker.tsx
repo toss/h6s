@@ -18,15 +18,17 @@ export default function DatePicker() {
           <button
             type="button"
             className="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center"
-            style={{ 
-              textAlign: "left",
-              fontSize: "0.875rem",
-              padding: "0.375rem 0.75rem",
-              "--bs-btn-hover-bg": "var(--bs-secondary-bg-subtle)",
-              "--bs-btn-hover-border-color": "var(--bs-secondary-border-subtle)",
-              "--bs-btn-active-bg": "var(--bs-secondary-bg-subtle)",
-              "--bs-btn-active-border-color": "var(--bs-secondary-border-subtle)",
-            } as React.CSSProperties}
+            style={
+              {
+                textAlign: "left",
+                fontSize: "0.875rem",
+                padding: "0.375rem 0.75rem",
+                "--bs-btn-hover-bg": "var(--bs-secondary-bg-subtle)",
+                "--bs-btn-hover-border-color": "var(--bs-secondary-border-subtle)",
+                "--bs-btn-active-bg": "var(--bs-secondary-bg-subtle)",
+                "--bs-btn-active-border-color": "var(--bs-secondary-border-subtle)",
+              } as React.CSSProperties
+            }
           >
             <span className={`${selectedDate ? "text-body" : "text-body-secondary"}`}>{displayValue}</span>
             <svg
@@ -109,7 +111,11 @@ function DatePickerContent({
           <thead>
             <tr>
               {headers.weekdays.map(({ key, value }) => (
-                <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
+                <th
+                  key={key}
+                  className="fw-medium text-body-secondary px-1 py-2"
+                  style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}
+                >
                   {format(value, "EEEEEE")}
                 </th>
               ))}
@@ -133,9 +139,9 @@ function DatePickerContent({
                     "--bs-btn-hover-border-color": "transparent",
                   } as React.CSSProperties;
 
-                        if (today) {
-                          style.border = "2px solid #3b82f6";
-                        }
+                  if (today) {
+                    style.border = "2px solid #3b82f6";
+                  }
 
                   if (isSelected) {
                     btnClass += " btn-primary";

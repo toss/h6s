@@ -52,7 +52,9 @@ export default function DateCalendar() {
                   <span style={{ fontSize: "1.25rem" }}>←</span>
                 </button>
 
-                <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>{format(cursorDate, "MMMM yyyy")}</h2>
+                <h2 className="mb-0 fw-semibold text-body-emphasis" style={{ fontSize: "0.8rem" }}>
+                  {format(cursorDate, "MMMM yyyy")}
+                </h2>
 
                 <button
                   type="button"
@@ -66,65 +68,69 @@ export default function DateCalendar() {
 
               <div style={{ display: "inline-block", width: "fit-content" }}>
                 <table className="table table-borderless text-center mb-0">
-                <thead>
-                  <tr>
-                    {headers.weekdays.map(({ key, value }) => (
-                      <th key={key} className="fw-medium text-body-secondary px-1 py-2" style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}>
-                        {format(value, "EEEEEE")}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {body.value.map(({ key, value: days }) => (
-                    <tr key={key}>
-                      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                        const isSelected = selectedDate && isSameDay(value, selectedDate);
-                        const today = isCurrentDate;
-
-                        let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
-                        const style = {
-                          width: "2.25rem",
-                          height: "2.25rem",
-                          fontSize: "0.75rem",
-                          lineHeight: "1",
-                          padding: "0",
-                          transition: "all 0.15s ease",
-                          borderRadius: "0.375rem",
-                        } as React.CSSProperties;
-
-                        if (today) {
-                          style.border = "2px solid var(--bs-primary)";
-                        }
-
-                        if (isSelected) {
-                          btnClass += " btn-primary";
-                        } else if (today) {
-                          btnClass += " text-body fw-semibold";
-                        } else if (isCurrentMonth) {
-                          btnClass += " text-body";
-                        } else {
-                          btnClass += " text-secondary";
-                        }
-
-                        return (
-                          <td key={key} className="p-0" style={{ position: "relative", padding: 0 }}>
-                            <button
-                              type="button"
-                              onClick={() => handleDateSelect(value, isCurrentMonth)}
-                              className={btnClass}
-                              style={style}
-                              aria-label={format(value, "PPP")}
-                            >
-                              {format(value, "d")}
-                            </button>
-                          </td>
-                        );
-                      })}
+                  <thead>
+                    <tr>
+                      {headers.weekdays.map(({ key, value }) => (
+                        <th
+                          key={key}
+                          className="fw-medium text-body-secondary px-1 py-2"
+                          style={{ fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden" }}
+                        >
+                          {format(value, "EEEEEE")}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {body.value.map(({ key, value: days }) => (
+                      <tr key={key}>
+                        {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
+                          const isSelected = selectedDate && isSameDay(value, selectedDate);
+                          const today = isCurrentDate;
+
+                          let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
+                          const style = {
+                            width: "2.25rem",
+                            height: "2.25rem",
+                            fontSize: "0.75rem",
+                            lineHeight: "1",
+                            padding: "0",
+                            transition: "all 0.15s ease",
+                            borderRadius: "0.375rem",
+                          } as React.CSSProperties;
+
+                          if (today) {
+                            style.border = "2px solid var(--bs-primary)";
+                          }
+
+                          if (isSelected) {
+                            btnClass += " btn-primary";
+                          } else if (today) {
+                            btnClass += " text-body fw-semibold";
+                          } else if (isCurrentMonth) {
+                            btnClass += " text-body";
+                          } else {
+                            btnClass += " text-secondary";
+                          }
+
+                          return (
+                            <td key={key} className="p-0" style={{ position: "relative", padding: 0 }}>
+                              <button
+                                type="button"
+                                onClick={() => handleDateSelect(value, isCurrentMonth)}
+                                className={btnClass}
+                                style={style}
+                                aria-label={format(value, "PPP")}
+                              >
+                                {format(value, "d")}
+                              </button>
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

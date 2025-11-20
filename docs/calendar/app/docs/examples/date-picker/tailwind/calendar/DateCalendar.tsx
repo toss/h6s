@@ -60,27 +60,30 @@ export function DateCalendar() {
 
       <div className="w-full">
         <table className="w-full border-collapse">
-        <thead>
-          <tr>
-            {headers.weekdays.map(({ key, value }) => (
-              <th key={key} className="w-[calc(100%/7)] px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden">
-                {format(value, "EEEEEE")}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {body.value.map(({ key, value: days }) => (
-            <tr key={key}>
-              {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                const isSelected = selectedDate && isSameDay(value, selectedDate);
+          <thead>
+            <tr>
+              {headers.weekdays.map(({ key, value }) => (
+                <th
+                  key={key}
+                  className="w-[calc(100%/7)] px-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap overflow-hidden"
+                >
+                  {format(value, "EEEEEE")}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {body.value.map(({ key, value: days }) => (
+              <tr key={key}>
+                {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
+                  const isSelected = selectedDate && isSameDay(value, selectedDate);
 
-                return (
-                  <td key={key} className="w-[calc(100%/7)] p-0 text-center">
-                    <button
-                      type="button"
-                      onClick={() => handleDateSelect(value, isCurrentMonth)}
-                      className={`
+                  return (
+                    <td key={key} className="w-[calc(100%/7)] p-0 text-center">
+                      <button
+                        type="button"
+                        onClick={() => handleDateSelect(value, isCurrentMonth)}
+                        className={`
                         box-border w-full h-9 rounded-md text-xs font-medium transition-all duration-150
                         ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                         ${!isCurrentMonth && !isSelected && "hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"}
@@ -89,16 +92,16 @@ export function DateCalendar() {
                         ${isCurrentDate && "border-2 border-slate-600 font-bold text-slate-700 dark:border-slate-400 dark:text-slate-300"}
                         ${isSelected && "bg-slate-600 text-white shadow-md shadow-slate-600/30 hover:bg-slate-700 dark:bg-slate-500 dark:shadow-slate-500/30 dark:hover:bg-slate-400"}
                       `}
-                    >
-                      {format(value, "d")}
-                    </button>
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                      >
+                        {format(value, "d")}
+                      </button>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

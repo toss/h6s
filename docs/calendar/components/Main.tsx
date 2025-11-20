@@ -1,10 +1,10 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
 import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
+import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
 import { DateRangeCalendarDual as VanillaRangeCalendarDual } from "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
 
@@ -16,7 +16,7 @@ type MainProps = {
   items: Array<{ title: string; description: string }>;
 };
 
-const MIDDLE_LETTERS = ['e', 'a', 'd', 'l', 'e', 's'] as const;
+const MIDDLE_LETTERS = ["e", "a", "d", "l", "e", "s"] as const;
 const HEADLESS_TEXT = MIDDLE_LETTERS.join("");
 
 const WIDTH_TRANSITION = {
@@ -41,7 +41,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
   const hiddenMeasureRef = useRef<HTMLSpanElement | null>(null);
   const hoverDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const currentTitleHoverRef = useRef<boolean>(false);
-  
+
   useEffect(() => {
     const measureWidth = () => {
       if (hiddenMeasureRef.current && headlessWidthRef.current === null) {
@@ -51,19 +51,17 @@ export function Main({ title, description, subDescription, navButtonText, items 
         }
       }
     };
-    
+
     measureWidth();
     const timeout = setTimeout(measureWidth, 100);
-    
+
     return () => clearTimeout(timeout);
   }, []);
 
-
-  
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
     let checkTimer: NodeJS.Timeout | null = null;
-    
+
     const startAutoPlay = () => {
       if (sixWidthRef.current !== null && headlessWidthRef.current !== null) {
         timer = setTimeout(() => {
@@ -76,9 +74,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
         checkTimer = setTimeout(startAutoPlay, 50);
       }
     };
-    
+
     startAutoPlay();
-    
+
     return () => {
       if (timer) clearTimeout(timer);
       if (checkTimer) clearTimeout(checkTimer);
@@ -120,7 +118,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
 
     if (!titleHover) {
       const targetWidth = sixWidthRef.current ?? "auto";
-      setMiddleWidth(prevWidth => {
+      setMiddleWidth((prevWidth) => {
         if (prevWidth === targetWidth) return prevWidth;
         return targetWidth;
       });
@@ -128,80 +126,101 @@ export function Main({ title, description, subDescription, navButtonText, items 
       // When expanding to headless, use measured width from actual rendered node
       // Don't use hiddenMeasureRef as it may be inaccurate
       const targetWidth = headlessWidthRef.current ?? "auto";
-      
-      setMiddleWidth(prevWidth => {
+
+      setMiddleWidth((prevWidth) => {
         if (prevWidth === targetWidth) return prevWidth;
         return targetWidth;
       });
     }
   }, [titleHover]);
 
-  const sixRefCallback = useCallback((node: HTMLSpanElement | null) => {
-    if (node && !titleHover) {
-      const width = node.scrollWidth;
-      const prevWidth = sixWidthRef.current;
-      if (prevWidth !== width) {
-        sixWidthRef.current = width;
-        setMiddleWidth(width);
-      }
-    }
-  }, [titleHover]);
-
-  const headlessRefCallback = useCallback((node: HTMLSpanElement | null) => {
-    if (node) {
-      // Measure immediately first
-      const width = node.scrollWidth;
-      if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
-        headlessWidthRef.current = width;
-        if (titleHover) {
+  const sixRefCallback = useCallback(
+    (node: HTMLSpanElement | null) => {
+      if (node && !titleHover) {
+        const width = node.scrollWidth;
+        const prevWidth = sixWidthRef.current;
+        if (prevWidth !== width) {
+          sixWidthRef.current = width;
           setMiddleWidth(width);
         }
       }
+    },
+    [titleHover],
+  );
 
-      // Then measure again after animation completes for accuracy
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-      animationTimeoutRef.current = setTimeout(() => {
-        const finalWidth = node.scrollWidth;
-        if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - finalWidth) > 1) {
-          headlessWidthRef.current = finalWidth;
+  const headlessRefCallback = useCallback(
+    (node: HTMLSpanElement | null) => {
+      if (node) {
+        // Measure immediately first
+        const width = node.scrollWidth;
+        if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - width) > 1) {
+          headlessWidthRef.current = width;
           if (titleHover) {
-            setMiddleWidth(finalWidth);
+            setMiddleWidth(width);
           }
         }
-        animationTimeoutRef.current = null;
-      }, MIDDLE_LETTERS.length * 0.06 * 1000 + 80);
-    }
-  }, [titleHover]);
 
-  const letterAnimate = useMemo(() => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  }), []);
-
-  const letterExit = useMemo(() => ({
-    opacity: 0,
-    y: 4,
-    scale: 0.95,
-    transition: LETTER_EXIT_TRANSITION,
-  }), []);
-
-  const widthAnimate = useMemo(() => ({
-    width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
-  }), [middleWidth]);
-
-  const layoutTransition = useMemo(() => ({
-    layout: {
-      duration: 0.3,
-      ease: [0.4, 0, 0.2, 1] as const,
+        // Then measure again after animation completes for accuracy
+        if (animationTimeoutRef.current) {
+          clearTimeout(animationTimeoutRef.current);
+        }
+        animationTimeoutRef.current = setTimeout(
+          () => {
+            const finalWidth = node.scrollWidth;
+            if (headlessWidthRef.current === null || Math.abs(headlessWidthRef.current - finalWidth) > 1) {
+              headlessWidthRef.current = finalWidth;
+              if (titleHover) {
+                setMiddleWidth(finalWidth);
+              }
+            }
+            animationTimeoutRef.current = null;
+          },
+          MIDDLE_LETTERS.length * 0.06 * 1000 + 80,
+        );
+      }
     },
-  }), []);
+    [titleHover],
+  );
 
-  const widthStyle = useMemo(() => ({ willChange: 'width' }), []);
-  const headlessContainerStyle = useMemo(() => ({ willChange: 'opacity' }), []);
-  const letterStyle = useMemo(() => ({ willChange: 'transform, opacity' }), []);
+  const letterAnimate = useMemo(
+    () => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    }),
+    [],
+  );
+
+  const letterExit = useMemo(
+    () => ({
+      opacity: 0,
+      y: 4,
+      scale: 0.95,
+      transition: LETTER_EXIT_TRANSITION,
+    }),
+    [],
+  );
+
+  const widthAnimate = useMemo(
+    () => ({
+      width: middleWidth === "auto" ? "auto" : `${middleWidth}px`,
+    }),
+    [middleWidth],
+  );
+
+  const layoutTransition = useMemo(
+    () => ({
+      layout: {
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1] as const,
+      },
+    }),
+    [],
+  );
+
+  const widthStyle = useMemo(() => ({ willChange: "width" }), []);
+  const headlessContainerStyle = useMemo(() => ({ willChange: "opacity" }), []);
+  const letterStyle = useMemo(() => ({ willChange: "transform, opacity" }), []);
 
   return (
     <section className="flex flex-col min-h-screen">
@@ -212,7 +231,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
       >
         {HEADLESS_TEXT}
       </span>
-      
+
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-900">
         {/* Main Content - Two Column Layout */}
         <div className="relative z-10 w-full h-full">
@@ -230,11 +249,11 @@ export function Main({ title, description, subDescription, navButtonText, items 
                   <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
                     @
                   </span>
-                  
+
                   <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block">
                     h
                   </span>
-                  
+
                   <motion.span
                     ref={middleContainerRef}
                     className="inline-flex items-center overflow-hidden"
@@ -245,7 +264,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                     <AnimatePresence mode="sync">
                       <span
                         className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                        style={{ display: titleHover ? 'none' : 'inline-block' }}
+                        style={{ display: titleHover ? "none" : "inline-block" }}
                         ref={sixRefCallback}
                       >
                         6
@@ -262,7 +281,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                           ref={headlessRefCallback}
                         >
                           {MIDDLE_LETTERS.map((letter, idx) => {
-                            const letterTransition = titleHover 
+                            const letterTransition = titleHover
                               ? {
                                   delay: idx === 0 ? 0.05 : idx * 0.05 + 0.01,
                                   duration: 0.3,
@@ -273,30 +292,33 @@ export function Main({ title, description, subDescription, navButtonText, items 
                                   duration: 0.18,
                                   ease: [0.4, 0, 0.2, 1] as const,
                                 };
-                            
+
                             return (
-                            <motion.span
-                              key={`${letter}-${idx}`}
-                              className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
-                              style={letterStyle}
-                              initial={{ opacity: 0, y: 8, scale: 0.9 }}
-                              animate={letterAnimate}
-                              exit={letterExit}
-                              transition={letterTransition}
-                            >
-                              {letter}
-                            </motion.span>
+                              <motion.span
+                                key={`${letter}-${
+                                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                                  idx
+                                }`}
+                                className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block"
+                                style={letterStyle}
+                                initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                                animate={letterAnimate}
+                                exit={letterExit}
+                                transition={letterTransition}
+                              >
+                                {letter}
+                              </motion.span>
                             );
                           })}
                         </motion.span>
                       )}
                     </AnimatePresence>
                   </motion.span>
-                  
+
                   <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent inline-block">
                     s
                   </span>
-                  
+
                   <span className="bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
                     /calendar
                   </span>
@@ -307,7 +329,8 @@ export function Main({ title, description, subDescription, navButtonText, items 
                 </p>
 
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                  Build flexible calendar UIs with any design system. Use Tailwind CSS, Bootstrap, Material UI, Chakra UI, or your custom components. Complete control over styling and behavior.
+                  Build flexible calendar UIs with any design system. Use Tailwind CSS, Bootstrap, Material UI, Chakra
+                  UI, or your custom components. Complete control over styling and behavior.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -330,12 +353,26 @@ export function Main({ title, description, subDescription, navButtonText, items 
             {/* Right Column - Calendar Examples in rounded box */}
             <div className="hidden lg:flex absolute top-0 right-0 bottom-0 left-1/2 overflow-visible z-30 items-start justify-end">
               {/* Rounded box attached to top and right, only bottom-left corner rounded, floating above background */}
-              <div className="bg-white dark:bg-gray-800 shadow-2xl" style={{ marginTop: '0', marginRight: '0', marginBottom: '32px', marginLeft: '0', borderTopLeftRadius: '0', borderTopRightRadius: '0', borderBottomRightRadius: '0', borderBottomLeftRadius: '32px', width: '100%', maxWidth: '44rem' }}>
-                <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: '4' }}>
+              <div
+                className="bg-white dark:bg-gray-800 shadow-2xl"
+                style={{
+                  marginTop: "0",
+                  marginRight: "0",
+                  marginBottom: "32px",
+                  marginLeft: "0",
+                  borderTopLeftRadius: "0",
+                  borderTopRightRadius: "0",
+                  borderBottomRightRadius: "0",
+                  borderBottomLeftRadius: "32px",
+                  width: "100%",
+                  maxWidth: "44rem",
+                }}
+              >
+                <div className="relative z-10 w-full flex flex-col p-6" style={{ gap: "4" }}>
                   {/* Top row: Tailwind CSS and Bootstrap 5 */}
-                  <div className="flex items-start" style={{ gap: '24px', height: '420px' }}>
+                  <div className="flex items-start" style={{ gap: "24px", height: "420px" }}>
                     {/* Tailwind CSS */}
-                    <div className="flex flex-col" style={{ gap: '8px' }}>
+                    <div className="flex flex-col" style={{ gap: "8px" }}>
                       {/* Tailwind CSS Badge */}
                       <Link
                         href="/docs/examples/date-picker/tailwind"
@@ -347,7 +384,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                     </div>
 
                     {/* Bootstrap 5 */}
-                    <div className="flex flex-col" style={{ gap: '8px' }}>
+                    <div className="flex flex-col" style={{ gap: "8px" }}>
                       {/* Bootstrap 5 Badge */}
                       <Link
                         href="/docs/examples/date-picker/bootstrap"
@@ -360,9 +397,9 @@ export function Main({ title, description, subDescription, navButtonText, items 
                       </BootstrapPreview>
                     </div>
                   </div>
-                  
+
                   {/* Bottom: Vanilla CSS Range Picker Dual */}
-                  <div className="flex flex-col w-full" style={{ gap: '8px', height: '416px' }}>
+                  <div className="flex flex-col w-full" style={{ gap: "8px", height: "416px" }}>
                     {/* Vanilla CSS Badge */}
                     <Link
                       href="/docs/examples/date-range-picker/vanilla"
