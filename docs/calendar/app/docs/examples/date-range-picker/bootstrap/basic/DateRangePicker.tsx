@@ -59,7 +59,7 @@ export default function DateRangePicker() {
           align="start"
           sideOffset={8}
           collisionPadding={12}
-          className="card shadow-lg border rounded-3"
+          className="card shadow-sm border rounded-3"
           style={{ zIndex: 1050, maxWidth: "calc(100vw - 2rem)" }}
         >
           <div className="card-body p-3 d-flex flex-column">

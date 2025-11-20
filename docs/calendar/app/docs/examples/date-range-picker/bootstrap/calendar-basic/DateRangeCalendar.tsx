@@ -53,10 +53,10 @@ export function DateRangeCalendar() {
   return (
     <div>
       <div style={{ display: "inline-block", width: "fit-content" }}>
-        <div className="card shadow-lg border rounded-3">
+        <div className="card shadow-sm border rounded-3">
           <div className="card-body p-3">
             <div className="d-flex flex-column">
-              <div className="d-flex justify-content-between align-items-start border-bottom pb-4">
+              <div className="d-flex justify-content-between align-items-start border-bottom pb-2">
                 <div>
                   <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>
                     {formatRange()}

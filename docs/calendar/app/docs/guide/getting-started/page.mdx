@@ -58,6 +58,31 @@ function MyCalendar() {
 }
 ```
 
+## Playground
+
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const filesCalendar = loadExample('app/docs/examples/date-picker/vanilla/calendar', [
+  'App.tsx',
+  'App.css',
+  'DateCalendar.tsx',
+  'DateCalendar.css',
+]);
+
+A styled calendar with date selection and month navigation:
+
+<Sandpack files={filesCalendar} height={425} />
+
+<div className="mt-4 flex justify-end">
+  <a
+    href="/docs/examples/date-picker/vanilla"
+    className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+  >
+    View more examples →
+  </a>
+</div>
+
 ## Key Concepts
 
 ### Headless Design
