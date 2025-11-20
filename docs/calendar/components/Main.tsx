@@ -8,14 +8,6 @@ import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-pick
 import { DateRangeCalendarDual as VanillaRangeCalendarDual } from "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
 
-type MainProps = {
-  title: string;
-  description: string;
-  subDescription: string;
-  navButtonText: string;
-  items: Array<{ title: string; description: string }>;
-};
-
 const MIDDLE_LETTERS = ["e", "a", "d", "l", "e", "s"] as const;
 const HEADLESS_TEXT = MIDDLE_LETTERS.join("");
 
@@ -30,7 +22,7 @@ const LETTER_EXIT_TRANSITION = {
   ease: [0.4, 0, 0.2, 1] as const,
 };
 
-export function Main({ title, description, subDescription, navButtonText, items }: MainProps) {
+export function Main() {
   const [titleHover, setTitleHover] = useState(false);
   const prevTitleHoverRef = useRef<boolean>(false);
   const middleContainerRef = useRef<HTMLSpanElement>(null);
@@ -325,7 +317,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                 </motion.h1>
 
                 <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-200 mb-4 font-semibold leading-relaxed">
-                  {description}
+                  Logic-first Calendar Hook for React
                 </p>
 
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
@@ -338,7 +330,7 @@ export function Main({ title, description, subDescription, navButtonText, items 
                     href="/docs/guide/getting-started"
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-600 text-white rounded-lg font-semibold text-base hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-500 transition-all shadow-lg hover:shadow-xl hover:scale-105 text-center"
                   >
-                    {navButtonText} →
+                    Get Started →
                   </Link>
                   <Link
                     href="/docs/examples/date-picker/vanilla"

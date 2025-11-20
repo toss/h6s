@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 [class*="--nextra-content-width"] {
   max-width: none;
 }
