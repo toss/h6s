@@ -145,7 +145,7 @@ function DateRangePickerContent({
                           }
                         }}
                         className={`
-                          box-border relative z-10 w-full aspect-square rounded-md text-xs font-medium transition-all duration-150
+                          box-border relative z-10 w-9 h-9 rounded-md text-xs font-medium transition-all duration-150
                           ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                           ${isCurrentMonth && !selected && "text-slate-900 dark:text-slate-100"}
                           ${!selected && "hover:bg-slate-100 dark:hover:bg-slate-700"}

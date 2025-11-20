@@ -117,7 +117,7 @@ function DatePickerContent({
                         type="button"
                         onClick={() => handleSelectDate(value)}
                         className={`
-                          box-border w-full aspect-square rounded-md text-xs font-medium transition-all duration-150
+                          box-border w-9 h-9 rounded-md text-xs font-medium transition-all duration-150
                           ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                           ${!isCurrentMonth && !isSelected && "hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-300"}
                           ${isCurrentMonth && "text-slate-900 dark:text-slate-100"}
