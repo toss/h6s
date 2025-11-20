@@ -26,7 +26,7 @@ export const filesCalendarDual = loadExample('app/docs/examples/date-range-picke
 
 ## Basic
 
-Date range picker with dual calendar popover built using plain CSS and BEM-style conventions.
+Input field with dual calendar popover for date range selection using plain CSS and BEM-style conventions.
 
 <Sandpack
   files={filesPicker}
@@ -38,7 +38,7 @@ Date range picker with dual calendar popover built using plain CSS and BEM-style
 
 ## Calendar Only
 
-DateRangeCalendar with single calendar view.
+Standalone calendar component for inline date range selection.
 
 <Sandpack
   files={filesCalendarBasic}
@@ -47,20 +47,9 @@ DateRangeCalendar with single calendar view.
 
 ## Dual Calendar
 
-For better UX when selecting date ranges, you can display two calendars side by side showing consecutive months.
+Two calendars side by side showing consecutive months for better range selection UX.
 
 <Sandpack
   files={filesCalendarDual}
   height={410}
 />
-
-## Features
-
-- Date range picker with field trigger and popover
-- Calendar-only components for inline use (basic and dual layouts)
-- Field-style trigger with placeholder and clear action
-- Floating popover built with `@radix-ui/react-popover`
-- Dual calendar layout showing consecutive months
-- Date range selection with visual highlighting
-- Component-scoped CSS classes
-- Dark mode support with `@media (prefers-color-scheme: dark)`
