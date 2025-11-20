@@ -3,9 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useTheme } from "nextra-theme-docs";
 import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
 import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
-import { DateRangeCalendarDual as VanillaRangeCalendarDual } from "../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
+import { DateRangeCalendarDual as MainRangeCalendarDual } from "./MainCalendar/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
 
 const MIDDLE_LETTERS = ["e", "a", "d", "l", "e", "s"] as const;
@@ -23,6 +24,7 @@ const LETTER_EXIT_TRANSITION = {
 };
 
 export function Main() {
+  const { resolvedTheme } = useTheme();
   const [titleHover, setTitleHover] = useState(false);
   const prevTitleHoverRef = useRef<boolean>(false);
   const middleContainerRef = useRef<HTMLSpanElement>(null);
@@ -399,7 +401,9 @@ export function Main() {
                     >
                       Vanilla CSS
                     </Link>
-                    <VanillaRangeCalendarDual />
+                    <div data-theme={resolvedTheme}>
+                      <MainRangeCalendarDual />
+                    </div>
                   </div>
                 </div>
               </div>

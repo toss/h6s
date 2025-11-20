@@ -202,6 +202,7 @@
   box-shadow: 0 2px 4px 0 rgba(82, 82, 91, 0.25);
 }
 
+/* Dark mode: System preference OR explicit data-theme */
 @media (prefers-color-scheme: dark) {
   .daterangecalendar-dual {
     background: linear-gradient(to bottom right, #18181b, #09090b);
