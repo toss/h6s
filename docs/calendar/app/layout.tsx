@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { Head } from "nextra/components";
+import { Head, Search } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import "nextra-theme-docs/style.css";
 import "./globals.css";
@@ -18,16 +18,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <Head />
       <body>
         <Layout
-          navbar={<Navbar logo={<b>@h6s/calendar</b>} projectLink="https://github.com/toss/h6s" />}
-          pageMap={pageMap}
-          footer={
-            <Footer>
-              MIT {new Date().getFullYear()} ©{" "}
-              <a href="https://github.com/toss/h6s" target="_blank" rel="noopener noreferrer">
-                h6s
-              </a>
-            </Footer>
+          navbar={
+            <Navbar
+              logo={<b>@h6s/calendar</b>}
+              projectLink="https://github.com/toss/h6s"
+              chatLink="https://discord.gg/vGXbVjP2nY"
+            />
           }
+          pageMap={pageMap}
+          docsRepositoryBase="https://github.com/toss/h6s/tree/main/docs/calendar"
+          sidebar={{ defaultMenuCollapseLevel: 3 }}
+          search={<Search placeholder="Search documentation..." />}
+          footer={<Footer>MIT {new Date().getFullYear()} © Viva Republica, Inc.</Footer>}
         >
           {children}
         </Layout>
