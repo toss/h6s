@@ -2,12 +2,12 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useTheme } from "nextra-theme-docs";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
 import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
-import { DateRangeCalendarDual as MainRangeCalendarDual } from "./MainCalendar/DateRangeCalendarDual";
 import { BootstrapPreview } from "./BootstrapPreview";
+import { DateRangeCalendarDual as MainRangeCalendarDual } from "./MainCalendar/DateRangeCalendarDual";
 
 const MIDDLE_LETTERS = ["e", "a", "d", "l", "e", "s"] as const;
 const HEADLESS_TEXT = MIDDLE_LETTERS.join("");
