@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@h6s/calendar": ["../../packages/calendar/src"]
     },
     "allowJs": true
   },
