@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/calendar",
+      "permanent": true
+    }
+  ]
+}
+
