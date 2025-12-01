@@ -1,0 +1,130 @@
+# useCalendar
+
+The main hook that provides calendar state, navigation controls, and render data.
+
+## Import
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+```
+
+## Usage
+
+```tsx
+function MyCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+
+  return (
+    <div>
+      <div>
+        <button onClick={navigation.toPrev}>←</button>
+        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <button onClick={navigation.toNext}>→</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            {headers.weekdays.map(({ key, value }) => (
+              <th key={key}>{format(value, 'EEE')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.value.map(({ key, value: days }) => (
+            <tr key={key}>
+              {days.map(({ key, value }) => (
+                <td key={key}>{format(value, 'd')}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+## Parameters
+
+```tsx
+function useCalendar(options?: UseCalendarOptions)
+
+interface UseCalendarOptions {
+  defaultDate?: Date | number | string;
+  defaultWeekStart?: WeekDayType;
+  defaultViewType?: CalendarViewType;
+}
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `defaultDate` | `Date \| number \| string` | `new Date()` | Initial date to display |
+| `defaultWeekStart` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | First day of week (0 = Sunday) |
+| `defaultViewType` | `CalendarViewType` | `CalendarViewType.Month` | Initial view type |
+
+## Return Value
+
+The hook returns an object with the following structure:
+
+```tsx
+{
+  // Render data
+  headers: { weekdays: Array<{ key: string; value: Date }> };
+  body: { value: Array<{ key: string; value: Array<Day> }> };
+  
+  // Navigation
+  navigation: {
+    toNext: () => void;
+    toPrev: () => void;
+    setToday: () => void;
+    setDate: (date: Date) => void;
+  };
+  
+  // View controls
+  view: {
+    type: CalendarViewType;
+    isMonthView: boolean;
+    isWeekView: boolean;
+    isDayView: boolean;
+    showMonthView: () => void;
+    showWeekView: () => void;
+    showDayView: () => void;
+    setViewType: (type: CalendarViewType) => void;
+    setWeekStartsOn: (day: WeekDayType) => void;
+  };
+  
+  // Metadata
+  cursorDate: Date;
+  year: number;
+  month: number;
+  day: number;
+  weekStartsOn: WeekDayType;
+  weeksInMonth: number;
+  today: { weekIndex: number; dateIndex: number };
+  
+  // Utilities
+  getDateCellByIndex: (weekIndex: number, dayIndex: number) => { value: Date };
+}
+```
+
+## API Reference
+
+For detailed information about each part of the return value:
+
+- **[headers](/api-docs/api/headers)** - Weekday header data
+- **[body](/api-docs/api/body)** - Calendar grid data
+- **[navigation](/api-docs/api/navigation)** - Navigation methods
+- **[view](/api-docs/api/view)** - View type controls
+- **[utilities](/api-docs/api/utilities)** - Metadata and utility methods
+
+## Type Exports
+
+```tsx
+import {
+  CalendarViewType,
+  type WeekDayType,
+  type UseCalendarOptions
+} from '@h6s/calendar';
+```

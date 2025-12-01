@@ -1,0 +1,62 @@
+# headers
+
+Weekday header data for rendering calendar column headers.
+
+## Type
+
+```tsx
+headers: {
+  weekdays: Array<{
+    key: string;  // Unique key for React rendering
+    value: Date; // Date object for the weekday
+  }>;
+}
+```
+
+## Usage
+
+```tsx
+const { headers } = useCalendar();
+
+<thead>
+  <tr>
+    {headers.weekdays.map(({ key, value }) => (
+      <th key={key}>{format(value, 'EEE')}</th>
+    ))}
+  </tr>
+</thead>
+```
+
+## Formatting
+
+Use `date-fns` format patterns to display weekday names:
+
+```tsx
+format(value, 'EEEE')   // Sunday, Monday, Tuesday, ...
+format(value, 'EEE')    // Sun, Mon, Tue, ...
+format(value, 'EEEEEE') // Su, Mo, Tu, ...
+format(value, 'EEEEE')  // S, M, T, ...
+```
+
+## Week Start
+
+The weekday order respects the `defaultWeekStart` option:
+
+```tsx
+// Week starts on Sunday (default)
+const { headers } = useCalendar({ defaultWeekStart: 0 });
+// headers.weekdays[0] = Sunday
+
+// Week starts on Monday
+const { headers } = useCalendar({ defaultWeekStart: 1 });
+// headers.weekdays[0] = Monday
+```
+
+You can also change it dynamically:
+
+```tsx
+const { headers, view } = useCalendar();
+
+view.setWeekStartsOn(1); // Change to Monday
+// headers.weekdays will update accordingly
+```

@@ -1,0 +1,349 @@
+/* Field Styles */
+.daterangepicker-field {
+  width: 100%;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.daterangepicker-field__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 0.5px solid #d4d4d8;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.daterangepicker-field__trigger:hover {
+  background-color: #fafafa;
+  border-color: #a1a1aa;
+}
+
+.daterangepicker-field__trigger:focus-visible {
+  outline: 2px solid #52525b;
+  outline-offset: 2px;
+}
+
+.daterangepicker-field__value {
+  flex: 1;
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #52525b;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daterangepicker-field__trigger:hover .daterangepicker-field__value {
+  color: #3f3f46;
+}
+
+.daterangepicker-field__value.is-selected {
+  color: #18181b;
+  font-weight: 600;
+}
+
+.daterangepicker-field__trigger:hover .daterangepicker-field__value.is-selected {
+  color: #3f3f46;
+}
+
+.daterangepicker-field__icon {
+  width: 1rem;
+  height: 1rem;
+  color: #71717a;
+  flex-shrink: 0;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.daterangepicker-field__trigger:hover .daterangepicker-field__icon {
+  color: #52525b;
+}
+
+/* Popover Styles */
+.daterangepicker-popover {
+  z-index: 50;
+  width: fit-content;
+  border-radius: 0.75rem;
+  border: 0.5px solid #d4d4d8;
+  background: linear-gradient(to bottom right, #fafafa, #ffffff);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+  outline: none;
+}
+
+.daterangepicker-popover__arrow {
+  fill: #ffffff;
+}
+
+.daterangepicker-popover__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: fit-content;
+}
+
+.daterangepicker-popover__calendars {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  width: fit-content;
+}
+
+.daterangepicker-popover__calendar-container {
+  width: fit-content;
+}
+
+.daterangepicker-popover__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+.daterangepicker-popover__nav-button {
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  border: 0.5px solid #d4d4d8;
+  background-color: transparent;
+  color: #52525b;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.daterangepicker-popover__nav-button:hover {
+  background-color: #f4f4f5;
+  border-color: #a1a1aa;
+  color: #3f3f46;
+}
+
+.daterangepicker-popover__nav-placeholder {
+  width: 1.75rem;
+}
+
+.daterangepicker-popover__month {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #18181b;
+  text-transform: capitalize;
+  letter-spacing: 0;
+}
+
+.daterangepicker-popover__calendar {
+  width: fit-content;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.daterangepicker-popover__weekday {
+  width: 2.25rem;
+  padding: 0.375rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.daterangepicker-popover__calendar tbody tr {
+  height: 2.25rem;
+}
+
+.daterangepicker-popover__calendar td {
+  position: relative;
+  text-align: center;
+  width: 2.25rem;
+  padding: 0;
+}
+
+.daterangepicker-popover__day {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.375rem;
+  border: 0.5px solid transparent;
+  background: none;
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.daterangepicker-popover__day--current-month {
+  color: #18181b;
+}
+
+.daterangepicker-popover__day--outside {
+  color: transparent;
+}
+
+.daterangepicker-popover__day--current-month:hover {
+  border-color: #d4d4d8;
+  background-color: #f4f4f5;
+  font-weight: 500;
+  color: #3f3f46;
+}
+
+.daterangepicker-popover__day--selected:hover {
+  background-color: #3f3f46;
+  border-color: #3f3f46;
+  color: #ffffff;
+}
+
+.daterangepicker-popover__day--today {
+  border: 2px solid #52525b;
+  font-weight: 600;
+  color: #3f3f46;
+}
+
+.daterangepicker-popover__calendar td.daterangepicker-popover__cell--in-range::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1.75rem;
+  transform: translateY(-50%);
+  background-color: #e4e4e7;
+  border-radius: 0;
+  z-index: 0;
+}
+
+.daterangepicker-popover__day--in-range {
+  color: #18181b;
+  font-weight: 500;
+}
+
+.daterangepicker-popover__day--selected {
+  background-color: #52525b;
+  color: #ffffff;
+  font-weight: 600;
+  border-color: #52525b;
+  box-shadow: 0 2px 4px 0 rgba(82, 82, 91, 0.25);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .daterangepicker-field__trigger {
+    border-color: #52525b;
+    background-color: #18181b;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .daterangepicker-field__trigger:hover {
+    background-color: #3f3f46;
+    border-color: #71717a;
+  }
+
+  .daterangepicker-field__value {
+    color: #d4d4d8;
+  }
+
+  .daterangepicker-field__trigger:hover .daterangepicker-field__value {
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-field__value.is-selected {
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-field__trigger:hover .daterangepicker-field__value.is-selected {
+    color: #ffffff;
+  }
+
+  .daterangepicker-field__icon {
+    color: #a1a1aa;
+  }
+
+  .daterangepicker-field__trigger:hover .daterangepicker-field__icon {
+    color: #d4d4d8;
+  }
+
+  .daterangepicker-popover {
+    background: linear-gradient(to bottom right, #18181b, #09090b);
+    border-color: #3f3f46;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4), 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .daterangepicker-popover__arrow {
+    fill: #18181b;
+  }
+
+  .daterangepicker-popover__nav-button {
+    border-color: #52525b;
+    color: #d4d4d8;
+  }
+
+  .daterangepicker-popover__nav-button:hover {
+    background-color: #3f3f46;
+    border-color: #71717a;
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-popover__month {
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-popover__weekday {
+    color: #a1a1aa;
+  }
+
+  .daterangepicker-popover__day--current-month {
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-popover__day--current-month:hover {
+    border-color: #52525b;
+    background-color: #3f3f46;
+    color: #d4d4d8;
+  }
+
+  .daterangepicker-popover__day--selected:hover {
+    background-color: #52525b;
+    border-color: #52525b;
+    color: #ffffff;
+  }
+
+  .daterangepicker-popover__day--today {
+    border-color: #71717a;
+    color: #d4d4d8;
+  }
+
+  .daterangepicker-popover__calendar td.daterangepicker-popover__cell--in-range::before {
+    background-color: #3f3f46;
+    border-radius: 0;
+  }
+
+  .daterangepicker-popover__day--in-range {
+    color: #f4f4f5;
+  }
+
+  .daterangepicker-popover__day--selected {
+    background-color: #71717a;
+    border-color: #71717a;
+    color: #ffffff;
+    box-shadow: 0 2px 6px 0 rgba(113, 113, 122, 0.4);
+  }
+}

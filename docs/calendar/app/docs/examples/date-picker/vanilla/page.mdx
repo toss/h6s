@@ -1,0 +1,39 @@
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const filesPicker = loadExample('app/docs/examples/date-picker/vanilla/basic', [
+  'App.tsx',
+  'App.css',
+  'DatePicker.tsx',
+  'DatePicker.css',
+]);
+
+export const filesCalendar = loadExample('app/docs/examples/date-picker/vanilla/calendar', [
+  'App.tsx',
+  'App.css',
+  'DateCalendar.tsx',
+  'DateCalendar.css',
+]);
+
+# Vanilla CSS
+
+## Basic
+
+Input field with calendar popover for single date selection using plain CSS and BEM-style conventions.
+
+<Sandpack
+  files={filesPicker}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  height={410}
+/>
+
+## Calendar Only
+
+Standalone calendar component for inline date selection.
+
+<Sandpack
+  files={filesCalendar}
+  height={430}
+/>

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+[class*="--nextra-content-width"] {
+  max-width: none;
+}
+
+[class*="--nextra-content-width"] > article {
+  padding: 0;
+}
+
+[class*="--nextra-content-width"] > article > div:nth-of-type(2) {
+  margin: 0;
+}

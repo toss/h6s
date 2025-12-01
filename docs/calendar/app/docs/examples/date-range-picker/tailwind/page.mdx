@@ -1,0 +1,61 @@
+import { Sandpack } from "@/components/Sandpack";
+import { loadExample } from "@/components/Sandpack/loadExample";
+
+export const filesPicker = loadExample('app/docs/examples/date-range-picker/tailwind/basic', [
+  'App.tsx',
+  'DateRangePicker.tsx',
+  'public/index.html',
+]);
+
+export const filesCalendarBasic = loadExample('app/docs/examples/date-range-picker/tailwind/calendar-basic', [
+  'App.tsx',
+  'DateRangeCalendar.tsx',
+  'public/index.html',
+]);
+
+export const filesCalendarDual = loadExample('app/docs/examples/date-range-picker/tailwind/calendar-dual', [
+  'App.tsx',
+  'DateRangeCalendarDual.tsx',
+  'public/index.html',
+]);
+
+# Tailwind CSS
+
+## Basic
+
+Input field with dual calendar popover for date range selection styled with Tailwind CSS utility classes.
+
+<Sandpack
+  files={filesPicker}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  height={420}
+/>
+
+## Calendar Only
+
+Standalone calendar component for inline date range selection.
+
+<Sandpack
+  files={filesCalendarBasic}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  height={410}
+/>
+
+## Dual Calendar
+
+Two calendars side by side showing consecutive months for better range selection UX.
+
+<Sandpack
+  files={filesCalendarDual}
+  providerOptions={{
+    externalResources: ["https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"],
+  }}
+  height={430}
+/>

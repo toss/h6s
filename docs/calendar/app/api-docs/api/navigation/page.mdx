@@ -1,0 +1,108 @@
+# navigation
+
+Methods to navigate through the calendar.
+
+## Type
+
+```tsx
+navigation: {
+  toNext: () => void;
+  toPrev: () => void;
+  setToday: () => void;
+  setDate: (date: Date) => void;
+}
+```
+
+## Methods
+
+### `toNext()`
+
+Move forward by one unit. Behavior depends on the current view type:
+- **Month view**: Next month
+- **Week view**: Next week
+- **Day view**: Next day
+
+```tsx
+<button onClick={navigation.toNext}>Next →</button>
+```
+
+### `toPrev()`
+
+Move backward by one unit. Behavior depends on the current view type:
+- **Month view**: Previous month
+- **Week view**: Previous week
+- **Day view**: Previous day
+
+```tsx
+<button onClick={navigation.toPrev}>← Previous</button>
+```
+
+### `setToday()`
+
+Jump to today's date.
+
+```tsx
+<button onClick={navigation.setToday}>Today</button>
+```
+
+### `setDate(date)`
+
+Jump to a specific date.
+
+**Parameters:**
+- `date` (Date): The target date to navigate to
+
+```tsx
+navigation.setDate(new Date(2024, 0, 1)); // January 1, 2024
+```
+
+## Usage Example
+
+```tsx
+function Calendar() {
+  const { navigation, cursorDate } = useCalendar();
+
+  return (
+    <div>
+      <button onClick={navigation.toPrev}>←</button>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      <button onClick={navigation.toNext}>→</button>
+      <button onClick={navigation.setToday}>Today</button>
+    </div>
+  );
+}
+```
+
+## Date Selection with Navigation
+
+Automatically navigate when selecting a date outside the current month:
+
+```tsx
+function SelectableCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { body, navigation } = useCalendar();
+
+  const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
+    if (!isCurrentMonth) {
+      navigation.setDate(date); // Navigate to that month
+    }
+    setSelectedDate(date);
+  };
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }) => (
+        <tr key={key}>
+          {days.map(({ key, value, isCurrentMonth }) => (
+            <td key={key}>
+              <button onClick={() => handleDateClick(value, isCurrentMonth)}>
+                {format(value, 'd')}
+              </button>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```

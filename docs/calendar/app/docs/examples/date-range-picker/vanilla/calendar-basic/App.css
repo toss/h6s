@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  width: 100%;
+  height: 100vh;
+  padding: 1rem;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-container {
+    background-color: #111827;
+  }
+}
+

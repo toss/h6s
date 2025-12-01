@@ -11,6 +11,9 @@ esm
 storybook-static
 node_modules
 temp
+.next
+out
+*.tsbuildinfo
 
 lerna-debug.log
 website/.yarn/.cache/**/*

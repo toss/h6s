@@ -1,0 +1,98 @@
+/* Nextra dark theme support via data-theme attribute */
+/* This file is only imported in the main page, not in Sandpack examples */
+
+[data-theme="dark"] .daterangecalendar-dual {
+  background: linear-gradient(to bottom right, #18181b, #09090b);
+  border-color: #3f3f46;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4), 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .daterangecalendar-selection {
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .daterangecalendar-selection-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .daterangecalendar-selection-value {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .daterangecalendar-nav-button {
+  border-color: #52525b;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .daterangecalendar-nav-button:hover {
+  background-color: #3f3f46;
+  border-color: #71717a;
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .daterangecalendar-title {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .daterangecalendar-weekday {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .daterangecalendar-day--current-month {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .daterangecalendar-day--outside {
+  color: #52525b;
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .daterangecalendar-day:hover {
+  border-color: #52525b;
+  background-color: #3f3f46;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .daterangecalendar-day--selected:hover {
+  background-color: #52525b;
+  border-color: #52525b;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .daterangecalendar-day--today {
+  border-color: #71717a;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .daterangecalendar-calendar td.daterangecalendar-cell--in-range::before {
+  background-color: #3f3f46;
+  border-radius: 0;
+}
+
+/* Range 시작: 왼쪽만 둥글게 */
+[data-theme="dark"] .daterangecalendar-calendar td.daterangecalendar-cell--range-start::before {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Range 끝: 오른쪽만 둥글게 */
+[data-theme="dark"] .daterangecalendar-calendar td.daterangecalendar-cell--range-end::before {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Range 시작이면서 끝인 경우 (하루만 선택) */
+[data-theme="dark"] .daterangecalendar-calendar td.daterangecalendar-cell--range-start.daterangecalendar-cell--range-end::before {
+  border-radius: 0;
+}
+
+[data-theme="dark"] .daterangecalendar-day--in-range {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .daterangecalendar-day--selected {
+  background-color: #71717a;
+  border-color: #71717a;
+  color: #ffffff;
+  box-shadow: 0 2px 6px 0 rgba(113, 113, 122, 0.4);
+}

@@ -1,0 +1,110 @@
+# body
+
+Main calendar grid data for rendering the calendar days.
+
+## Type
+
+```tsx
+body: {
+  value: Array<{
+    key: string;        // Unique key for the week row
+    value: Array<{
+      key: string;              // Unique key for the day cell
+      value: Date;              // Date object for this cell
+      isCurrentDate: boolean;   // Is this today's date?
+      isCurrentMonth: boolean;  // Is this date in the current month?
+      isWeekend: boolean;       // Is this a weekend day?
+    }>;
+  }>;
+}
+```
+
+## Structure
+
+The `body` contains a nested array:
+- **Outer array**: Represents weeks
+- **Inner array**: Represents days within each week
+
+## Usage
+
+```tsx
+const { body } = useCalendar();
+
+<tbody>
+  {body.value.map(({ key, value: days }) => (
+    <tr key={key}>
+      {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
+        <td
+          key={key}
+          className={cn(
+            !isCurrentMonth && 'opacity-30',
+            isCurrentDate && 'font-bold'
+          )}
+        >
+          {format(value, 'd')}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+```
+
+## Properties
+
+### `value`
+- **Type**: `Date`
+- The date object for this calendar cell
+
+### `isCurrentDate`
+- **Type**: `boolean`
+- `true` if this cell represents today's date
+
+### `isCurrentMonth`
+- **Type**: `boolean`
+- `true` if this date belongs to the currently displayed month
+
+### `isWeekend`
+- **Type**: `boolean`
+- `true` if this is Saturday or Sunday
+
+## View Type Behavior
+
+The structure adapts based on the current view type:
+
+- **Month view**: 4-6 weeks with 7 days each
+- **Week view**: 1 week with 7 days
+- **Day view**: 1 day
+
+```tsx
+const { body, view } = useCalendar();
+
+if (view.isMonthView) {
+  console.log(body.value.length); // 4-6 weeks
+}
+
+if (view.isWeekView) {
+  console.log(body.value.length); // 1 week
+  console.log(body.value[0].value.length); // 7 days
+}
+
+if (view.isDayView) {
+  console.log(body.value.length); // 1 week
+  console.log(body.value[0].value.length); // 1 day
+}
+```
+
+## Performance
+
+Always use the provided `key` properties for React list rendering:
+
+```tsx
+// ✅ Good
+{body.value.map(({ key, value: days }) => (
+  <tr key={key}>...</tr>
+))}
+
+// ❌ Bad - don't use array index
+{body.value.map((week, i) => (
+  <tr key={i}>...</tr>
+))}
+```

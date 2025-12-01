@@ -1,0 +1,152 @@
+# utilities
+
+Metadata properties and utility methods provided by `useCalendar`.
+
+## Metadata Properties
+
+### `cursorDate`
+- **Type**: `Date`
+- The current date being displayed in the calendar
+
+```tsx
+const { cursorDate } = useCalendar();
+console.log(format(cursorDate, 'MMMM yyyy')); // "January 2024"
+```
+
+### `year`, `month`, `day`
+Extracted components from `cursorDate` for convenience.
+
+```tsx
+const { year, month, day } = useCalendar();
+console.log(year);   // 2024
+console.log(month);  // 0 (January is 0, December is 11)
+console.log(day);    // 15
+```
+
+**Note**: `month` is 0-indexed (0 = January, 11 = December) following JavaScript Date convention.
+
+### `weekStartsOn`
+- **Type**: `WeekDayType` (0-6)
+- The currently configured first day of the week
+
+```tsx
+const { weekStartsOn } = useCalendar();
+console.log(weekStartsOn); // 0-6 (0 = Sunday, 1 = Monday, ...)
+```
+
+### `startWeekdayInMonth`
+- **Type**: `number` (0-6)
+- Which day of the week the current month starts on
+
+```tsx
+const { startWeekdayInMonth } = useCalendar();
+// If January 2024 starts on Monday:
+console.log(startWeekdayInMonth); // 1
+```
+
+### `weeksInMonth`
+- **Type**: `number`
+- Number of weeks in the current month view (typically 4-6)
+
+```tsx
+const { weeksInMonth } = useCalendar();
+console.log(weeksInMonth); // 4-6
+```
+
+### `weekdays`
+- **Type**: `Array<{ value: Date }>`
+- Array of 7 Date objects representing the weekday headers
+
+```tsx
+const { weekdays } = useCalendar();
+console.log(weekdays.length); // 7
+```
+
+### `today`
+- **Type**: `{ weekIndex: number; dateIndex: number }`
+- Position of today's date in the calendar grid
+
+```tsx
+const { today } = useCalendar();
+console.log(today.weekIndex);  // Week row index (0-based)
+console.log(today.dateIndex);  // Day column index (0-6)
+```
+
+## Utility Methods
+
+### `getDateCellByIndex(weekIndex, dayIndex)`
+
+Get a specific date cell by its position in the calendar grid.
+
+**Parameters:**
+- `weekIndex` (number): Week row index (0-based)
+- `dayIndex` (number): Day column index (0-6)
+
+**Returns:**
+- Object with `value` property containing the Date
+
+```tsx
+const { getDateCellByIndex } = useCalendar();
+
+// Get the date in the first week, first day
+const cell = getDateCellByIndex(0, 0);
+console.log(cell.value); // Date object
+
+// Get the date in the third week, fourth day
+const midMonthCell = getDateCellByIndex(2, 3);
+console.log(format(midMonthCell.value, 'MMM d, yyyy')); // "Jan 18, 2024"
+```
+
+**Note**: For most use cases, iterating over `body.value` is simpler and more straightforward. This method is mainly useful for custom grid rendering or event positioning.
+
+## Usage Examples
+
+### Display Current Month/Year
+
+```tsx
+import { useCalendar } from '@h6s/calendar';
+import { format } from 'date-fns';
+
+function CalendarHeader() {
+  const { cursorDate, year, month } = useCalendar();
+
+  return (
+    <div>
+      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      {/* Or build it manually: */}
+      <p>Year: {year}, Month: {month + 1}</p>
+    </div>
+  );
+}
+```
+
+### Highlight Today
+
+```tsx
+function CalendarWithTodayHighlight() {
+  const { body, today } = useCalendar();
+
+  return (
+    <tbody>
+      {body.value.map(({ key, value: days }, weekIndex) => (
+        <tr key={key}>
+          {days.map(({ key, value }, dayIndex) => {
+            const isToday =
+              weekIndex === today.weekIndex &&
+              dayIndex === today.dateIndex;
+
+            return (
+              <td
+                key={key}
+                className={isToday ? 'bg-blue-100 font-bold' : ''}
+              >
+                {format(value, 'd')}
+              </td>
+            );
+          })}
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+```
