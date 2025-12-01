@@ -2,7 +2,7 @@
 
 import { useCalendar } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
-import { format, isSameDay, isToday } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { useMemo, useState } from "react";
 
 export default function DatePicker() {
