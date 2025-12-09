@@ -6,8 +6,21 @@ import "nextra-theme-docs/style.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "@h6s/calendar - Logic-first Calendar Hook for React",
-  description: "Headless calendar library for React. Your calendar, your way.",
+  title: {
+    default: "@h6s/calendar - Logic-first Calendar Hook for React",
+    template: "%s | @h6s/calendar",
+  },
+  description: "Headless calendar library for React.",
+  openGraph: {
+    title: "@h6s/calendar - Logic-first Calendar Hook for React",
+    description: "Headless calendar library for React.",
+    type: "website",
+    siteName: "@h6s/calendar",
+  },
+  twitter: {
+    title: "@h6s/calendar - Logic-first Calendar Hook for React",
+    description: "Headless calendar library for React.",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
