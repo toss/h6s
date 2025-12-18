@@ -49,7 +49,7 @@
     "@testing-library/react": "*",
     "@types/node": "*",
     "@types/react": "*",
-    "date-fns": "2.30.0",
+    "date-fns": "4.1.0",
     "jsdom": "*",
     "playwright": "1.17.1",
     "react": "*",

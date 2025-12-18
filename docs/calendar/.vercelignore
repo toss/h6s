@@ -1,0 +1,5 @@
+# Exclude Next.js build cache and development files
+.next/cache
+.next/static/development
+.next/trace
+
