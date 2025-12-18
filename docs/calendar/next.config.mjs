@@ -19,11 +19,8 @@ export default withNextra({
         "../../packages/*/coverage/**",
         "../../packages/*/src/**/*.test.ts",
         "../../packages/*/src/**/*.test.tsx",
-        "../../packages/*/.e2e/**",
-        // Exclude examples and website
-        "../../examples/**",
-        "../../website/**",
-        // Exclude root node_modules (if any)
+      "../../packages/*/.e2e/**",
+      // Exclude root node_modules (if any)
         "../../node_modules/**",
         // Exclude build artifacts
         "**/.next/**",

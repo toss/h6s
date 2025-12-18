@@ -7,10 +7,6 @@
 ../../packages/*/coverage
 ../../packages/*/.e2e
 
-# Exclude examples and website
-../../examples
-../../website
-
 # Exclude root node_modules
 ../../node_modules
 
