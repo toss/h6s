@@ -10,24 +10,15 @@ export default withNextra({
   experimental: {
     outputFileTracingExcludes: {
       "*": [
-        // Exclude node_modules from other workspaces
-        "../../packages/*/node_modules/**",
-        "../../packages/*/dist/**",
-        "../../packages/*/.next/**",
-        "../../packages/*/playwright-report/**",
-        "../../packages/*/test-results/**",
-        "../../packages/*/coverage/**",
-        "../../packages/*/src/**/*.test.ts",
-        "../../packages/*/src/**/*.test.tsx",
+      // Exclude node_modules from other workspaces
+      "../../packages/*/node_modules/**",
+      // Exclude dist from other workspaces (workspace deps may resolve to dist)
+      "../../packages/*/dist/**",
+      // Exclude test files from source code
+      "../../packages/*/src/**/*.test.ts",
+      "../../packages/*/src/**/*.test.tsx",
+      // Exclude e2e test directory
       "../../packages/*/.e2e/**",
-      // Exclude root node_modules (if any)
-        "../../node_modules/**",
-        // Exclude build artifacts
-        "**/.next/**",
-        "**/dist/**",
-        "**/coverage/**",
-        "**/playwright-report/**",
-        "**/test-results/**",
       ],
     },
   },
