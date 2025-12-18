@@ -13282,7 +13282,7 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/react", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:16.0.0"],\
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
-          ["date-fns", "npm:2.30.0"],\
+          ["date-fns", "npm:4.1.0"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
           ["playwright", "npm:1.17.1"],\
           ["react", "npm:18.3.1"],\
