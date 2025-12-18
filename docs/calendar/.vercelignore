@@ -1,12 +1,3 @@
-# Exclude other workspace node_modules and build artifacts
-../../packages/*/node_modules
-../../packages/*/dist
-../../packages/*/.e2e
-
-# Exclude test files from source code
-../../packages/*/src/**/*.test.ts
-../../packages/*/src/**/*.test.tsx
-
 # Exclude Next.js build cache and development files
 .next/cache
 .next/static/development
