@@ -7,3 +7,8 @@
 ../../packages/*/src/**/*.test.ts
 ../../packages/*/src/**/*.test.tsx
 
+# Exclude Next.js build cache and development files
+.next/cache
+.next/static/development
+.next/trace
+

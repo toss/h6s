@@ -19,6 +19,12 @@ export default withNextra({
         "../../packages/*/src/**/*.test.tsx",
         // Exclude e2e test directory
         "../../packages/*/.e2e/**",
+        // Exclude Next.js build cache (not needed at runtime)
+        ".next/cache/**",
+        // Exclude development static files
+        ".next/static/development/**",
+        // Exclude trace files
+        ".next/trace",
       ],
     },
   },
