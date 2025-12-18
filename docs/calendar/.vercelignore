@@ -1,0 +1,33 @@
+# Exclude other workspace node_modules
+../../packages/*/node_modules
+../../packages/*/dist
+../../packages/*/.next
+../../packages/*/playwright-report
+../../packages/*/test-results
+../../packages/*/coverage
+../../packages/*/.e2e
+
+# Exclude examples and website
+../../examples
+../../website
+
+# Exclude root node_modules
+../../node_modules
+
+# Exclude build artifacts
+.next
+dist
+coverage
+playwright-report
+test-results
+
+# Exclude test files
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.spec.ts
+**/*.spec.tsx
+**/*.spec.js
+**/*.spec.jsx
+
