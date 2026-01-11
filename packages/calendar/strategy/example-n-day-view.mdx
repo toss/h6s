@@ -1,0 +1,88 @@
+---
+title: N-Day View Example
+---
+
+# N-Day View Example
+
+이 예제는 `DayRangeStrategy`를 사용하여 특정 일수(예: 3일, 5일)를 한 화면에 보여주는 뷰를 구현하는 방법을 보여줍니다. 주로 스케줄러나 모바일 대시보드에서 활용됩니다.
+
+```tsx
+import React from 'react';
+import { useTimeGrid, DayRangeStrategy } from '@h6s/calendar';
+
+const NDayCalendar = () => {
+  const DAYS_TO_SHOW = 3; // 3일 보기 설정
+
+  // 1. useTimeGrid 훅 초기화 (DayRangeStrategy 주입)
+  const { 
+    grid,      // { rows: 1, cols: 3, data: GridCell[][] }
+    axes,      // xLabels: ['1/11(일)', '1/12(월)', '1/13(화)']
+    navigation, 
+    cursorDate  
+  } = useTimeGrid({
+    defaultDate: new Date(),
+    strategy: new DayRangeStrategy({ 
+      days: DAYS_TO_SHOW,
+      // 시작일 조정 옵션이 있다면 추가 (ex: 항상 오늘부터 시작 등)
+    }),
+  });
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '600px', border: '1px solid #eee', borderRadius: '8px' }}>
+      {/* 네비게이션: 설정된 DAYS_TO_SHOW만큼 앞뒤로 이동 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+        <button onClick={navigation.prev}>{DAYS_TO_SHOW}일 전</button>
+        <span style={{ fontWeight: 'bold' }}>
+          {cursorDate.toLocaleDateString()} 기준
+        </span>
+        <button onClick={navigation.next}>{DAYS_TO_SHOW}일 후</button>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        // 설정된 일수(3)만큼 열 생성
+        gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
+        gap: '10px'
+      }}>
+        {/* 날짜 셀 렌더링 */}
+        {grid.data.flat().map((cell) => {
+          const isToday = cell.value.toDateString() === new Date().toDateString();
+
+          return (
+            <div 
+              key={cell.value.getTime()}
+              style={{
+                padding: '20px 10px',
+                border: isToday ? '2px solid #007aff' : '1px solid #ddd',
+                borderRadius: '6px',
+                textAlign: 'center',
+                backgroundColor: isToday ? '#f0f7ff' : '#fff'
+              }}
+            >
+              <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                {/* 요일 표시 */}
+                {cell.value.toLocaleDateString('ko-KR', { weekday: 'short' })}
+              </div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '5px 0' }}>
+                {cell.value.getDate()}
+              </div>
+              <div style={{ fontSize: '0.75rem', color: isToday ? '#007aff' : '#999' }}>
+                {isToday ? '오늘' : ''}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default NDayCalendar;
+```
+
+## 주요 특징
+
+1. **유연한 범위 제어**: `DayRangeStrategy`의 `days` 옵션만 변경하면 3일, 5일, 7일 등 원하는 기간을 즉시 구현할 수 있습니다.
+2. **동적 네비게이션**: `navigation.next()` 호출 시 현재 보여지는 범위(`days`)만큼 날짜가 자동으로 점프합니다. (예: 1월 1일~3일 뷰에서 Next 클릭 시 1월 4일로 이동)
+3. **단순한 그리드 구조**: N-Day View는 보통 1행으로 구성되므로 `grid.data.flat()`을 사용해 가로로 나열하기 매우 편리합니다.
+4. **상태 기반 스타일링**: `cell.value`를 현재 시간과 비교하여 '오늘' 표시 등 조건부 스타일을 쉽게 적용할 수 있습니다.

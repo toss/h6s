@@ -1,0 +1,124 @@
+---
+title: Annual Heatmap Example
+---
+
+# Annual Heatmap Example
+
+이 예제는 `AnnualHeatmapStrategy`를 사용하여 GitHub 잔디와 같은 연간 활동 히트맵을 구현하는 방법을 보여줍니다. 히트맵은 일반적인 달력과 달리 **X축이 주(Weeks/Months)**가 되고, **Y축이 요일(Days of Week)**이 되는 7행 가변열 구조를 가집니다.
+
+```tsx
+import React from 'react';
+import { useTimeGrid, AnnualHeatmapStrategy } from '@h6s/calendar';
+
+const AnnualHeatmap = () => {
+  // 1. useTimeGrid 훅 초기화 (AnnualHeatmapStrategy 주입)
+  const { 
+    grid,      // { rows: 7, cols: 53, data: GridCell[][] }
+    axes,      // xLabels: ['Jan', 'Feb', ...], yLabels: ['Mon', 'Wed', 'Fri']
+    navigation,
+    cursorDate
+  } = useTimeGrid({
+    defaultDate: new Date(),
+    strategy: new AnnualHeatmapStrategy(),
+  });
+
+  // 데이터 시뮬레이션 (실제로는 API에서 가져온 활동량 데이터)
+  const getActivityLevel = (date: Date) => {
+    const day = date.getDay();
+    return (day % 4); // 0~3 단계의 가상 활동량
+  };
+
+  const colors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+
+  return (
+    <div style={{ padding: '20px', overflowX: 'auto', border: '1px solid #eee', borderRadius: '8px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <h3>{cursorDate.getFullYear()}년 활동 기록</h3>
+        <div>
+          <button onClick={navigation.prev}>이전 해</button>
+          <button onClick={navigation.next}>다음 해</button>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '8px' }}>
+        {/* 2. Y축 라벨 (요일: Mon, Wed, Fri 등) */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateRows: `repeat(${grid.rows}, 12px)`, 
+          gap: '2px',
+          marginTop: '20px', // X축 라벨 높이만큼 마진
+          fontSize: '10px',
+          color: '#777'
+        }}>
+          {axes.y.map((label) => (
+            <div key={label.index} style={{ gridRow: label.index + 1 }}>
+              {label.label}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {/* 3. X축 라벨 (월: Jan, Feb...) */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: `repeat(${grid.cols}, 12px)`, 
+            gap: '2px',
+            fontSize: '10px',
+            color: '#777'
+          }}>
+            {axes.x.map((label) => (
+              <div 
+                key={label.index} 
+                style={{ 
+                  gridColumn: `${label.index + 1} / span ${label.span || 1}`,
+                  textAlign: 'left' 
+                }}
+              >
+                {label.label}
+              </div>
+            ))}
+          </div>
+
+          {/* 4. 히트맵 메인 그리드 */}
+          <div style={{
+            display: 'grid',
+            gridAutoFlow: 'column', // 열 방향으로 먼저 채움 (GitHub 스타일)
+            gridTemplateRows: `repeat(${grid.rows}, 12px)`,
+            gridTemplateColumns: `repeat(${grid.cols}, 12px)`,
+            gap: '2px'
+          }}>
+            {/* 2D 데이터를 flat하게 뿌리되, row/col 정보를 CSS Grid에 활용 */}
+            {grid.data.flat().map((cell) => {
+              const level = getActivityLevel(cell.value);
+              return (
+                <div
+                  key={cell.value.getTime()}
+                  title={cell.value.toDateString()}
+                  style={{
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: colors[level],
+                    borderRadius: '2px',
+                    // cell.row와 cell.col을 사용하여 정확한 위치 지정
+                    gridRow: cell.row + 1,
+                    gridColumn: cell.col + 1
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AnnualHeatmap;
+```
+
+## 주요 특징
+
+1. **축(Axis)의 완전한 활용**: 히트맵은 X축(월)과 Y축(요일) 정보를 모두 사용하여 복잡한 라벨링 시스템을 보여줍니다.
+2. **ColSpan 지원**: `axes.x`에서 제공하는 `span` 정보를 사용하여 'Jan', 'Feb' 라벨이 해당 월의 주차 너비만큼 적절히 병합되도록 구현할 수 있습니다.
+3. **Grid Layout 전략**: `gridAutoFlow: 'column'` 또는 명시적인 `gridRow/gridColumn` 지정을 통해 요일이 행이 되고 주가 열이 되는 히트맵 특유의 레이아웃을 쉽게 처리합니다.
+4. **대량 데이터 처리**: 약 370개(53주 x 7일)의 셀을 렌더링하면서도 `grid.data`의 정형화된 구조 덕분에 로직이 간결하게 유지됩니다.

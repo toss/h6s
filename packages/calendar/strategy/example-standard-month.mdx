@@ -1,0 +1,97 @@
+---
+title: Standard Month Calendar Example
+---
+
+# Standard Month Calendar Example
+
+이 예제는 `MonthGridStrategy`를 사용하여 전형적인 월간 달력을 구현하는 방법을 보여줍니다. `useTimeGrid` 훅은 그리드 데이터와 네비게이션 로직을 제공하며, UI 렌더링은 완전히 개발자의 몫입니다.
+
+```tsx
+import React from 'react';
+import { useTimeGrid, MonthGridStrategy } from '@h6s/calendar';
+
+const StandardMonthCalendar = () => {
+  // 1. useTimeGrid 훅 초기화
+  const { 
+    grid,      // 2차원 그리드 데이터 { rows, cols, data: GridCell[][] }
+    axes,      // 축 라벨 정보 { x: AxisHeader[], y: AxisHeader[] }
+    navigation, // 네비게이션 함수들 { next, prev, setDate }
+    cursorDate  // 현재 기준 날짜
+  } = useTimeGrid({
+    defaultDate: new Date(),
+    strategy: new MonthGridStrategy({ 
+      weekStartsOn: 0 // 0: 일요일 시작, 1: 월요일 시작
+    }),
+  });
+
+  const year = cursorDate.getFullYear();
+  const month = cursorDate.getMonth() + 1;
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '500px', border: '1px solid #eee', borderRadius: '8px' }}>
+      {/* 헤더: 연/월 표시 및 네비게이션 */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '20px' 
+      }}>
+        <button onClick={navigation.prev}>이전 달</button>
+        <h2 style={{ margin: 0 }}>{year}년 {month}월</h2>
+        <button onClick={navigation.next}>다음 달</button>
+      </div>
+
+      {/* 달력 본문: CSS Grid 활용 */}
+      <div style={{
+        display: 'grid',
+        // 전략에서 제공하는 cols(7)를 사용하여 레이아웃 결정
+        gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
+        gap: '2px',
+        backgroundColor: '#eee',
+        border: '1px solid #eee'
+      }}>
+        {/* 요일 헤더 (X축) */}
+        {axes.x.map((header) => (
+          <div key={`header-${header.index}`} style={{ 
+            backgroundColor: '#f9f9f9', 
+            padding: '10px 0', 
+            fontWeight: 'bold',
+            textAlign: 'center' 
+          }}>
+            {/* 전략에서 제공하는 라벨 (Sun, Mon...) */}
+            {header.label}
+          </div>
+        ))}
+
+        {/* 날짜 셀 (Body) */}
+        {/* 2차원 데이터를 flat()하여 CSS Grid로 순서대로 배치 */}
+        {grid.data.flat().map((cell) => (
+          <div 
+            key={`${cell.row}-${cell.col}`}
+            style={{
+              backgroundColor: '#fff',
+              padding: '15px 0',
+              textAlign: 'center',
+              cursor: 'pointer',
+              // 현재 달이 아닌 날짜(isMain: false)는 흐리게 표시
+              color: cell.isMain ? '#333' : '#ccc',
+            }}
+            onClick={() => navigation.setDate(cell.value)}
+          >
+            {cell.value.getDate()}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default StandardMonthCalendar;
+```
+
+## 주요 특징
+
+1. **Headless 방식**: 스타일이나 DOM 구조에 관여하지 않고 오직 데이터(`grid`, `axes`)와 상태 제어(`navigation`)만 제공합니다.
+2. **Matrix 기반 레이아웃**: `grid.data`가 2차원 배열로 제공되므로, 복잡한 레이아웃에서도 `row`, `col` 인덱스를 활용해 정밀한 배치가 가능합니다.
+3. **Axis 추상화**: `axes.x`를 통해 요일 헤더를 가져옵니다. 전략을 바꾸면(예: 히트맵) 이 축 정보도 자동으로 해당 전략에 맞게 변경됩니다.
+4. **상태 분리**: `isMain` 플래그를 통해 현재 뷰의 유효 범위(이번 달 날짜인지 등)를 쉽게 판단할 수 있습니다.
