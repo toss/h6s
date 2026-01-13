@@ -70,7 +70,11 @@ export interface TimeGrid<TData = unknown, TDate = unknown> {
 
 // ============ createTimeGrid 옵션 ============
 
-export interface CreateTimeGridOptions<TData = unknown, TDate = unknown> {
+export interface CreateTimeGridOptions<
+  TData = unknown,
+  TDate = unknown,
+  TPlugins extends import('../plugin/types').Plugin<TData, TDate, any>[] = [],
+> {
   /** DateAdapter 인스턴스 */
   adapter: import('../adapter/types').DateAdapter<TDate>;
 
@@ -91,4 +95,7 @@ export interface CreateTimeGridOptions<TData = unknown, TDate = unknown> {
 
   /** 데이터에서 날짜 추출 함수 */
   getItemDate?: (item: TData) => TDate;
+
+  /** 플러그인 배열 */
+  plugins?: TPlugins;
 }

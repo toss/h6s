@@ -1,7 +1,7 @@
 /**
  * MonthCalendar - 전통적인 월간 달력 데모
  *
- * createTimeGrid + selection 플러그인 + isWeekend 유틸리티 조합.
+ * createTimeGrid + plugins 옵션 + isWeekend 유틸리티 조합.
  * navigation (이전/다음/오늘) 동작 포함.
  */
 
@@ -11,7 +11,6 @@ import {
   createMockAdapter,
   withPadding,
   toMatrix,
-  pipe,
   selection,
   isWeekend,
 } from '../src';
@@ -48,23 +47,22 @@ export function MonthCalendar({
     return { startDate: start, endDate: end };
   }, [year, month]);
 
-  // TimeGrid 생성 + 플러그인 적용
-  const gridWithPlugins = useMemo(() => {
-    const baseGrid = createTimeGrid<unknown, Date>({
+  // TimeGrid 생성 (plugins 옵션으로 전달)
+  const grid = useMemo(() => {
+    return createTimeGrid({
       adapter,
       range: { start: startDate, end: endDate },
       cellUnit: 'day',
       weekStartsOn,
+      plugins: [selection({ mode: 'single' })],
     });
-
-    return pipe(baseGrid, [selection({ mode: 'single' })]);
   }, [adapter, startDate, endDate, weekStartsOn]);
 
   // 패딩 추가 + 행렬 변환
   const matrix = useMemo(() => {
-    const paddedGrid = withPadding(gridWithPlugins, adapter);
+    const paddedGrid = withPadding(grid, adapter);
     return toMatrix(paddedGrid.cells, 7);
-  }, [gridWithPlugins, adapter]);
+  }, [grid, adapter]);
 
   // Navigation 핸들러
   const goNext = useCallback(() => {

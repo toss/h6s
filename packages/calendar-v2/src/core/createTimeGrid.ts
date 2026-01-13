@@ -6,6 +6,7 @@
  */
 
 import type { DateAdapter, WeekDay } from '../adapter/types';
+import type { Plugin, InferPluginExtensions } from '../plugin/types';
 import type {
   Cell,
   CellUnit,
@@ -14,9 +15,34 @@ import type {
   TimeRange,
 } from './types';
 
-export function createTimeGrid<TData = unknown, TDate = unknown>(
-  options: CreateTimeGridOptions<TData, TDate>
-): TimeGrid<TData, TDate> {
+/**
+ * TimeGrid 생성
+ *
+ * @example
+ * // 기본 사용
+ * const grid = createTimeGrid({
+ *   adapter,
+ *   range: { start: '2026-01-01', end: '2026-01-31' },
+ *   cellUnit: 'day',
+ * });
+ *
+ * @example
+ * // 플러그인과 함께 사용
+ * const grid = createTimeGrid({
+ *   adapter,
+ *   range: { start: '2026-01-01', end: '2026-01-31' },
+ *   cellUnit: 'day',
+ *   plugins: [selection({ mode: 'single' })],
+ * });
+ * // grid.selection.select(cell) - 타입 추론 동작
+ */
+export function createTimeGrid<
+  TData = unknown,
+  TDate = unknown,
+  TPlugins extends Plugin<TData, TDate, any>[] = [],
+>(
+  options: CreateTimeGridOptions<TData, TDate, TPlugins>
+): TimeGrid<TData, TDate> & InferPluginExtensions<TPlugins> {
   const {
     adapter,
     range: rawRange,
@@ -24,6 +50,7 @@ export function createTimeGrid<TData = unknown, TDate = unknown>(
     weekStartsOn = adapter.getWeekStartsOn(),
     data = [],
     getItemDate,
+    plugins = [] as unknown as TPlugins,
   } = options;
 
   // 범위 정규화 (문자열이면 TDate로 변환)
@@ -39,7 +66,7 @@ export function createTimeGrid<TData = unknown, TDate = unknown>(
   const cells = generateCells(range, cellUnit, adapter, weekStartsOn, dataByDate);
 
   // TimeGrid 객체 생성
-  const grid: TimeGrid<TData, TDate> = {
+  let grid: TimeGrid<TData, TDate> = {
     cells,
     range,
     cellUnit,
@@ -62,7 +89,12 @@ export function createTimeGrid<TData = unknown, TDate = unknown>(
     },
   };
 
-  return grid;
+  // 플러그인 적용
+  for (const plugin of plugins) {
+    grid = plugin.extend(grid) as TimeGrid<TData, TDate>;
+  }
+
+  return grid as TimeGrid<TData, TDate> & InferPluginExtensions<TPlugins>;
 }
 
 // ============ Helper Functions ============
