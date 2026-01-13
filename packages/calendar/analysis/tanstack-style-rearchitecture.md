@@ -672,28 +672,31 @@ Utils: cells → 원하는 레이아웃 (2D, 그룹화 등)
 
 ### 4.4 Plugin 사용법
 
-#### Core에서 직접 사용 (pipe 패턴)
+#### 기본 사용법 (plugins 옵션)
 
 ```typescript
 import { createTimeGrid } from '@h6s/calendar-core';
 import { navigation, selection } from '@h6s/calendar/plugins';
 
-// 플러그인은 옵션을 받아 Grid → EnhancedGrid 함수를 반환
-const grid = pipe(
-  createTimeGrid({ adapter, range, cellUnit: 'day' }),
-  navigation({ step: 'month', min: '2020-01-01', max: '2030-12-31' }),
-  selection({ mode: 'range', onSelect: console.log }),
-);
+// createTimeGrid의 plugins 옵션으로 전달
+const grid = createTimeGrid({
+  adapter,
+  range,
+  cellUnit: 'day',
+  plugins: [
+    navigation({ step: 'month', min: '2020-01-01', max: '2030-12-31' }),
+    selection({ mode: 'range', onSelect: console.log }),
+  ],
+});
 
-// 플러그인이 추가한 API 사용
+// 플러그인이 추가한 API 사용 (타입 추론 동작)
 grid.navigation.goNext();
 grid.navigation.goPrev();
 grid.selection.select(cell);
 grid.selection.clear();
-grid.getCellProps(cell);  // 플러그인들이 확장한 props 포함
 ```
 
-#### React에서 사용 (plugins 배열)
+#### React에서 사용
 
 ```typescript
 import { useTimeGrid } from '@h6s/calendar-react';
@@ -708,6 +711,16 @@ const grid = useTimeGrid({
     selection({ mode: 'range' }),
   ],
 });
+```
+
+#### 고급: pipe 유틸리티 (동적 플러그인 조합)
+
+```typescript
+import { pipe } from '@h6s/calendar/plugin';
+
+// 런타임에 동적으로 플러그인 조합이 필요한 경우
+const baseGrid = createTimeGrid({ adapter, range, cellUnit: 'day' });
+const enhancedGrid = pipe(baseGrid, conditionalPlugins);
 ```
 
 #### 플러그인 API 예시
@@ -1621,17 +1634,8 @@ grid.holidays.isHoliday(cell);  // ✅ 타입 추론 동작
 ### 5.7 플러그인 조합
 
 ```typescript
-// Core에서: pipe로 순차 적용
-const enhancedGrid = pipe(
-  createTimeGrid(options),
-  navigation({ step: 'month' }),
-  selection({ mode: 'range' }),
-  a11y({ locale: 'ko-KR' }),
-  events({ data: myEvents }),
-);
-
-// React Hook에서: plugins 배열로 전달
-const grid = useTimeGrid({
+// 기본: createTimeGrid의 plugins 옵션으로 전달
+const grid = createTimeGrid({
   ...options,
   plugins: [
     navigation({ step: 'month' }),
@@ -1640,6 +1644,18 @@ const grid = useTimeGrid({
     events({ data: myEvents }),
   ],
 });
+
+// React Hook에서도 동일
+const grid = useTimeGrid({
+  ...options,
+  plugins: [
+    navigation({ step: 'month' }),
+    selection({ mode: 'range' }),
+  ],
+});
+
+// 고급: pipe로 동적 조합 (런타임에 조건부로 플러그인 추가 시)
+const enhancedGrid = pipe(baseGrid, dynamicPlugins);
 ```
 
 ---

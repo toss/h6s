@@ -116,7 +116,7 @@ packages/calendar-core/src/
 packages/calendar-core/src/
 ├── plugin/
 │   ├── types.ts         # Plugin 인터페이스
-│   ├── pipe.ts          # 플러그인 조합 함수
+│   ├── pipe.ts          # 플러그인 조합 함수 (고급 사용자용)
 │   └── index.ts
 ```
 
@@ -128,8 +128,21 @@ interface Plugin<TGrid, TExtension> {
 }
 ```
 
+**사용법** (createTimeGrid의 plugins 옵션):
+```typescript
+const grid = createTimeGrid({
+  adapter,
+  range: { start, end },
+  cellUnit: 'day',
+  plugins: [selection({ mode: 'single' })],
+});
+
+// 타입 추론 동작
+grid.selection.select(cell);
+```
+
 **검증 포인트**:
-- 플러그인 조합 시 타입이 올바르게 병합되는가?
+- plugins 옵션으로 전달 시 타입이 올바르게 병합되는가?
 - `grid.pluginA.method()` + `grid.pluginB.method()` 자동완성
 
 #### 2.2 샘플 플러그인
