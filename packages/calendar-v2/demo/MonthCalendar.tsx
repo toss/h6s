@@ -8,12 +8,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
   createTimeGrid,
-  createMockAdapter,
   withPadding,
   toMatrix,
   selection,
   navigation,
   isWeekend,
+  startOfMonth,
+  endOfMonth,
 } from '../src';
 import type { Cell, PaddedCell, WeekDay, NavigationState } from '../src';
 
@@ -32,20 +33,19 @@ export function MonthCalendar({
 }: MonthCalendarProps) {
   const today = new Date();
 
-  const adapter = useMemo(() => createMockAdapter({ weekStartsOn }), [weekStartsOn]);
-
   // 초기 범위 계산
   const initialRange = useMemo(() => {
     const year = initialYear ?? today.getFullYear();
     const month = initialMonth ?? today.getMonth();
+    const start = new Date(year, month, 1);
     return {
-      start: new Date(year, month, 1),
-      end: new Date(year, month + 1, 0),
+      start,
+      end: endOfMonth(start),
     };
   }, [initialYear, initialMonth, today]);
 
   // Navigation 상태 (React 상태로 관리 - 범위 변경 시 리렌더링 트리거)
-  const [navState, setNavState] = useState<NavigationState<Date>>({
+  const [navState, setNavState] = useState<NavigationState>({
     cursor: initialRange.start,
     rangeStart: initialRange.start,
     rangeEnd: initialRange.end,
@@ -57,22 +57,21 @@ export function MonthCalendar({
   // TimeGrid 생성 (plugins 옵션으로 전달)
   const grid = useMemo(() => {
     return createTimeGrid({
-      adapter,
       range: { start: navState.rangeStart, end: navState.rangeEnd },
       cellUnit: 'day',
       weekStartsOn,
       plugins: [
         selection({ mode: 'single' }),
-        navigation({ unit: 'month', adapter }),
+        navigation({ unit: 'month' }),
       ],
     });
-  }, [adapter, navState.rangeStart, navState.rangeEnd, weekStartsOn]);
+  }, [navState.rangeStart, navState.rangeEnd, weekStartsOn]);
 
   // 패딩 추가 + 행렬 변환
   const matrix = useMemo(() => {
-    const paddedGrid = withPadding(grid, adapter);
+    const paddedGrid = withPadding(grid);
     return toMatrix(paddedGrid.cells, 7);
-  }, [grid, adapter]);
+  }, [grid]);
 
   // Navigation 핸들러 (플러그인 메서드 사용)
   const handleGoNext = useCallback(() => {
@@ -91,7 +90,7 @@ export function MonthCalendar({
   }, [grid]);
 
   // Selection 핸들러
-  const handleCellClick = useCallback((cell: Cell<unknown, Date>) => {
+  const handleCellClick = useCallback((cell: Cell<unknown>) => {
     setSelectedKey((prev) => (prev === cell.key ? null : cell.key));
   }, []);
 
@@ -134,7 +133,7 @@ export function MonthCalendar({
           {matrix.map((week, weekIndex) => (
             <tr key={weekIndex}>
               {week.map((cell) => {
-                const paddedCell = cell as PaddedCell<unknown, Date>;
+                const paddedCell = cell as PaddedCell<unknown>;
                 const isSelected = selectedKey === cell.key;
                 const isCellWeekend = isWeekend(cell.weekday);
 

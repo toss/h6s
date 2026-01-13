@@ -8,10 +8,10 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
   createTimeGrid,
-  createMockAdapter,
   isWeekend,
+  addDays,
 } from '../src';
-import type { Cell, WeekDay } from '../src';
+import type { Cell } from '../src';
 
 const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -42,25 +42,20 @@ export function NDayView({
   const [startDate, setStartDate] = useState(initialDate ?? today);
   const [days, setDays] = useState(initialDays);
 
-  const adapter = useMemo(() => createMockAdapter({ weekStartsOn: 0 }), []);
-
   // N일 범위 계산
   const endDate = useMemo(() => {
-    const end = new Date(startDate);
-    end.setDate(end.getDate() + days - 1);
-    return end;
+    return addDays(startDate, days - 1);
   }, [startDate, days]);
 
   // TimeGrid 생성
   const grid = useMemo(() => {
-    return createTimeGrid<Event, Date>({
-      adapter,
+    return createTimeGrid<Event>({
       range: { start: startDate, end: endDate },
       cellUnit: 'day',
       data: events,
       getItemDate: (event) => event.date,
     });
-  }, [adapter, startDate, endDate, events]);
+  }, [startDate, endDate, events]);
 
   // Navigation
   const goNext = useCallback(() => {
@@ -84,7 +79,7 @@ export function NDayView({
   }, []);
 
   // 날짜 포맷
-  const formatDate = (cell: Cell<Event, Date>) => {
+  const formatDate = (cell: Cell<Event>) => {
     return `${cell.month + 1}/${cell.dayOfMonth}`;
   };
 

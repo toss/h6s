@@ -8,7 +8,6 @@
 import React from 'react';
 import {
   createTimeGrid,
-  createMockAdapter,
   groupBy,
 } from '../src';
 
@@ -42,14 +41,11 @@ const COLORS = [
 ];
 
 export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps) {
-  const adapter = createMockAdapter({ weekStartsOn: 0 }); // GitHub은 일요일 시작
-
   // TimeGrid 생성 (데이터 바인딩)
-  const grid = createTimeGrid<ContributionData, Date>({
-    adapter,
+  const grid = createTimeGrid<ContributionData>({
     range: { start: startDate, end: endDate },
     cellUnit: 'day',
-    weekStartsOn: 0,
+    weekStartsOn: 0, // GitHub은 일요일 시작
     data,
     getItemDate: (item) => item.date,
   });

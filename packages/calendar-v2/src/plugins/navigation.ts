@@ -6,41 +6,48 @@
  */
 
 import type { TimeGrid } from '../core/types';
-import type { DateAdapter } from '../adapter/types';
 import type { Plugin } from '../plugin/types';
+import {
+  addDays,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  today,
+  type WeekDay,
+} from '../utils/date';
 
 export type NavigationUnit = 'day' | 'week' | 'month' | 'year';
 
-export interface NavigationOptions<TDate> {
+export interface NavigationOptions {
   /** 이동 단위 */
   unit: NavigationUnit;
-  /** DateAdapter (날짜 계산용) */
-  adapter: DateAdapter<TDate>;
+  /** 주 시작 요일 (week 단위에서 사용, 기본값: 0) */
+  weekStartsOn?: WeekDay;
 }
 
-export interface NavigationState<TDate> {
+export interface NavigationState {
   /** 현재 커서 날짜 */
-  cursor: TDate;
+  cursor: Date;
   /** 현재 범위 시작 */
-  rangeStart: TDate;
+  rangeStart: Date;
   /** 현재 범위 끝 */
-  rangeEnd: TDate;
+  rangeEnd: Date;
 }
 
-export interface NavigationExtension<TDate> {
+export interface NavigationExtension {
   navigation: {
     /** 현재 상태 */
-    state: NavigationState<TDate>;
+    state: NavigationState;
     /** 다음으로 이동 */
-    goNext: () => NavigationState<TDate>;
+    goNext: () => NavigationState;
     /** 이전으로 이동 */
-    goPrev: () => NavigationState<TDate>;
+    goPrev: () => NavigationState;
     /** 오늘로 이동 */
-    goToday: () => NavigationState<TDate>;
+    goToday: () => NavigationState;
     /** 특정 날짜로 이동 */
-    goTo: (date: TDate) => NavigationState<TDate>;
+    goTo: (date: Date) => NavigationState;
     /** 새로운 범위 반환 (grid 재생성용) */
-    getRange: () => { start: TDate; end: TDate };
+    getRange: () => { start: Date; end: Date };
   };
 }
 
@@ -52,88 +59,84 @@ export interface NavigationExtension<TDate> {
  *
  * @example
  * const grid = createTimeGrid({
- *   adapter,
- *   range,
+ *   range: { start: '2026-01-01', end: '2026-01-31' },
  *   cellUnit: 'day',
- *   plugins: [navigation({ unit: 'month', adapter })],
+ *   plugins: [navigation({ unit: 'month' })],
  * });
  *
  * // 다음 달로 이동
  * const newState = grid.navigation.goNext();
- * // newState.rangeStart, newState.rangeEnd로 새 grid 생성
  */
-export function navigation<TDate>(
-  options: NavigationOptions<TDate>
-): Plugin<NavigationExtension<TDate>> {
-  const { unit, adapter } = options;
+export function navigation(options: NavigationOptions): Plugin<NavigationExtension> {
+  const { unit, weekStartsOn = 0 } = options;
 
   return {
     name: 'navigation',
-    extend<TData, TDateGrid>(grid: TimeGrid<TData, TDateGrid>) {
+    extend<TData>(grid: TimeGrid<TData>) {
       // 초기 상태 (grid의 range에서 추출)
-      let state: NavigationState<TDate> = {
-        cursor: grid.range.start as unknown as TDate,
-        rangeStart: grid.range.start as unknown as TDate,
-        rangeEnd: grid.range.end as unknown as TDate,
+      let state: NavigationState = {
+        cursor: grid.range.start,
+        rangeStart: grid.range.start,
+        rangeEnd: grid.range.end,
       };
 
-      const calculateRange = (cursor: TDate): { start: TDate; end: TDate } => {
+      const calculateRange = (cursor: Date): { start: Date; end: Date } => {
         switch (unit) {
           case 'day':
             return { start: cursor, end: cursor };
 
           case 'week': {
-            const weekStart = adapter.startOfWeek(cursor);
-            const weekEnd = adapter.addDays(weekStart, 6);
+            const weekStart = startOfWeek(cursor, weekStartsOn);
+            const weekEnd = addDays(weekStart, 6);
             return { start: weekStart, end: weekEnd };
           }
 
           case 'month': {
-            const monthStart = adapter.startOfMonth(cursor);
-            // 다음 달 1일의 전날 = 이번 달 마지막 날
-            const nextMonth = adapter.addDays(monthStart, 32);
-            const monthEnd = adapter.addDays(adapter.startOfMonth(nextMonth), -1);
+            const monthStart = startOfMonth(cursor);
+            const monthEnd = endOfMonth(cursor);
             return { start: monthStart, end: monthEnd };
           }
 
           case 'year': {
-            const yearStart = new Date(adapter.getYear(cursor), 0, 1) as unknown as TDate;
-            const yearEnd = new Date(adapter.getYear(cursor), 11, 31) as unknown as TDate;
-            return { start: yearStart, end: yearEnd };
+            const year = cursor.getFullYear();
+            return {
+              start: new Date(year, 0, 1),
+              end: new Date(year, 11, 31),
+            };
           }
         }
       };
 
-      const moveCursor = (direction: number): NavigationState<TDate> => {
-        let newCursor: TDate;
+      const moveCursor = (direction: number): NavigationState => {
+        let newCursor: Date;
 
         switch (unit) {
           case 'day':
-            newCursor = adapter.addDays(state.cursor, direction);
+            newCursor = addDays(state.cursor, direction);
             break;
 
           case 'week':
-            newCursor = adapter.addDays(state.cursor, direction * 7);
+            newCursor = addDays(state.cursor, direction * 7);
             break;
 
           case 'month': {
-            const currentMonth = adapter.getMonth(state.cursor);
-            const currentYear = adapter.getYear(state.cursor);
+            const currentMonth = state.cursor.getMonth();
+            const currentYear = state.cursor.getFullYear();
             const newMonth = currentMonth + direction;
 
             if (newMonth > 11) {
-              newCursor = new Date(currentYear + 1, 0, 1) as unknown as TDate;
+              newCursor = new Date(currentYear + 1, 0, 1);
             } else if (newMonth < 0) {
-              newCursor = new Date(currentYear - 1, 11, 1) as unknown as TDate;
+              newCursor = new Date(currentYear - 1, 11, 1);
             } else {
-              newCursor = new Date(currentYear, newMonth, 1) as unknown as TDate;
+              newCursor = new Date(currentYear, newMonth, 1);
             }
             break;
           }
 
           case 'year': {
-            const year = adapter.getYear(state.cursor) + direction;
-            newCursor = new Date(year, 0, 1) as unknown as TDate;
+            const year = state.cursor.getFullYear() + direction;
+            newCursor = new Date(year, 0, 1);
             break;
           }
         }
@@ -148,22 +151,22 @@ export function navigation<TDate>(
         return state;
       };
 
-      const goNext = (): NavigationState<TDate> => moveCursor(1);
+      const goNext = (): NavigationState => moveCursor(1);
 
-      const goPrev = (): NavigationState<TDate> => moveCursor(-1);
+      const goPrev = (): NavigationState => moveCursor(-1);
 
-      const goToday = (): NavigationState<TDate> => {
-        const today = adapter.today();
-        const range = calculateRange(today);
+      const goToday = (): NavigationState => {
+        const todayDate = today();
+        const range = calculateRange(todayDate);
         state = {
-          cursor: today,
+          cursor: todayDate,
           rangeStart: range.start,
           rangeEnd: range.end,
         };
         return state;
       };
 
-      const goTo = (date: TDate): NavigationState<TDate> => {
+      const goTo = (date: Date): NavigationState => {
         const range = calculateRange(date);
         state = {
           cursor: date,
@@ -188,7 +191,7 @@ export function navigation<TDate>(
           goTo,
           getRange,
         },
-      } as TimeGrid<TData, TDateGrid> & NavigationExtension<TDate>;
+      };
     },
   };
 }

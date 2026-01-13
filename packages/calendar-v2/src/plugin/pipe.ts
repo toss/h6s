@@ -23,25 +23,25 @@ import type { ExtendedTimeGrid, Plugin } from './types';
  * // 타입 추론 동작
  * extendedGrid.selection.select(cell); // ✓
  */
-export function pipe<TData, TDate, const TPlugins extends readonly Plugin<any>[]>(
-  grid: TimeGrid<TData, TDate>,
+export function pipe<TData, const TPlugins extends readonly Plugin<any>[]>(
+  grid: TimeGrid<TData>,
   plugins: TPlugins
-): ExtendedTimeGrid<TData, TDate, TPlugins> {
+): ExtendedTimeGrid<TData, TPlugins> {
   let result: any = grid;
 
   for (const plugin of plugins) {
     result = plugin.extend(result);
   }
 
-  return result as ExtendedTimeGrid<TData, TDate, TPlugins>;
+  return result as ExtendedTimeGrid<TData, TPlugins>;
 }
 
 /**
  * 단일 플러그인 적용 (타입 안전)
  */
-export function applyPlugin<TData, TDate, TExtension>(
-  grid: TimeGrid<TData, TDate>,
+export function applyPlugin<TData, TExtension>(
+  grid: TimeGrid<TData>,
   plugin: Plugin<TExtension>
-): TimeGrid<TData, TDate> & TExtension {
+): TimeGrid<TData> & TExtension {
   return plugin.extend(grid);
 }

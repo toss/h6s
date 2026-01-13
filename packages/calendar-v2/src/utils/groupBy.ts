@@ -5,14 +5,14 @@
  * 월간 달력(주 단위), GitHub 잔디(요일 단위) 등 레이아웃 구성에 사용.
  */
 
-import type { WeekDay } from '../adapter/types';
 import type { Cell, TimeGrid } from '../core/types';
+import type { WeekDay } from './date';
 
 export type GroupByKey = 'week' | 'weekday' | 'month';
 
-export interface GroupedCells<TData, TDate> {
+export interface GroupedCells<TData = unknown> {
   key: string;
-  cells: Cell<TData, TDate>[];
+  cells: Cell<TData>[];
 }
 
 /**
@@ -32,11 +32,11 @@ export interface GroupedCells<TData, TDate> {
  * const weekdays = groupBy(grid, 'weekday');
  * // [{ key: '0', cells: [일요일들...] }, { key: '1', cells: [월요일들...] }]
  */
-export function groupBy<TData, TDate>(
-  grid: TimeGrid<TData, TDate>,
+export function groupBy<TData>(
+  grid: TimeGrid<TData>,
   key: GroupByKey
-): GroupedCells<TData, TDate>[] {
-  const groups = new Map<string, Cell<TData, TDate>[]>();
+): GroupedCells<TData>[] {
+  const groups = new Map<string, Cell<TData>[]>();
 
   for (const cell of grid.cells) {
     const groupKey = getGroupKey(cell, key, grid.weekStartsOn);
@@ -54,8 +54,8 @@ export function groupBy<TData, TDate>(
   }));
 }
 
-function getGroupKey<TData, TDate>(
-  cell: Cell<TData, TDate>,
+function getGroupKey<TData>(
+  cell: Cell<TData>,
   key: GroupByKey,
   weekStartsOn: WeekDay
 ): string {
@@ -69,8 +69,8 @@ function getGroupKey<TData, TDate>(
   }
 }
 
-function getWeekKey<TData, TDate>(
-  cell: Cell<TData, TDate>,
+function getWeekKey<TData>(
+  cell: Cell<TData>,
   weekStartsOn: WeekDay
 ): string {
   // 주 번호 계산 (ISO 주 번호 기반 단순화)

@@ -29,13 +29,13 @@ export interface SelectionExtension {
     /** 현재 상태 */
     state: SelectionState;
     /** 셀 선택 */
-    select: (cell: Cell<any, any>) => SelectionState;
+    select: (cell: Cell<any>) => SelectionState;
     /** 선택 해제 */
     clear: () => SelectionState;
     /** 셀이 선택되었는지 확인 */
-    isSelected: (cell: Cell<any, any>) => boolean;
+    isSelected: (cell: Cell<any>) => boolean;
     /** 셀이 범위 내에 있는지 확인 */
-    isInRange: (cell: Cell<any, any>) => boolean;
+    isInRange: (cell: Cell<any>) => boolean;
   };
 }
 
@@ -47,8 +47,7 @@ export interface SelectionExtension {
  *
  * @example
  * const grid = createTimeGrid({
- *   adapter,
- *   range,
+ *   range: { start: '2026-01-01', end: '2026-01-31' },
  *   cellUnit: 'day',
  *   plugins: [selection({ mode: 'single' })],
  * });
@@ -59,7 +58,7 @@ export function selection(options: SelectionOptions): Plugin<SelectionExtension>
 
   return {
     name: 'selection',
-    extend<TData, TDate>(grid: TimeGrid<TData, TDate>) {
+    extend<TData>(grid: TimeGrid<TData>) {
       // 초기 상태
       let state: SelectionState = {
         selectedKey: null,
@@ -67,7 +66,7 @@ export function selection(options: SelectionOptions): Plugin<SelectionExtension>
         rangeEndKey: null,
       };
 
-      const select = (cell: Cell<any, any>): SelectionState => {
+      const select = (cell: Cell<any>): SelectionState => {
         if (mode === 'single') {
           state = {
             selectedKey: cell.key,
@@ -109,14 +108,14 @@ export function selection(options: SelectionOptions): Plugin<SelectionExtension>
         return state;
       };
 
-      const isSelected = (cell: Cell<any, any>): boolean => {
+      const isSelected = (cell: Cell<any>): boolean => {
         if (mode === 'single') {
           return state.selectedKey === cell.key;
         }
         return isInRange(cell);
       };
 
-      const isInRange = (cell: Cell<any, any>): boolean => {
+      const isInRange = (cell: Cell<any>): boolean => {
         if (!state.rangeStartKey || !state.rangeEndKey) {
           return state.rangeStartKey === cell.key;
         }

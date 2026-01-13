@@ -2,7 +2,7 @@
  * Plugin Types - 플러그인 시스템 타입 정의
  *
  * 단순화된 플러그인 인터페이스.
- * TData, TDate는 createTimeGrid에서 추론되고, Plugin은 Extension 타입만 정의.
+ * TData만 제네릭으로 사용 (Date는 고정).
  */
 
 import type { TimeGrid } from '../core/types';
@@ -18,11 +18,9 @@ export interface Plugin<TExtension = unknown> {
 
   /**
    * TimeGrid를 확장하는 함수
-   * TData, TDate는 createTimeGrid에서 추론됨
+   * TData는 createTimeGrid에서 추론됨
    */
-  extend: <TData, TDate>(
-    grid: TimeGrid<TData, TDate>
-  ) => TimeGrid<TData, TDate> & TExtension;
+  extend: <TData>(grid: TimeGrid<TData>) => TimeGrid<TData> & TExtension;
 }
 
 /**
@@ -42,6 +40,5 @@ export type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
  */
 export type ExtendedTimeGrid<
   TData,
-  TDate,
   TPlugins extends readonly Plugin<any>[],
-> = TimeGrid<TData, TDate> & InferPluginExtensions<TPlugins>;
+> = TimeGrid<TData> & InferPluginExtensions<TPlugins>;

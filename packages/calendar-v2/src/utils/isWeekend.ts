@@ -5,7 +5,7 @@
  * Core에 포함되지 않고 유틸리티로 분리되어 선택적 사용 가능.
  */
 
-import type { WeekDay } from '../adapter/types';
+import type { WeekDay } from './date';
 
 /**
  * 주말 여부 판별

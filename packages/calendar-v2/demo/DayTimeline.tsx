@@ -6,10 +6,7 @@
  */
 
 import React from 'react';
-import {
-  createTimeGrid,
-  createMockAdapter,
-} from '../src';
+import { createTimeGrid } from '../src';
 
 interface Event {
   id: string;
@@ -28,11 +25,8 @@ interface DayTimelineProps {
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 export function DayTimeline({ date, events = [] }: DayTimelineProps) {
-  const adapter = createMockAdapter();
-
   // 단일 날짜 TimeGrid (PoC에서 edge case 검증)
-  const grid = createTimeGrid<Event, Date>({
-    adapter,
+  const grid = createTimeGrid<Event>({
     range: { start: date, end: date },
     cellUnit: 'day',
     data: events,
