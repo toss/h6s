@@ -132,13 +132,12 @@ interface Plugin<TGrid, TExtension> {
 - 플러그인 조합 시 타입이 올바르게 병합되는가?
 - `grid.pluginA.method()` + `grid.pluginB.method()` 자동완성
 
-#### 2.2 샘플 플러그인 2개
+#### 2.2 샘플 플러그인
 
 ```
 packages/calendar-core/src/
 ├── plugins/
-│   ├── selection.ts     # 선택 플러그인 (최소 버전)
-│   └── weekendMarker.ts # 커스텀 플러그인 예시
+│   └── selection.ts     # 선택 플러그인 (최소 버전)
 ```
 
 **Selection Plugin** (최소 구현):
@@ -154,17 +153,9 @@ selection({ mode: 'single' | 'range' })
 }
 ```
 
-**WeekendMarker Plugin** (커스텀 예시):
-```typescript
-weekendMarker()
-→ {
-  getCellProps: (cell) => ({ 'data-weekend': isWeekend(cell) })
-}
-```
-
 **검증 포인트**:
-- 두 플러그인을 동시에 사용할 때 충돌 없는가?
-- 커스텀 플러그인이 공식 플러그인과 동일한 방식으로 동작하는가?
+- 플러그인 타입 추론이 동작하는가?
+- 커스텀 플러그인이 동일한 인터페이스로 작성 가능한가?
 
 ---
 
@@ -263,8 +254,7 @@ packages/
 │   │   │   ├── types.ts
 │   │   │   └── pipe.ts
 │   │   ├── plugins/
-│   │   │   ├── selection.ts
-│   │   │   └── weekendMarker.ts
+│   │   │   └── selection.ts
 │   │   └── index.ts
 │   ├── package.json         # dependencies: {} (empty!)
 │   └── tsconfig.json
