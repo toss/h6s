@@ -18,18 +18,12 @@ import type { ExtendedTimeGrid, Plugin } from './types';
  * @example
  * const extendedGrid = pipe(grid, [
  *   selection({ mode: 'single' }),
- *   weekendMarker(),
  * ]);
  *
  * // 타입 추론 동작
  * extendedGrid.selection.select(cell); // ✓
- * extendedGrid.getCellProps(cell);     // ✓
  */
-export function pipe<
-  TData,
-  TDate,
-  TPlugins extends Plugin<TData, TDate, any>[],
->(
+export function pipe<TData, TDate, const TPlugins extends readonly Plugin<any>[]>(
   grid: TimeGrid<TData, TDate>,
   plugins: TPlugins
 ): ExtendedTimeGrid<TData, TDate, TPlugins> {
@@ -47,7 +41,7 @@ export function pipe<
  */
 export function applyPlugin<TData, TDate, TExtension>(
   grid: TimeGrid<TData, TDate>,
-  plugin: Plugin<TData, TDate, TExtension>
+  plugin: Plugin<TExtension>
 ): TimeGrid<TData, TDate> & TExtension {
   return plugin.extend(grid);
 }

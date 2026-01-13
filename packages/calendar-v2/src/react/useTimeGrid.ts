@@ -164,17 +164,16 @@ export function useTimeGrid<TData = unknown, TDate = unknown>(
  *   adapter,
  *   initialRange,
  *   cellUnit: 'day',
- *   plugins: [selection({ mode: 'single' }), weekendMarker()],
+ *   plugins: [selection({ mode: 'single' })],
  * });
  *
  * // 타입 추론 동작
  * grid.selection.select(cell);
- * grid.getCellProps(cell);
  */
 export function useTimeGridWithPlugins<
   TData = unknown,
   TDate = unknown,
-  TPlugins extends Plugin<TData, TDate, any>[] = [],
+  const TPlugins extends readonly Plugin<any>[] = [],
 >(
   options: UseTimeGridOptions<TData, TDate> & { plugins: TPlugins }
 ): UseTimeGridResult<TData, TDate> & {

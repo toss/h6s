@@ -73,7 +73,7 @@ export interface TimeGrid<TData = unknown, TDate = unknown> {
 export interface CreateTimeGridOptions<
   TData = unknown,
   TDate = unknown,
-  TPlugins extends import('../plugin/types').Plugin<TData, TDate, any>[] = [],
+  TPlugins extends readonly import('../plugin/types').Plugin<any>[] = [],
 > {
   /** DateAdapter 인스턴스 */
   adapter: import('../adapter/types').DateAdapter<TDate>;

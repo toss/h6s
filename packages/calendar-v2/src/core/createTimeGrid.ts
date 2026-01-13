@@ -39,7 +39,7 @@ import type {
 export function createTimeGrid<
   TData = unknown,
   TDate = unknown,
-  TPlugins extends Plugin<TData, TDate, any>[] = [],
+  const TPlugins extends readonly Plugin<any>[] = [],
 >(
   options: CreateTimeGridOptions<TData, TDate, TPlugins>
 ): TimeGrid<TData, TDate> & InferPluginExtensions<TPlugins> {
