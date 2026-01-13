@@ -1,7 +1,7 @@
 /**
- * Demo App - 3개 캘린더 UI 동시 렌더링
+ * Demo App - 4개 캘린더 UI 동시 렌더링
  *
- * 동일한 createTimeGrid Core를 사용하여 완전히 다른 3가지 UI 렌더링.
+ * 동일한 createTimeGrid Core를 사용하여 완전히 다른 4가지 UI 렌더링.
  * 이것이 TanStack 스타일 아키텍처의 핵심 가치를 보여줌.
  */
 
@@ -9,6 +9,7 @@ import React from 'react';
 import { MonthCalendar } from './MonthCalendar';
 import { GithubGrass } from './GithubGrass';
 import { DayTimeline } from './DayTimeline';
+import { NDayView } from './NDayView';
 
 // 샘플 데이터 생성
 function generateContributionData() {
@@ -75,17 +76,42 @@ function generateTimelineEvents(date: Date) {
   ];
 }
 
+function generateNDayEvents() {
+  const events = [];
+  const today = new Date();
+
+  for (let dayOffset = 0; dayOffset < 14; dayOffset++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() + dayOffset);
+
+    // 각 날짜에 랜덤 이벤트 생성
+    const eventCount = Math.floor(Math.random() * 4);
+    for (let i = 0; i < eventCount; i++) {
+      const hour = 8 + Math.floor(Math.random() * 10); // 8시-17시
+      events.push({
+        id: `${dayOffset}-${i}`,
+        title: ['회의', '리뷰', '작업', '미팅', '점심'][Math.floor(Math.random() * 5)],
+        date: new Date(date),
+        hour,
+      });
+    }
+  }
+
+  return events;
+}
+
 export function App() {
   const today = new Date();
   const contribution = generateContributionData();
   const timelineEvents = generateTimelineEvents(today);
+  const nDayEvents = generateNDayEvents();
 
   return (
     <div className="demo-app">
       <h1>@h6s/calendar-v2 PoC Demo</h1>
       <p className="description">
         동일한 <code>createTimeGrid</code> Core를 사용하여
-        3가지 완전히 다른 UI를 렌더링합니다.
+        4가지 완전히 다른 UI를 렌더링합니다.
       </p>
 
       <div className="demo-grid">
@@ -108,18 +134,24 @@ export function App() {
             events={timelineEvents}
           />
         </section>
+
+        <section className="demo-section wide">
+          <h3 style={{ marginTop: 0, marginBottom: 16 }}>N-Day View (동적 일수 변경)</h3>
+          <NDayView events={nDayEvents} initialDays={4} />
+        </section>
       </div>
 
       <footer className="demo-footer">
         <h4>PoC 검증 포인트</h4>
         <ul>
           <li>✅ Core zero-dependency: 외부 의존성 없음</li>
-          <li>✅ 3개 UI 패턴: 월간 / 잔디 / 타임라인</li>
+          <li>✅ 4개 UI 패턴: 월간 / 잔디 / 타임라인 / N-Day</li>
           <li>✅ 유틸리티 조합: withPadding, toMatrix, groupBy</li>
           <li>✅ 플러그인 시스템: selection</li>
           <li>✅ 데이터 바인딩: getItemDate로 이벤트 매핑</li>
-          <li>✅ Navigation: 이전/다음/오늘 버튼으로 월 이동</li>
+          <li>✅ Navigation: 이전/다음/오늘 버튼으로 이동</li>
           <li>✅ Selection: 날짜 클릭 시 선택 상태 표시</li>
+          <li>✅ 동적 범위: N-Day View에서 표시 일수 변경</li>
         </ul>
       </footer>
 
@@ -151,6 +183,9 @@ export function App() {
           border: 1px solid #eee;
           border-radius: 8px;
           background: white;
+        }
+        .demo-section.wide {
+          grid-column: 1 / -1;
         }
         .demo-footer {
           margin-top: 32px;
