@@ -1,8 +1,8 @@
 /**
  * Plugin Types - 플러그인 시스템 타입 정의
  *
- * 타입 안전한 플러그인 조합을 위한 인터페이스.
- * 플러그인을 추가할 때마다 타입이 자동으로 추론됨.
+ * 단순화된 플러그인 인터페이스.
+ * TData, TDate는 createTimeGrid에서 추론되고, Plugin은 Extension 타입만 정의.
  */
 
 import type { TimeGrid } from '../core/types';
@@ -10,41 +10,32 @@ import type { TimeGrid } from '../core/types';
 /**
  * 플러그인 인터페이스
  *
- * @template TData - 데이터 타입
- * @template TDate - 날짜 타입
  * @template TExtension - 플러그인이 추가하는 확장 타입
  */
-export interface Plugin<
-  TData = unknown,
-  TDate = unknown,
-  TExtension = unknown,
-> {
+export interface Plugin<TExtension = unknown> {
   /** 플러그인 이름 (디버깅용) */
   name: string;
 
   /**
    * TimeGrid를 확장하는 함수
-   * @param grid - 원본 TimeGrid
-   * @returns 확장된 TimeGrid
+   * TData, TDate는 createTimeGrid에서 추론됨
    */
-  extend: (grid: TimeGrid<TData, TDate>) => TimeGrid<TData, TDate> & TExtension;
+  extend: <TData, TDate>(
+    grid: TimeGrid<TData, TDate>
+  ) => TimeGrid<TData, TDate> & TExtension;
 }
 
 /**
  * 플러그인 배열에서 확장 타입 추출
  *
  * @example
- * type Extensions = InferPluginExtensions<[SelectionPlugin, NavigationPlugin]>;
- * // { selection: {...} } & { navigation: {...} }
+ * type Extensions = InferPluginExtensions<[Plugin<SelectionExt>, Plugin<NavExt>]>;
+ * // SelectionExt & NavExt
  */
-export type InferPluginExtensions<
-  TPlugins extends Plugin<any, any, any>[],
-> = TPlugins extends [
-  Plugin<any, any, infer First>,
-  ...infer Rest extends Plugin<any, any, any>[],
-]
-  ? First & InferPluginExtensions<Rest>
-  : unknown;
+export type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
+  TPlugins extends readonly [Plugin<infer First>, ...infer Rest extends readonly Plugin<any>[]]
+    ? First & InferPluginExtensions<Rest>
+    : unknown;
 
 /**
  * 확장된 TimeGrid 타입
@@ -52,5 +43,5 @@ export type InferPluginExtensions<
 export type ExtendedTimeGrid<
   TData,
   TDate,
-  TPlugins extends Plugin<TData, TDate, any>[],
+  TPlugins extends readonly Plugin<any>[],
 > = TimeGrid<TData, TDate> & InferPluginExtensions<TPlugins>;

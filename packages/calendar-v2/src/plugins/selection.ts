@@ -15,27 +15,27 @@ export interface SelectionOptions {
   mode: SelectionMode;
 }
 
-export interface SelectionState<TData, TDate> {
-  /** 현재 선택된 셀 (single 모드) */
-  selected: Cell<TData, TDate> | null;
-  /** 범위 선택 시작 셀 (range 모드) */
-  rangeStart: Cell<TData, TDate> | null;
-  /** 범위 선택 끝 셀 (range 모드) */
-  rangeEnd: Cell<TData, TDate> | null;
+export interface SelectionState {
+  /** 현재 선택된 셀 키 (single 모드) */
+  selectedKey: string | null;
+  /** 범위 선택 시작 키 (range 모드) */
+  rangeStartKey: string | null;
+  /** 범위 선택 끝 키 (range 모드) */
+  rangeEndKey: string | null;
 }
 
-export interface SelectionExtension<TData, TDate> {
+export interface SelectionExtension {
   selection: {
     /** 현재 상태 */
-    state: SelectionState<TData, TDate>;
+    state: SelectionState;
     /** 셀 선택 */
-    select: (cell: Cell<TData, TDate>) => SelectionState<TData, TDate>;
+    select: (cell: Cell<any, any>) => SelectionState;
     /** 선택 해제 */
-    clear: () => SelectionState<TData, TDate>;
+    clear: () => SelectionState;
     /** 셀이 선택되었는지 확인 */
-    isSelected: (cell: Cell<TData, TDate>) => boolean;
+    isSelected: (cell: Cell<any, any>) => boolean;
     /** 셀이 범위 내에 있는지 확인 */
-    isInRange: (cell: Cell<TData, TDate>) => boolean;
+    isInRange: (cell: Cell<any, any>) => boolean;
   };
 }
 
@@ -46,85 +46,85 @@ export interface SelectionExtension<TData, TDate> {
  * @returns Selection Plugin
  *
  * @example
- * const grid = pipe(baseGrid, [selection({ mode: 'single' })]);
+ * const grid = createTimeGrid({
+ *   adapter,
+ *   range,
+ *   cellUnit: 'day',
+ *   plugins: [selection({ mode: 'single' })],
+ * });
  * grid.selection.select(cell);
- * if (grid.selection.isSelected(cell)) { ... }
  */
-export function selection<TData = unknown, TDate = unknown>(
-  options: SelectionOptions
-): Plugin<TData, TDate, SelectionExtension<TData, TDate>> {
+export function selection(options: SelectionOptions): Plugin<SelectionExtension> {
   const { mode } = options;
 
   return {
     name: 'selection',
-    extend(grid: TimeGrid<TData, TDate>) {
+    extend<TData, TDate>(grid: TimeGrid<TData, TDate>) {
       // 초기 상태
-      let state: SelectionState<TData, TDate> = {
-        selected: null,
-        rangeStart: null,
-        rangeEnd: null,
+      let state: SelectionState = {
+        selectedKey: null,
+        rangeStartKey: null,
+        rangeEndKey: null,
       };
 
-      const select = (
-        cell: Cell<TData, TDate>
-      ): SelectionState<TData, TDate> => {
+      const select = (cell: Cell<any, any>): SelectionState => {
         if (mode === 'single') {
           state = {
-            selected: cell,
-            rangeStart: null,
-            rangeEnd: null,
+            selectedKey: cell.key,
+            rangeStartKey: null,
+            rangeEndKey: null,
           };
         } else {
           // range 모드
-          if (!state.rangeStart) {
+          if (!state.rangeStartKey) {
             state = {
-              selected: null,
-              rangeStart: cell,
-              rangeEnd: null,
+              selectedKey: null,
+              rangeStartKey: cell.key,
+              rangeEndKey: null,
             };
-          } else if (!state.rangeEnd) {
+          } else if (!state.rangeEndKey) {
             state = {
-              selected: null,
-              rangeStart: state.rangeStart,
-              rangeEnd: cell,
+              selectedKey: null,
+              rangeStartKey: state.rangeStartKey,
+              rangeEndKey: cell.key,
             };
           } else {
             // 새로운 범위 시작
             state = {
-              selected: null,
-              rangeStart: cell,
-              rangeEnd: null,
+              selectedKey: null,
+              rangeStartKey: cell.key,
+              rangeEndKey: null,
             };
           }
         }
         return state;
       };
 
-      const clear = (): SelectionState<TData, TDate> => {
+      const clear = (): SelectionState => {
         state = {
-          selected: null,
-          rangeStart: null,
-          rangeEnd: null,
+          selectedKey: null,
+          rangeStartKey: null,
+          rangeEndKey: null,
         };
         return state;
       };
 
-      const isSelected = (cell: Cell<TData, TDate>): boolean => {
+      const isSelected = (cell: Cell<any, any>): boolean => {
         if (mode === 'single') {
-          return state.selected?.key === cell.key;
+          return state.selectedKey === cell.key;
         }
         return isInRange(cell);
       };
 
-      const isInRange = (cell: Cell<TData, TDate>): boolean => {
-        if (!state.rangeStart || !state.rangeEnd) {
-          return state.rangeStart?.key === cell.key;
+      const isInRange = (cell: Cell<any, any>): boolean => {
+        if (!state.rangeStartKey || !state.rangeEndKey) {
+          return state.rangeStartKey === cell.key;
         }
 
         // 범위 내에 있는지 확인 (key 기반 비교)
         const cellKey = cell.key;
-        const startKey = state.rangeStart.key;
-        const endKey = state.rangeEnd.key;
+        const startKey = state.rangeStartKey;
+        const endKey = state.rangeEndKey;
 
         // ISO 날짜 문자열 비교 (사전순 = 시간순)
         const [min, max] = startKey <= endKey ? [startKey, endKey] : [endKey, startKey];
