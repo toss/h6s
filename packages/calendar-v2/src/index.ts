@@ -37,8 +37,12 @@ export type {
 } from './plugin';
 
 // ============ Built-in Plugins ============
-export { selection } from './plugins';
+export { navigation, selection } from './plugins';
 export type {
+  NavigationExtension,
+  NavigationOptions,
+  NavigationState,
+  NavigationUnit,
   SelectionExtension,
   SelectionMode,
   SelectionOptions,

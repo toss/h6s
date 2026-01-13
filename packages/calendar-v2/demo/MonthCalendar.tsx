@@ -1,8 +1,8 @@
 /**
  * MonthCalendar - 전통적인 월간 달력 데모
  *
- * createTimeGrid + plugins 옵션 + isWeekend 유틸리티 조합.
- * navigation (이전/다음/오늘) 동작 포함.
+ * createTimeGrid + plugins (selection, navigation) + isWeekend 유틸리티 조합.
+ * navigation 플러그인으로 이전/다음/오늘 동작 구현.
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
@@ -12,9 +12,10 @@ import {
   withPadding,
   toMatrix,
   selection,
+  navigation,
   isWeekend,
 } from '../src';
-import type { Cell, PaddedCell, WeekDay } from '../src';
+import type { Cell, PaddedCell, WeekDay, NavigationState } from '../src';
 
 const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -31,32 +32,41 @@ export function MonthCalendar({
 }: MonthCalendarProps) {
   const today = new Date();
 
-  // Navigation 상태
-  const [year, setYear] = useState(initialYear ?? today.getFullYear());
-  const [month, setMonth] = useState(initialMonth ?? today.getMonth());
+  const adapter = useMemo(() => createMockAdapter({ weekStartsOn }), [weekStartsOn]);
+
+  // 초기 범위 계산
+  const initialRange = useMemo(() => {
+    const year = initialYear ?? today.getFullYear();
+    const month = initialMonth ?? today.getMonth();
+    return {
+      start: new Date(year, month, 1),
+      end: new Date(year, month + 1, 0),
+    };
+  }, [initialYear, initialMonth, today]);
+
+  // Navigation 상태 (React 상태로 관리 - 범위 변경 시 리렌더링 트리거)
+  const [navState, setNavState] = useState<NavigationState<Date>>({
+    cursor: initialRange.start,
+    rangeStart: initialRange.start,
+    rangeEnd: initialRange.end,
+  });
 
   // Selection 상태 (React 상태로 관리)
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
-
-  const adapter = useMemo(() => createMockAdapter({ weekStartsOn }), [weekStartsOn]);
-
-  // 해당 월의 시작일과 끝일 계산
-  const { startDate, endDate } = useMemo(() => {
-    const start = new Date(year, month, 1);
-    const end = new Date(year, month + 1, 0);
-    return { startDate: start, endDate: end };
-  }, [year, month]);
 
   // TimeGrid 생성 (plugins 옵션으로 전달)
   const grid = useMemo(() => {
     return createTimeGrid({
       adapter,
-      range: { start: startDate, end: endDate },
+      range: { start: navState.rangeStart, end: navState.rangeEnd },
       cellUnit: 'day',
       weekStartsOn,
-      plugins: [selection({ mode: 'single' })],
+      plugins: [
+        selection({ mode: 'single' }),
+        navigation({ unit: 'month', adapter }),
+      ],
     });
-  }, [adapter, startDate, endDate, weekStartsOn]);
+  }, [adapter, navState.rangeStart, navState.rangeEnd, weekStartsOn]);
 
   // 패딩 추가 + 행렬 변환
   const matrix = useMemo(() => {
@@ -64,32 +74,21 @@ export function MonthCalendar({
     return toMatrix(paddedGrid.cells, 7);
   }, [grid, adapter]);
 
-  // Navigation 핸들러
-  const goNext = useCallback(() => {
-    setMonth((m) => {
-      if (m === 11) {
-        setYear((y) => y + 1);
-        return 0;
-      }
-      return m + 1;
-    });
-  }, []);
+  // Navigation 핸들러 (플러그인 메서드 사용)
+  const handleGoNext = useCallback(() => {
+    const newState = grid.navigation.goNext();
+    setNavState(newState);
+  }, [grid]);
 
-  const goPrev = useCallback(() => {
-    setMonth((m) => {
-      if (m === 0) {
-        setYear((y) => y - 1);
-        return 11;
-      }
-      return m - 1;
-    });
-  }, []);
+  const handleGoPrev = useCallback(() => {
+    const newState = grid.navigation.goPrev();
+    setNavState(newState);
+  }, [grid]);
 
-  const goToday = useCallback(() => {
-    const now = new Date();
-    setYear(now.getFullYear());
-    setMonth(now.getMonth());
-  }, []);
+  const handleGoToday = useCallback(() => {
+    const newState = grid.navigation.goToday();
+    setNavState(newState);
+  }, [grid]);
 
   // Selection 핸들러
   const handleCellClick = useCallback((cell: Cell<unknown, Date>) => {
@@ -104,14 +103,18 @@ export function MonthCalendar({
     });
   }, [weekStartsOn]);
 
+  // 현재 표시 중인 연/월
+  const displayYear = navState.rangeStart.getFullYear();
+  const displayMonth = navState.rangeStart.getMonth();
+
   return (
     <div className="month-calendar">
       {/* Navigation */}
       <div className="calendar-header">
-        <button onClick={goPrev} className="nav-btn">◀</button>
-        <h3>{year}년 {month + 1}월</h3>
-        <button onClick={goNext} className="nav-btn">▶</button>
-        <button onClick={goToday} className="today-btn">오늘</button>
+        <button onClick={handleGoPrev} className="nav-btn">◀</button>
+        <h3>{displayYear}년 {displayMonth + 1}월</h3>
+        <button onClick={handleGoNext} className="nav-btn">▶</button>
+        <button onClick={handleGoToday} className="today-btn">오늘</button>
       </div>
 
       <table>
