@@ -1,11 +1,11 @@
 /**
  * MonthCalendar - 전통적인 월간 달력 데모
  *
- * 동일한 createTimeGrid 결과를 사용하여 전통적인 월간 달력 UI 렌더링.
- * withPadding + toMatrix + groupBy 유틸리티 조합 사용.
+ * createTimeGrid + selection 플러그인 + isWeekend 유틸리티 조합.
+ * navigation (이전/다음/오늘) 동작 포함.
  */
 
-import React from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   createTimeGrid,
   createMockAdapter,
@@ -13,73 +13,116 @@ import {
   toMatrix,
   pipe,
   selection,
-  weekendMarker,
   isWeekend,
 } from '../src';
-import type { PaddedCell } from '../src';
+import type { Cell, PaddedCell, WeekDay } from '../src';
 
 const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
 interface MonthCalendarProps {
-  year: number;
-  month: number; // 0-11
-  weekStartsOn?: 0 | 1; // 0=일요일, 1=월요일
+  initialYear?: number;
+  initialMonth?: number; // 0-11
+  weekStartsOn?: WeekDay;
 }
 
 export function MonthCalendar({
-  year,
-  month,
+  initialYear,
+  initialMonth,
   weekStartsOn = 0,
 }: MonthCalendarProps) {
-  const adapter = createMockAdapter({ weekStartsOn });
+  const today = new Date();
+
+  // Navigation 상태
+  const [year, setYear] = useState(initialYear ?? today.getFullYear());
+  const [month, setMonth] = useState(initialMonth ?? today.getMonth());
+
+  // Selection 상태 (React 상태로 관리)
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
+  const adapter = useMemo(() => createMockAdapter({ weekStartsOn }), [weekStartsOn]);
 
   // 해당 월의 시작일과 끝일 계산
-  const startDate = new Date(year, month, 1);
-  const endDate = new Date(year, month + 1, 0); // 다음 달 0일 = 이번 달 마지막 날
+  const { startDate, endDate } = useMemo(() => {
+    const start = new Date(year, month, 1);
+    const end = new Date(year, month + 1, 0);
+    return { startDate: start, endDate: end };
+  }, [year, month]);
 
-  // TimeGrid 생성
-  const baseGrid = createTimeGrid<unknown, Date>({
-    adapter,
-    range: { start: startDate, end: endDate },
-    cellUnit: 'day',
-    weekStartsOn,
-  });
+  // TimeGrid 생성 + 플러그인 적용
+  const gridWithPlugins = useMemo(() => {
+    const baseGrid = createTimeGrid<unknown, Date>({
+      adapter,
+      range: { start: startDate, end: endDate },
+      cellUnit: 'day',
+      weekStartsOn,
+    });
 
-  // 플러그인 적용
-  const gridWithPlugins = pipe(baseGrid, [
-    selection({ mode: 'single' }),
-    weekendMarker(),
-  ]);
+    return pipe(baseGrid, [selection({ mode: 'single' })]);
+  }, [adapter, startDate, endDate, weekStartsOn]);
 
-  // 패딩 추가 (이전/다음 달 날짜)
-  const paddedGrid = withPadding(gridWithPlugins, adapter);
+  // 패딩 추가 + 행렬 변환
+  const matrix = useMemo(() => {
+    const paddedGrid = withPadding(gridWithPlugins, adapter);
+    return toMatrix(paddedGrid.cells, 7);
+  }, [gridWithPlugins, adapter]);
 
-  // 7열 행렬로 변환
-  const matrix = toMatrix(paddedGrid.cells, 7);
+  // Navigation 핸들러
+  const goNext = useCallback(() => {
+    setMonth((m) => {
+      if (m === 11) {
+        setYear((y) => y + 1);
+        return 0;
+      }
+      return m + 1;
+    });
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setMonth((m) => {
+      if (m === 0) {
+        setYear((y) => y - 1);
+        return 11;
+      }
+      return m - 1;
+    });
+  }, []);
+
+  const goToday = useCallback(() => {
+    const now = new Date();
+    setYear(now.getFullYear());
+    setMonth(now.getMonth());
+  }, []);
+
+  // Selection 핸들러
+  const handleCellClick = useCallback((cell: Cell<unknown, Date>) => {
+    setSelectedKey((prev) => (prev === cell.key ? null : cell.key));
+  }, []);
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
-  const headers = Array.from({ length: 7 }, (_, i) => {
-    const dayIndex = (weekStartsOn + i) % 7;
-    return WEEKDAY_NAMES[dayIndex];
-  });
+  const headers = useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => {
+      const dayIndex = ((weekStartsOn + i) % 7) as WeekDay;
+      return { name: WEEKDAY_NAMES[dayIndex], dayIndex };
+    });
+  }, [weekStartsOn]);
 
   return (
     <div className="month-calendar">
-      <h3>
-        {year}년 {month + 1}월 (월간 달력)
-      </h3>
+      {/* Navigation */}
+      <div className="calendar-header">
+        <button onClick={goPrev} className="nav-btn">◀</button>
+        <h3>{year}년 {month + 1}월</h3>
+        <button onClick={goNext} className="nav-btn">▶</button>
+        <button onClick={goToday} className="today-btn">오늘</button>
+      </div>
 
       <table>
         <thead>
           <tr>
-            {headers.map((name, i) => (
+            {headers.map(({ name, dayIndex }) => (
               <th
-                key={i}
-                style={{
-                  color: isWeekend(((weekStartsOn + i) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6)
-                    ? '#e53935'
-                    : 'inherit',
-                }}
+                key={dayIndex}
+                style={{ color: isWeekend(dayIndex) ? '#e53935' : 'inherit' }}
               >
                 {name}
               </th>
@@ -91,13 +134,26 @@ export function MonthCalendar({
             <tr key={weekIndex}>
               {week.map((cell) => {
                 const paddedCell = cell as PaddedCell<unknown, Date>;
+                const isSelected = selectedKey === cell.key;
+                const isCellWeekend = isWeekend(cell.weekday);
+
                 return (
                   <td
                     key={cell.key}
+                    onClick={() => handleCellClick(cell)}
                     style={{
                       opacity: paddedCell.isPadding ? 0.3 : 1,
-                      backgroundColor: cell.isToday ? '#e3f2fd' : 'transparent',
-                      color: isWeekend(cell.weekday) ? '#e53935' : 'inherit',
+                      backgroundColor: isSelected
+                        ? '#1976d2'
+                        : cell.isToday
+                        ? '#e3f2fd'
+                        : 'transparent',
+                      color: isSelected
+                        ? 'white'
+                        : isCellWeekend
+                        ? '#e53935'
+                        : 'inherit',
+                      cursor: 'pointer',
                     }}
                   >
                     {cell.dayOfMonth}
@@ -109,7 +165,37 @@ export function MonthCalendar({
         </tbody>
       </table>
 
+      {selectedKey && (
+        <div className="selection-info">
+          선택된 날짜: {selectedKey}
+        </div>
+      )}
+
       <style>{`
+        .month-calendar {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .calendar-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+        .calendar-header h3 {
+          margin: 0;
+          min-width: 120px;
+          text-align: center;
+        }
+        .nav-btn, .today-btn {
+          padding: 4px 12px;
+          border: 1px solid #ddd;
+          background: white;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .nav-btn:hover, .today-btn:hover {
+          background: #f5f5f5;
+        }
         .month-calendar table {
           border-collapse: collapse;
           width: 100%;
@@ -125,6 +211,16 @@ export function MonthCalendar({
         .month-calendar th {
           background: #f5f5f5;
           font-weight: bold;
+        }
+        .month-calendar td:hover {
+          background: #f0f0f0;
+        }
+        .selection-info {
+          margin-top: 12px;
+          padding: 8px;
+          background: #e3f2fd;
+          border-radius: 4px;
+          font-size: 14px;
         }
       `}</style>
     </div>

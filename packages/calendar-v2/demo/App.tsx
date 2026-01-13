@@ -90,11 +90,8 @@ export function App() {
 
       <div className="demo-grid">
         <section className="demo-section">
-          <MonthCalendar
-            year={today.getFullYear()}
-            month={today.getMonth()}
-            weekStartsOn={0}
-          />
+          <h3 style={{ marginTop: 0, marginBottom: 16 }}>월간 달력 (Navigation + Selection)</h3>
+          <MonthCalendar weekStartsOn={0} />
         </section>
 
         <section className="demo-section">
@@ -119,8 +116,10 @@ export function App() {
           <li>✅ Core zero-dependency: 외부 의존성 없음</li>
           <li>✅ 3개 UI 패턴: 월간 / 잔디 / 타임라인</li>
           <li>✅ 유틸리티 조합: withPadding, toMatrix, groupBy</li>
-          <li>✅ 플러그인 시스템: selection, weekendMarker</li>
+          <li>✅ 플러그인 시스템: selection</li>
           <li>✅ 데이터 바인딩: getItemDate로 이벤트 매핑</li>
+          <li>✅ Navigation: 이전/다음/오늘 버튼으로 월 이동</li>
+          <li>✅ Selection: 날짜 클릭 시 선택 상태 표시</li>
         </ul>
       </footer>
 

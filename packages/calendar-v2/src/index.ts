@@ -37,14 +37,12 @@ export type {
 } from './plugin';
 
 // ============ Built-in Plugins ============
-export { selection, weekendMarker } from './plugins';
+export { selection } from './plugins';
 export type {
-  CellProps,
   SelectionExtension,
   SelectionMode,
   SelectionOptions,
   SelectionState,
-  WeekendMarkerExtension,
 } from './plugins';
 
 // ============ React (requires react peer dependency) ============
