@@ -20,6 +20,18 @@ export interface Plugin<TExtension = unknown, TState = unknown> {
   name: string;
 
   /**
+   * 액션 메서드 이름 목록 (React Adapter에서 자동 바인딩)
+   *
+   * 여기 명시된 메서드는 useTimeGrid에서 호출 시:
+   * - 반환된 상태를 내부 setState로 업데이트
+   * - void 반환으로 변환
+   *
+   * @example
+   * actions: ['goNext', 'goPrev', 'goToday', 'goTo']
+   */
+  actions?: string[];
+
+  /**
    * 초기 상태 생성 (옵션)
    * 상태가 필요한 플러그인만 구현
    */

@@ -145,6 +145,7 @@ export function navigation(
 
   return {
     name: 'navigation',
+    actions: ['goNext', 'goPrev', 'goToday', 'goTo'],
 
     // 초기 상태: 전달받은 range 그대로 사용
     getInitialState: (range: TimeRange): NavigationState => {

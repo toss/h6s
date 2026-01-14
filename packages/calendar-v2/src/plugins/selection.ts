@@ -118,6 +118,7 @@ export function selection(
 
   return {
     name: 'selection',
+    actions: ['select', 'clear'],
 
     // 초기 상태 생성
     getInitialState: (_range: TimeRange): SelectionState => {

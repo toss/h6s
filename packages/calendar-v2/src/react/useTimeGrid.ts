@@ -10,7 +10,6 @@
 import { useMemo, useState, useCallback } from 'react';
 import { createTimeGrid } from '../core';
 import type {
-  Cell,
   CellUnit,
   TimeGrid,
   TimeRange,
@@ -160,49 +159,30 @@ export function useTimeGrid<
     []
   );
 
-  // Navigation 메서드 바인딩
-  const boundNavigation = useMemo(() => {
-    const nav = (grid as any).navigation;
-    if (!nav) return undefined;
-
-    return {
-      state: nav.state,
-      goNext: () => updatePluginState('navigation', nav.goNext()),
-      goPrev: () => updatePluginState('navigation', nav.goPrev()),
-      goToday: () => updatePluginState('navigation', nav.goToday()),
-      goTo: (date: Date) => updatePluginState('navigation', nav.goTo(date)),
-      getRange: nav.getRange,
-    };
-  }, [grid, updatePluginState]);
-
-  // Selection 메서드 바인딩
-  const boundSelection = useMemo(() => {
-    const sel = (grid as any).selection;
-    if (!sel) return undefined;
-
-    return {
-      state: sel.state,
-      select: (cell: Cell) => updatePluginState('selection', sel.select(cell)),
-      clear: () => updatePluginState('selection', sel.clear()),
-      isSelected: sel.isSelected,
-      isInRange: sel.isInRange,
-    };
-  }, [grid, updatePluginState]);
-
-  // 바인딩된 그리드 생성
+  // 플러그인 액션 메서드 동적 바인딩
   const boundGrid = useMemo(() => {
     const result: any = { ...grid };
 
-    if (boundNavigation) {
-      result.navigation = boundNavigation;
-    }
+    for (const plugin of plugins) {
+      const extension = result[plugin.name];
+      if (!extension || !plugin.actions?.length) continue;
 
-    if (boundSelection) {
-      result.selection = boundSelection;
+      // 액션 메서드들을 바인딩
+      const boundExtension = { ...extension };
+      for (const actionName of plugin.actions) {
+        const originalMethod = extension[actionName];
+        if (typeof originalMethod === 'function') {
+          boundExtension[actionName] = (...args: unknown[]) => {
+            const newState = originalMethod(...args);
+            updatePluginState(plugin.name, newState);
+          };
+        }
+      }
+      result[plugin.name] = boundExtension;
     }
 
     return result as UseTimeGridResult<TPlugins>;
-  }, [grid, boundNavigation, boundSelection]);
+  }, [grid, plugins, updatePluginState]);
 
   return boundGrid;
 }
