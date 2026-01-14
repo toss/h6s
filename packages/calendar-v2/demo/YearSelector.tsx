@@ -5,7 +5,7 @@
  * 12년 범위를 한 번에 표시하고 selection plugin으로 선택.
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTimeGrid, selection, navigation } from '../src';
 
 interface YearSelectorProps {
@@ -32,7 +32,7 @@ export function YearSelector({ initialYear, onSelect }: YearSelectorProps) {
   });
 
   // 3x4 행렬로 변환
-  const rows = useMemo(() => grid.getRows(4), [grid]);
+  const rows = grid.getRows(4);
 
   const currentYear = today.getFullYear();
   const rangeStart = grid.navigation.state.rangeStart.getFullYear();

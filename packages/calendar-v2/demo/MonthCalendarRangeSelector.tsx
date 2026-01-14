@@ -5,7 +5,7 @@
  * 첫 클릭: 시작 날짜 선택, 두번째 클릭: 끝 날짜 선택.
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   useTimeGrid,
   selection,
@@ -49,15 +49,13 @@ export function MonthCalendarRangeSelector({
   const displayMonth = grid.navigation.state.rangeStart.getMonth();
 
   // 행렬 변환
-  const rows = useMemo(() => grid.getRows(7), [grid]);
+  const rows = grid.getRows(7);
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
-  const headers = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => {
-      const dayIndex = ((weekStartsOn + i) % 7) as WeekDay;
-      return { name: WEEKDAY_NAMES[dayIndex], dayIndex };
-    });
-  }, [weekStartsOn]);
+  const headers = Array.from({ length: 7 }, (_, i) => {
+    const dayIndex = ((weekStartsOn + i) % 7) as WeekDay;
+    return { name: WEEKDAY_NAMES[dayIndex], dayIndex };
+  });
 
   // 현재 표시 중인 연도
   const displayYear = grid.navigation.state.rangeStart.getFullYear();

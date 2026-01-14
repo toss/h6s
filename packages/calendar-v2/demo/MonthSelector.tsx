@@ -5,7 +5,7 @@
  * selection plugin으로 월 선택, navigation으로 연도 이동.
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTimeGrid, selection, navigation } from '../src';
 
 const MONTH_NAMES = [
@@ -36,7 +36,7 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
   });
 
   // 3x4 행렬로 변환
-  const rows = useMemo(() => grid.getRows(4), [grid]);
+  const rows = grid.getRows(4);
 
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
