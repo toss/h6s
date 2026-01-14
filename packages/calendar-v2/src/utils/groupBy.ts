@@ -10,9 +10,9 @@ import type { WeekDay } from './date';
 
 export type GroupByKey = 'week' | 'weekday' | 'month';
 
-export interface GroupedCells<TData = unknown> {
+export interface GroupedCells {
   key: string;
-  cells: Cell<TData>[];
+  cells: Cell[];
 }
 
 /**
@@ -32,11 +32,8 @@ export interface GroupedCells<TData = unknown> {
  * const weekdays = groupBy(grid, 'weekday');
  * // [{ key: '0', cells: [일요일들...] }, { key: '1', cells: [월요일들...] }]
  */
-export function groupBy<TData>(
-  grid: TimeGrid<TData>,
-  key: GroupByKey
-): GroupedCells<TData>[] {
-  const groups = new Map<string, Cell<TData>[]>();
+export function groupBy(grid: TimeGrid, key: GroupByKey): GroupedCells[] {
+  const groups = new Map<string, Cell[]>();
 
   for (const cell of grid.cells) {
     const groupKey = getGroupKey(cell, key, grid.weekStartsOn);
@@ -54,11 +51,7 @@ export function groupBy<TData>(
   }));
 }
 
-function getGroupKey<TData>(
-  cell: Cell<TData>,
-  key: GroupByKey,
-  weekStartsOn: WeekDay
-): string {
+function getGroupKey(cell: Cell, key: GroupByKey, weekStartsOn: WeekDay): string {
   switch (key) {
     case 'week':
       return getWeekKey(cell, weekStartsOn);
@@ -69,10 +62,7 @@ function getGroupKey<TData>(
   }
 }
 
-function getWeekKey<TData>(
-  cell: Cell<TData>,
-  weekStartsOn: WeekDay
-): string {
+function getWeekKey(cell: Cell, weekStartsOn: WeekDay): string {
   // 주 번호 계산 (ISO 주 번호 기반 단순화)
   // weekStartsOn이 다르면 주 경계가 달라짐
   const dayOfYear = getDayOfYear(cell.year, cell.month, cell.dayOfMonth);

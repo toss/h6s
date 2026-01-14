@@ -46,7 +46,7 @@ export interface EventsExtension<TEvent> {
     /**
      * 특정 셀과 겹치는 이벤트 조회
      */
-    getEventsForCell: (cell: Cell<any>) => TEvent[];
+    getEventsForCell: (cell: Cell) => TEvent[];
 
     /**
      * 특정 날짜와 겹치는 이벤트 조회
@@ -88,7 +88,7 @@ function eventOverlapsDay(eventRange: EventRange, day: Date): boolean {
  */
 function eventOverlapsCell(
   eventRange: EventRange,
-  cell: Cell<any>,
+  cell: Cell,
   cellUnit: CellUnit
 ): boolean {
   if (cellUnit === 'hour') {
@@ -132,7 +132,7 @@ export function events<TEvent>(
 
   return {
     name: 'events',
-    extend<TData>(grid: TimeGrid<TData>) {
+    extend(grid: TimeGrid) {
       // 범위 캐시
       const rangeCache = new Map<TEvent, EventRange>();
       const getRange = (event: TEvent): EventRange => {
@@ -149,7 +149,7 @@ export function events<TEvent>(
       });
 
       // API 구현
-      const getEventsForCell = (cell: Cell<any>): TEvent[] => {
+      const getEventsForCell = (cell: Cell): TEvent[] => {
         return eventsInView.filter((event) => {
           const range = getRange(event);
           return eventOverlapsCell(range, cell, grid.cellUnit);

@@ -18,14 +18,13 @@ import {
   type WeekDay,
 } from './date';
 
-export interface PaddedCell<TData = unknown> extends Cell<TData> {
+export interface PaddedCell extends Cell {
   /** 패딩 셀 여부 (이전/다음 달) */
   isPadding: boolean;
 }
 
-export interface PaddedTimeGrid<TData = unknown>
-  extends Omit<TimeGrid<TData>, 'cells'> {
-  cells: PaddedCell<TData>[];
+export interface PaddedTimeGrid extends Omit<TimeGrid, 'cells'> {
+  cells: PaddedCell[];
 }
 
 /**
@@ -39,9 +38,7 @@ export interface PaddedTimeGrid<TData = unknown>
  * // 첫 주: [이전달28, 이전달29, 이전달30, 1, 2, 3, 4]
  * // 마지막 주: [28, 29, 30, 31, 다음달1, 다음달2, 다음달3]
  */
-export function withPadding<TData>(
-  grid: TimeGrid<TData>
-): PaddedTimeGrid<TData> {
+export function withPadding(grid: TimeGrid): PaddedTimeGrid {
   if (grid.cells.length === 0) {
     return {
       ...grid,
@@ -53,19 +50,13 @@ export function withPadding<TData>(
   const lastCell = grid.cells[grid.cells.length - 1];
 
   // 첫 주의 패딩 (이전 달)
-  const leadingPadding = createLeadingPadding<TData>(
-    firstCell,
-    grid.weekStartsOn
-  );
+  const leadingPadding = createLeadingPadding(firstCell, grid.weekStartsOn);
 
   // 마지막 주의 패딩 (다음 달)
-  const trailingPadding = createTrailingPadding<TData>(
-    lastCell,
-    grid.weekStartsOn
-  );
+  const trailingPadding = createTrailingPadding(lastCell, grid.weekStartsOn);
 
   // 기존 셀에 isPadding: false 추가
-  const existingCells: PaddedCell<TData>[] = grid.cells.map((cell) => ({
+  const existingCells: PaddedCell[] = grid.cells.map((cell) => ({
     ...cell,
     isPadding: false,
   }));
@@ -77,29 +68,29 @@ export function withPadding<TData>(
   };
 }
 
-function createLeadingPadding<TData>(
-  firstCell: Cell<TData>,
+function createLeadingPadding(
+  firstCell: Cell,
   weekStartsOn: WeekDay
-): PaddedCell<TData>[] {
-  const padding: PaddedCell<TData>[] = [];
+): PaddedCell[] {
+  const padding: PaddedCell[] = [];
 
   // 첫 셀의 요일과 주 시작 요일의 차이
   const daysToFill = (firstCell.weekday - weekStartsOn + 7) % 7;
 
   for (let i = daysToFill; i > 0; i--) {
     const date = addDays(firstCell.date, -i);
-    const cell = createPaddingCell<TData>(date);
+    const cell = createPaddingCell(date);
     padding.push(cell);
   }
 
   return padding;
 }
 
-function createTrailingPadding<TData>(
-  lastCell: Cell<TData>,
+function createTrailingPadding(
+  lastCell: Cell,
   weekStartsOn: WeekDay
-): PaddedCell<TData>[] {
-  const padding: PaddedCell<TData>[] = [];
+): PaddedCell[] {
+  const padding: PaddedCell[] = [];
 
   // 마지막 셀의 요일과 주 끝 요일의 차이
   const weekEndDay = ((weekStartsOn + 6) % 7) as WeekDay;
@@ -107,20 +98,19 @@ function createTrailingPadding<TData>(
 
   for (let i = 1; i <= daysToFill; i++) {
     const date = addDays(lastCell.date, i);
-    const cell = createPaddingCell<TData>(date);
+    const cell = createPaddingCell(date);
     padding.push(cell);
   }
 
   return padding;
 }
 
-function createPaddingCell<TData>(date: Date): PaddedCell<TData> {
+function createPaddingCell(date: Date): PaddedCell {
   const todayDate = today();
 
   return {
     key: toISODateString(date),
     date,
-    data: [] as TData[],
     isToday: isSameDay(date, todayDate),
     weekday: getDay(date),
     dayOfMonth: getDate(date),

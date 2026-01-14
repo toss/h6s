@@ -19,15 +19,12 @@ import type { Cell } from '../core/types';
  * const matrix = toMatrix(grid.cells, 7);
  * // [[월, 화, 수, 목, 금, 토, 일], [...], ...]
  */
-export function toMatrix<TData>(
-  cells: Cell<TData>[],
-  columns: number = 7
-): Cell<TData>[][] {
+export function toMatrix(cells: Cell[], columns: number = 7): Cell[][] {
   if (columns <= 0) {
     throw new Error('columns must be positive');
   }
 
-  const matrix: Cell<TData>[][] = [];
+  const matrix: Cell[][] = [];
 
   for (let i = 0; i < cells.length; i += columns) {
     matrix.push(cells.slice(i, i + columns));
