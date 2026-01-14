@@ -26,6 +26,8 @@ import {
   getMonth,
   getYear,
   getHours,
+  startOfWeek,
+  addDays,
   type WeekDay,
 } from '../utils/date';
 import { getUnit } from './units';
@@ -57,6 +59,7 @@ export function createTimeGrid<
     range: rawRange,
     cellUnit,
     weekStartsOn = 0,
+    fillWeeks = false,
     plugins = [] as unknown as TPlugins,
     pluginStates = {},
   } = options;
@@ -67,8 +70,13 @@ export function createTimeGrid<
     end: normalizeDate(rawRange.end),
   };
 
+  // fillWeeks: 완전한 주로 확장
+  const cellRange = fillWeeks && cellUnit === 'day'
+    ? expandToFullWeeks(range, weekStartsOn)
+    : range;
+
   // 셀 생성
-  const cells = generateCells(range, cellUnit, weekStartsOn);
+  const cells = generateCells(cellRange, cellUnit, weekStartsOn);
 
   // TimeGrid 객체 생성
   let grid: TimeGrid = {
@@ -124,6 +132,20 @@ function getCellKey(date: Date, cellUnit: CellUnit): string {
     default:
       return toISODateString(date); // YYYY-MM-DD (day, week)
   }
+}
+
+/**
+ * 범위를 완전한 주로 확장
+ */
+function expandToFullWeeks(range: TimeRange, weekStartsOn: WeekDay): TimeRange {
+  const weekStart = startOfWeek(range.start, weekStartsOn);
+  const weekEnd = startOfWeek(range.end, weekStartsOn);
+  const endOfLastWeek = addDays(weekEnd, 6);
+
+  return {
+    start: weekStart,
+    end: endOfLastWeek,
+  };
 }
 
 /**

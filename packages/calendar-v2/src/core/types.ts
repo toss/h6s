@@ -88,6 +88,14 @@ export interface CreateTimeGridOptions<
   /** 주 시작 요일 (기본값: 0 = 일요일) */
   weekStartsOn?: WeekDay;
 
+  /**
+   * 완전한 주로 확장 (기본값: false)
+   * true일 때 range를 포함하는 완전한 주들로 셀 생성.
+   * 월간 달력에서 이전/다음 달 날짜 표시에 사용.
+   * cell.month !== displayMonth 로 padding 여부 판단 가능.
+   */
+  fillWeeks?: boolean;
+
   /** 플러그인 배열 */
   plugins?: TPlugins;
 

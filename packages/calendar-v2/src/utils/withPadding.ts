@@ -1,6 +1,9 @@
 /**
  * withPadding - 패딩 셀 추가 유틸리티
  *
+ * @deprecated `createTimeGrid({ fillWeeks: true })` 사용 권장.
+ * `cell.month !== displayMonth`로 padding 여부 판단 가능.
+ *
  * 월간 달력에서 이전/다음 달의 날짜를 표시하기 위한 패딩 셀 추가.
  * 첫 주의 빈 공간과 마지막 주의 빈 공간을 채움.
  */
@@ -30,13 +33,18 @@ export interface PaddedTimeGrid extends Omit<TimeGrid, 'cells'> {
 /**
  * TimeGrid에 패딩 셀 추가
  *
+ * @deprecated `createTimeGrid({ fillWeeks: true })` 사용 권장.
+ *
  * @param grid - 원본 TimeGrid
  * @returns 패딩이 추가된 TimeGrid
  *
  * @example
+ * // Before (deprecated)
  * const paddedGrid = withPadding(grid);
- * // 첫 주: [이전달28, 이전달29, 이전달30, 1, 2, 3, 4]
- * // 마지막 주: [28, 29, 30, 31, 다음달1, 다음달2, 다음달3]
+ *
+ * // After (recommended)
+ * const grid = createTimeGrid({ ..., fillWeeks: true });
+ * const isPadding = cell.month !== displayMonth;
  */
 export function withPadding(grid: TimeGrid): PaddedTimeGrid {
   if (grid.cells.length === 0) {

@@ -8,14 +8,13 @@
 import React, { useMemo } from 'react';
 import {
   useTimeGrid,
-  withPadding,
   toMatrix,
   selection,
   navigation,
   isWeekend,
   endOfMonth,
 } from '../src';
-import type { PaddedCell, WeekDay } from '../src';
+import type { Cell, WeekDay } from '../src';
 
 const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -40,17 +39,20 @@ export function MonthCalendar({
     range: { start: initialDate, end: endOfMonth(initialDate) },
     cellUnit: 'day',
     weekStartsOn,
+    fillWeeks: true,  // 완전한 주로 확장
     plugins: [
       selection({ mode: 'single' }),
       navigation({ unit: 'month' }),
     ] as const,
   });
 
-  // 패딩 추가 + 행렬 변환
+  // 현재 표시 중인 월 (padding 판단용)
+  const displayMonth = grid.navigation.state.rangeStart.getMonth();
+
+  // 행렬 변환
   const matrix = useMemo(() => {
-    const paddedGrid = withPadding(grid);
-    return toMatrix(paddedGrid.cells, 7);
-  }, [grid]);
+    return toMatrix(grid.cells, 7);
+  }, [grid.cells]);
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
   const headers = useMemo(() => {
@@ -60,9 +62,8 @@ export function MonthCalendar({
     });
   }, [weekStartsOn]);
 
-  // 현재 표시 중인 연/월
+  // 현재 표시 중인 연도
   const displayYear = grid.navigation.state.rangeStart.getFullYear();
-  const displayMonth = grid.navigation.state.rangeStart.getMonth();
 
   return (
     <div className="month-calendar">
@@ -91,7 +92,7 @@ export function MonthCalendar({
           {matrix.map((week, weekIndex) => (
             <tr key={weekIndex}>
               {week.map((cell) => {
-                const paddedCell = cell as PaddedCell<unknown>;
+                const isPadding = cell.month !== displayMonth;
                 const isSelected = grid.selection.isSelected(cell);
                 const isCellWeekend = isWeekend(cell.weekday);
 
@@ -100,7 +101,7 @@ export function MonthCalendar({
                     key={cell.key}
                     onClick={() => grid.selection.select(cell)}
                     style={{
-                      opacity: paddedCell.isPadding ? 0.3 : 1,
+                      opacity: isPadding ? 0.3 : 1,
                       backgroundColor: isSelected
                         ? '#1976d2'
                         : cell.isToday

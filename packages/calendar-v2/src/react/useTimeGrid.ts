@@ -34,6 +34,8 @@ export interface UseTimeGridOptions<
   cellUnit: CellUnit;
   /** 주 시작 요일 */
   weekStartsOn?: WeekDay;
+  /** 완전한 주로 확장 */
+  fillWeeks?: boolean;
   /** 플러그인 배열 */
   plugins?: TPlugins;
 }
@@ -113,6 +115,7 @@ export function useTimeGrid<
     range: initialRange,
     cellUnit,
     weekStartsOn = 0,
+    fillWeeks = false,
     plugins = [] as unknown as TPlugins,
   } = options;
 
@@ -151,10 +154,11 @@ export function useTimeGrid<
       range: currentRange,
       cellUnit,
       weekStartsOn,
+      fillWeeks,
       plugins,
       pluginStates,
     });
-  }, [currentRange, cellUnit, weekStartsOn, plugins, pluginStates]);
+  }, [currentRange, cellUnit, weekStartsOn, fillWeeks, plugins, pluginStates]);
 
   // 플러그인 상태 업데이트 헬퍼
   const updatePluginState = useCallback(
