@@ -309,7 +309,7 @@ export function NDayView({
 
         .time-grid {
           display: flex;
-          height: 400px;
+          height: 600px;
           overflow-y: auto;
         }
 
@@ -342,6 +342,7 @@ export function NDayView({
           height: 48px;
           border-bottom: 1px solid #eee;
           padding: 2px;
+          box-sizing: border-box;
         }
 
         .day-column.today .hour-cell {

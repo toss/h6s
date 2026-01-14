@@ -181,7 +181,8 @@ export function AgendaView({
         .agenda-list {
           border: 1px solid #ddd;
           border-radius: 8px;
-          overflow: hidden;
+          max-height: 750px;
+          overflow-y: auto;
         }
         .no-events {
           padding: 40px;

@@ -158,12 +158,14 @@ export function App() {
 
       <div className="demo-grid">
         <section className="demo-section">
-          <h3 className="section-title">Month Calendar <span>(Navigation + Selection)</span></h3>
+          <h3 className="section-title">Month Calendar</h3>
+          <p className="plugin-info">Plugin: selection, navigation</p>
           <MonthCalendar weekStartsOn={0} />
         </section>
 
         <section className="demo-section">
-          <h3 className="section-title">Github Grass <span>(Core only)</span></h3>
+          <h3 className="section-title">Github Grass</h3>
+          <p className="plugin-info">Plugin: events</p>
           <GithubGrass
             startDate={contribution.startDate}
             endDate={contribution.endDate}
@@ -171,29 +173,34 @@ export function App() {
           />
         </section>
 
+        <section className="demo-section">
+          <h3 className="section-title">Month Selector</h3>
+          <p className="plugin-info">Plugin: selection, navigation</p>
+          <MonthSelector />
+        </section>
+
+        <section className="demo-section">
+          <h3 className="section-title">Year Selector</h3>
+          <p className="plugin-info">Plugin: selection, navigation</p>
+          <YearSelector />
+        </section>
+
         <section className="demo-section wide">
-          <h3 className="section-title">N-Day View <span>(Core only)</span></h3>
+          <h3 className="section-title">N-Day View</h3>
+          <p className="plugin-info">Plugin: events</p>
           <NDayView events={nDayEvents} initialDays={4} />
         </section>
 
         <section className="demo-section">
-          <h3 className="section-title">Day View <span>(Events + Navigation)</span></h3>
+          <h3 className="section-title">Day View</h3>
+          <p className="plugin-info">Plugin: events, navigation</p>
           <GoogleDayView initialDate={today} events={calendarEvents} />
         </section>
 
         <section className="demo-section">
-          <h3 className="section-title">Agenda View <span>(Events + Navigation)</span></h3>
+          <h3 className="section-title">Agenda View</h3>
+          <p className="plugin-info">Plugin: events, navigation</p>
           <AgendaView initialDate={today} events={calendarEvents} />
-        </section>
-
-        <section className="demo-section">
-          <h3 className="section-title">Year Selector <span>(cellUnit: year)</span></h3>
-          <YearSelector />
-        </section>
-
-        <section className="demo-section">
-          <h3 className="section-title">Month Selector <span>(cellUnit: month)</span></h3>
-          <MonthSelector />
         </section>
       </div>
 
@@ -242,12 +249,13 @@ export function App() {
           background: white;
         }
         .section-title {
-          margin: 0 0 16px 0;
-          font-size: 16px;
+          margin: 0 0 8px 0;
+          font-size: 20px;
           font-weight: 600;
         }
-        .section-title span {
-          font-weight: 400;
+        .plugin-info {
+          margin: 0 0 16px 0;
+          font-size: 14px;
           color: #888;
         }
         .demo-section.wide {

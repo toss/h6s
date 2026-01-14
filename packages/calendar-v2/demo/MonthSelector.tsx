@@ -47,11 +47,9 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
   return (
     <div className="month-selector">
       <div className="selector-header">
-        <span className="title">{displayYear}년</span>
-        <div className="nav-buttons">
-          <button type="button" onClick={grid.navigation.goPrev}>&lt;</button>
-          <button type="button" onClick={grid.navigation.goNext}>&gt;</button>
-        </div>
+        <button type="button" onClick={grid.navigation.goPrev} className="nav-btn">◀</button>
+        <h3>{displayYear}년</h3>
+        <button type="button" onClick={grid.navigation.goNext} className="nav-btn">▶</button>
       </div>
 
       <div className="month-grid">
@@ -79,50 +77,41 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
         ))}
       </div>
 
+      {grid.selection.state.selectedKey && (
+        <div className="selection-info">
+          선택된 월: {displayYear}년 {MONTH_NAMES[parseInt(grid.selection.state.selectedKey.split('-')[1]) - 1]}
+        </div>
+      )}
+
       <style>{`
         .month-selector {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          width: 320px;
-          padding: 20px;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .selector-header {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          margin-bottom: 24px;
+          gap: 12px;
+          margin-bottom: 16px;
         }
-        .title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #333;
+        .selector-header h3 {
+          margin: 0;
+          flex: 1;
+          text-align: center;
         }
-        .nav-buttons {
-          display: flex;
-          gap: 4px;
-        }
-        .nav-buttons button {
-          width: 32px;
-          height: 32px;
-          border: 1px solid #e0e0e0;
+        .nav-btn {
+          padding: 4px 12px;
+          border: 1px solid #ddd;
           background: white;
-          border-radius: 6px;
+          border-radius: 4px;
           cursor: pointer;
-          font-size: 14px;
-          color: #666;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
-        .nav-buttons button:hover {
+        .nav-btn:hover {
           background: #f5f5f5;
         }
         .month-grid {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 8px;
         }
         .month-row {
           display: flex;
@@ -130,23 +119,32 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
         }
         .month-cell {
           flex: 1;
-          padding: 16px 8px;
-          border: none;
+          padding: 12px 8px;
+          border: 1px solid #ddd;
           background: transparent;
-          border-radius: 8px;
+          border-radius: 4px;
           cursor: pointer;
-          font-size: 16px;
-          color: #1976d2;
+          font-size: 14px;
+          color: inherit;
           transition: all 0.15s;
         }
         .month-cell:hover {
-          background: #f5f5f5;
+          background: #f0f0f0;
         }
         .month-cell.current {
-          font-weight: 600;
+          background: #e3f2fd;
         }
         .month-cell.selected {
+          background: #1976d2;
+          color: white;
+          border-color: #1976d2;
+        }
+        .selection-info {
+          margin-top: 12px;
+          padding: 8px;
           background: #e3f2fd;
+          border-radius: 4px;
+          font-size: 14px;
         }
       `}</style>
     </div>

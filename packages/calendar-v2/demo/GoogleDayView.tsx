@@ -176,7 +176,7 @@ export function GoogleDayView({
           border: 1px solid #ddd;
           border-radius: 4px;
           overflow: hidden;
-          max-height: 500px;
+          max-height: 750px;
           overflow-y: auto;
         }
         .time-labels {
