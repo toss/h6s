@@ -126,6 +126,7 @@ function createPaddingCell<TData>(date: Date): PaddedCell<TData> {
     dayOfMonth: getDate(date),
     month: getMonth(date),
     year: getYear(date),
+    hour: 0,
     isPadding: true,
   };
 }

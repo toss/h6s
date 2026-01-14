@@ -1,20 +1,26 @@
 // Date utilities
 export {
   addDays,
+  addHours,
   endOfMonth,
   fromISODateString,
   getDate,
   getDay,
+  getHours,
   getMonth,
   getYear,
   isAfter,
+  isAfterTime,
   isBefore,
+  isBeforeTime,
   isSameDay,
   startOfDay,
+  startOfHour,
   startOfMonth,
   startOfWeek,
   today,
   toISODateString,
+  toISODateTimeString,
 } from './date';
 export type { WeekDay } from './date';
 

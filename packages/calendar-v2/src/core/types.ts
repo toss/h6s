@@ -44,6 +44,9 @@ export interface Cell<TData = unknown> {
 
   /** 연도 */
   year: number;
+
+  /** 시간 (0-23, hour 단위 그리드에서 사용) */
+  hour: number;
 }
 
 // ============ TimeGrid - Core가 반환하는 결과물 ============

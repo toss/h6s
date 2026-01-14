@@ -7,6 +7,15 @@
 export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 /**
+ * 시간 추가
+ */
+export function addHours(date: Date, hours: number): Date {
+  const result = new Date(date);
+  result.setHours(result.getHours() + hours);
+  return result;
+}
+
+/**
  * 일 추가
  */
 export function addDays(date: Date, days: number): Date {
@@ -50,6 +59,15 @@ export function startOfDay(date: Date): Date {
 }
 
 /**
+ * 시간의 시작 (HH:00:00)
+ */
+export function startOfHour(date: Date): Date {
+  const result = new Date(date);
+  result.setMinutes(0, 0, 0);
+  return result;
+}
+
+/**
  * 오늘 날짜
  */
 export function today(): Date {
@@ -68,17 +86,31 @@ export function isSameDay(date1: Date, date2: Date): boolean {
 }
 
 /**
- * date1이 date2보다 이전인지
+ * date1이 date2보다 이전인지 (일 단위 비교)
  */
 export function isBefore(date1: Date, date2: Date): boolean {
   return startOfDay(date1).getTime() < startOfDay(date2).getTime();
 }
 
 /**
- * date1이 date2보다 이후인지
+ * date1이 date2보다 이후인지 (일 단위 비교)
  */
 export function isAfter(date1: Date, date2: Date): boolean {
   return startOfDay(date1).getTime() > startOfDay(date2).getTime();
+}
+
+/**
+ * date1이 date2보다 이전인지 (시간 단위 비교)
+ */
+export function isBeforeTime(date1: Date, date2: Date): boolean {
+  return startOfHour(date1).getTime() < startOfHour(date2).getTime();
+}
+
+/**
+ * date1이 date2보다 이후인지 (시간 단위 비교)
+ */
+export function isAfterTime(date1: Date, date2: Date): boolean {
+  return startOfHour(date1).getTime() > startOfHour(date2).getTime();
 }
 
 /**
@@ -89,6 +121,22 @@ export function toISODateString(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
+}
+
+/**
+ * ISO 날짜+시간 문자열로 변환 (YYYY-MM-DDTHH)
+ */
+export function toISODateTimeString(date: Date): string {
+  const dateStr = toISODateString(date);
+  const hour = String(date.getHours()).padStart(2, '0');
+  return `${dateStr}T${hour}`;
+}
+
+/**
+ * 시간 반환 (0-23)
+ */
+export function getHours(date: Date): number {
+  return date.getHours();
 }
 
 /**
