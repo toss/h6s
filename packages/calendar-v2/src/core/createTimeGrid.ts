@@ -105,6 +105,27 @@ export function createTimeGrid<
       }
       return rows;
     },
+
+    getWeeks(): Cell[][] {
+      const weeks: Cell[][] = [];
+      let currentWeek: Cell[] = [];
+
+      for (const cell of cells) {
+        // 주 시작 요일이면 새 주 시작 (첫 셀 제외)
+        if (cell.weekday === weekStartsOn && currentWeek.length > 0) {
+          weeks.push(currentWeek);
+          currentWeek = [];
+        }
+        currentWeek.push(cell);
+      }
+
+      // 마지막 주 추가
+      if (currentWeek.length > 0) {
+        weeks.push(currentWeek);
+      }
+
+      return weeks;
+    },
   };
 
   // 플러그인 적용 (상태 주입)

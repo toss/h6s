@@ -70,8 +70,11 @@ export interface TimeGrid {
   /** 범위 내 셀 찾기 */
   getCellsInRange(range: TimeRange): Cell[];
 
-  /** 셀을 2D 행렬로 변환 (달력 렌더링용) */
+  /** 셀을 2D 행렬로 변환 (레이아웃용) */
   getRows(columns?: number): Cell[][];
+
+  /** 셀을 주 단위로 그룹핑 (월간 달력용) */
+  getWeeks(): Cell[][];
 }
 
 // ============ createTimeGrid 옵션 ============

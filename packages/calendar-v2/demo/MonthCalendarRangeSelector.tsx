@@ -48,8 +48,8 @@ export function MonthCalendarRangeSelector({
   // 현재 표시 중인 월 (padding 판단용)
   const displayMonth = grid.navigation.state.rangeStart.getMonth();
 
-  // 행렬 변환
-  const rows = grid.getRows(7);
+  // 주 단위 그룹핑
+  const weeks = grid.getWeeks();
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
   const headers = Array.from({ length: 7 }, (_, i) => {
@@ -90,7 +90,7 @@ export function MonthCalendarRangeSelector({
           </tr>
         </thead>
         <tbody>
-          {rows.map((week, weekIndex) => (
+          {weeks.map((week, weekIndex) => (
             <tr key={weekIndex}>
               {week.map((cell) => {
                 const isPadding = cell.month !== displayMonth;
