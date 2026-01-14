@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { MonthCalendar } from './MonthCalendar';
+import { MonthCalendarRangeSelector } from './MonthCalendarRangeSelector';
 import { GithubGrass } from './GithubGrass';
 import { NDayView } from './NDayView';
 import { GoogleDayView } from './GoogleDayView';
@@ -153,24 +154,20 @@ export function App() {
       <h1>@h6s/calendar-v2 PoC Demo</h1>
       <p className="description">
         동일한 <code>createTimeGrid</code> Core를 사용하여
-        6가지 완전히 다른 UI를 렌더링합니다.
+        8가지 완전히 다른 UI를 렌더링합니다.
       </p>
 
       <div className="demo-grid">
         <section className="demo-section">
           <h3 className="section-title">Month Calendar</h3>
-          <p className="plugin-info">Plugin: selection, navigation</p>
+          <p className="plugin-info">Plugin: selection (single), navigation</p>
           <MonthCalendar weekStartsOn={0} />
         </section>
 
         <section className="demo-section">
-          <h3 className="section-title">Github Grass</h3>
-          <p className="plugin-info">Plugin: events</p>
-          <GithubGrass
-            startDate={contribution.startDate}
-            endDate={contribution.endDate}
-            data={contribution.data}
-          />
+          <h3 className="section-title">Range Selector</h3>
+          <p className="plugin-info">Plugin: selection (range), navigation</p>
+          <MonthCalendarRangeSelector weekStartsOn={0} />
         </section>
 
         <section className="demo-section">
@@ -183,6 +180,16 @@ export function App() {
           <h3 className="section-title">Year Selector</h3>
           <p className="plugin-info">Plugin: selection, navigation</p>
           <YearSelector />
+        </section>
+
+        <section className="demo-section wide">
+          <h3 className="section-title">Github Grass</h3>
+          <p className="plugin-info">Plugin: events</p>
+          <GithubGrass
+            startDate={contribution.startDate}
+            endDate={contribution.endDate}
+            data={contribution.data}
+          />
         </section>
 
         <section className="demo-section wide">
@@ -208,12 +215,12 @@ export function App() {
         <h4>PoC 검증 포인트</h4>
         <ul>
           <li>✅ Core zero-dependency: 외부 의존성 없음 (Native Date only)</li>
-          <li>✅ 7개 UI 패턴: Month / Grass / N-Day / Day / Agenda / Year Selector / Month Selector</li>
+          <li>✅ 8개 UI 패턴: Month / Range Selector / Grass / N-Day / Day / Agenda / Year Selector / Month Selector</li>
           <li>✅ 다양한 cellUnit: day, hour, month, year</li>
           <li>✅ 플러그인 시스템: selection, navigation, events</li>
           <li>✅ fillWeeks 옵션: 월간 달력에서 완전한 주 생성</li>
           <li>✅ Navigation Plugin: 이전/다음/오늘 버튼으로 이동</li>
-          <li>✅ Selection Plugin: 날짜 클릭 시 선택 상태 표시</li>
+          <li>✅ Selection Plugin: single/range 모드 지원</li>
           <li>✅ Events Plugin: 시간대별 이벤트 필터링</li>
           <li>✅ 동적 범위: N-Day View에서 표시 일수 변경</li>
         </ul>
