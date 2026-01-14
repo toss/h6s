@@ -40,21 +40,11 @@ export {
   today,
   toISODateString,
   // Grid utilities
-  groupBy,
   isWeekend,
-  toMatrix,
-  withPadding,
 } from './utils';
-export type {
-  GroupByKey,
-  GroupedCells,
-  PaddedCell,
-  PaddedTimeGrid,
-  WeekDay,
-} from './utils';
+export type { WeekDay } from './utils';
 
 // ============ Plugin System ============
-export { applyPlugin, pipe } from './plugin';
 export type {
   ExtendedTimeGrid,
   InferPluginExtensions,

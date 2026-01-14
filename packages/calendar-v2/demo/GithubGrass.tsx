@@ -2,14 +2,13 @@
  * GithubGrass - GitHub 잔디 스타일 데모
  *
  * 동일한 createTimeGrid 결과를 사용하여 GitHub Contribution Graph 스타일 UI 렌더링.
- * groupBy('weekday') 유틸리티로 요일별 그룹화.
+ * getWeeks()로 주 단위 그룹화.
  * Events Plugin으로 날짜별 데이터 조회.
  */
 
 import React from 'react';
 import {
   createTimeGrid,
-  groupBy,
   events,
 } from '../src';
 
@@ -58,7 +57,7 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
   });
 
   // 주 단위로 그룹화 (열 생성)
-  const weekGroups = groupBy(grid, 'week');
+  const weeks = grid.getWeeks();
 
   return (
     <div className="github-grass">
@@ -74,11 +73,11 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
 
         {/* 잔디 그리드 */}
         <div className="grass-grid">
-          {weekGroups.map((week) => (
-            <div key={week.key} className="week-column">
+          {weeks.map((week, weekIndex) => (
+            <div key={weekIndex} className="week-column">
               {/* 주 내 7개 셀을 요일 순으로 정렬 */}
               {Array.from({ length: 7 }, (_, dayIndex) => {
-                const cell = week.cells.find((c) => c.weekday === dayIndex);
+                const cell = week.find((c) => c.weekday === dayIndex);
                 if (!cell) {
                   return <div key={dayIndex} className="cell empty" />;
                 }
