@@ -25,6 +25,31 @@ export function addDays(date: Date, days: number): Date {
 }
 
 /**
+ * 월 추가
+ */
+export function addMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + months);
+  return result;
+}
+
+/**
+ * 년 추가
+ */
+export function addYears(date: Date, years: number): Date {
+  const result = new Date(date);
+  result.setFullYear(result.getFullYear() + years);
+  return result;
+}
+
+/**
+ * 연의 시작일
+ */
+export function startOfYear(date: Date): Date {
+  return new Date(date.getFullYear(), 0, 1);
+}
+
+/**
  * 월의 시작일
  */
 export function startOfMonth(date: Date): Date {

@@ -14,15 +14,10 @@ import type {
   TimeRange,
 } from './types';
 import {
-  addDays,
-  addHours,
-  startOfDay,
-  startOfHour,
   today,
   isSameDay,
   isBefore,
   isAfter,
-  isAfterTime,
   toISODateString,
   toISODateTimeString,
   fromISODateString,
@@ -33,6 +28,7 @@ import {
   getHours,
   type WeekDay,
 } from '../utils/date';
+import { getUnit } from './units';
 
 /**
  * TimeGrid 생성
@@ -88,9 +84,7 @@ export function createTimeGrid<
     cellCount: cells.length,
 
     getCellByDate(date: Date): Cell<TData> | null {
-      const targetKey = cellUnit === 'hour'
-        ? toISODateTimeString(date)
-        : toISODateString(date);
+      const targetKey = getCellKey(date, cellUnit);
       return cells.find((cell) => cell.key === targetKey) ?? null;
     },
 
@@ -143,31 +137,41 @@ function groupDataByDate<TData>(
   return map;
 }
 
+/**
+ * 셀 키 생성 (단위별로 다른 포맷)
+ */
+function getCellKey(date: Date, cellUnit: CellUnit): string {
+  switch (cellUnit) {
+    case 'hour':
+      return toISODateTimeString(date); // YYYY-MM-DDTHH
+    case 'month':
+      return `${getYear(date)}-${String(getMonth(date) + 1).padStart(2, '0')}`; // YYYY-MM
+    case 'year':
+      return String(getYear(date)); // YYYY
+    default:
+      return toISODateString(date); // YYYY-MM-DD (day, week)
+  }
+}
+
+/**
+ * Unit 기반 셀 생성
+ */
 function generateCells<TData>(
   range: TimeRange,
   cellUnit: CellUnit,
-  weekStartsOn: WeekDay,
-  dataByDate: Map<string, TData[]>
-): Cell<TData>[] {
-  if (cellUnit === 'hour') {
-    return generateHourCells(range, dataByDate);
-  }
-  return generateDayCells(range, cellUnit, dataByDate);
-}
-
-function generateHourCells<TData>(
-  range: TimeRange,
+  _weekStartsOn: WeekDay,
   dataByDate: Map<string, TData[]>
 ): Cell<TData>[] {
   const cells: Cell<TData>[] = [];
   const todayDate = today();
+  const unit = getUnit(cellUnit);
 
-  let current = startOfHour(range.start);
-  const end = startOfHour(range.end);
+  let current = unit.normalize(range.start);
+  const end = unit.normalize(range.end);
 
-  while (!isAfterTime(current, end)) {
-    const key = toISODateTimeString(current);
-    // hour 단위에서도 일별 데이터 바인딩 지원 (같은 날의 데이터)
+  while (!unit.isAfter(current, end)) {
+    const key = getCellKey(current, cellUnit);
+    // 일별 데이터 바인딩 (hour 단위에서도 같은 날의 데이터 사용)
     const dateKey = toISODateString(current);
     const cellData = dataByDate.get(dateKey) ?? [];
 
@@ -180,46 +184,11 @@ function generateHourCells<TData>(
       dayOfMonth: getDate(current),
       month: getMonth(current),
       year: getYear(current),
-      hour: getHours(current),
+      hour: cellUnit === 'hour' ? getHours(current) : 0,
     };
 
     cells.push(cell);
-    current = addHours(current, 1);
-  }
-
-  return cells;
-}
-
-function generateDayCells<TData>(
-  range: TimeRange,
-  cellUnit: CellUnit,
-  dataByDate: Map<string, TData[]>
-): Cell<TData>[] {
-  const cells: Cell<TData>[] = [];
-  const todayDate = today();
-
-  let current = startOfDay(range.start);
-  const end = startOfDay(range.end);
-  const increment = cellUnit === 'week' ? 7 : 1;
-
-  while (!isAfter(current, end)) {
-    const key = toISODateString(current);
-    const cellData = dataByDate.get(key) ?? [];
-
-    const cell: Cell<TData> = {
-      key,
-      date: new Date(current),
-      data: cellData,
-      isToday: isSameDay(current, todayDate),
-      weekday: getDay(current),
-      dayOfMonth: getDate(current),
-      month: getMonth(current),
-      year: getYear(current),
-      hour: 0,
-    };
-
-    cells.push(cell);
-    current = addDays(current, increment);
+    current = unit.getNext(current);
   }
 
   return cells;

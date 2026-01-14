@@ -2,6 +2,8 @@
 export {
   addDays,
   addHours,
+  addMonths,
+  addYears,
   endOfMonth,
   fromISODateString,
   getDate,
@@ -18,6 +20,7 @@ export {
   startOfHour,
   startOfMonth,
   startOfWeek,
+  startOfYear,
   today,
   toISODateString,
   toISODateTimeString,

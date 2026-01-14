@@ -9,7 +9,7 @@ import type { Plugin } from '../plugin/types';
 
 // ============ 기본 타입 ============
 
-export type CellUnit = 'hour' | 'day' | 'week' | 'month';
+export type CellUnit = 'hour' | 'day' | 'week' | 'month' | 'year';
 
 export interface TimeRange {
   start: Date;
