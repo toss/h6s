@@ -10,7 +10,8 @@ import { MonthCalendar } from './MonthCalendar';
 import { GithubGrass } from './GithubGrass';
 import { NDayView } from './NDayView';
 import { GoogleDayView } from './GoogleDayView';
-import { YearCalendar } from './YearCalendar';
+import { YearSelector } from './YearSelector';
+import { MonthSelector } from './MonthSelector';
 import { AgendaView } from './AgendaView';
 
 // 샘플 데이터 생성
@@ -185,9 +186,14 @@ export function App() {
           <AgendaView initialDate={today} events={calendarEvents} />
         </section>
 
-        <section className="demo-section wide">
-          <h3 className="section-title">Year Calendar <span>(Core only)</span></h3>
-          <YearCalendar weekStartsOn={0} />
+        <section className="demo-section">
+          <h3 className="section-title">Year Selector <span>(cellUnit: year)</span></h3>
+          <YearSelector />
+        </section>
+
+        <section className="demo-section">
+          <h3 className="section-title">Month Selector <span>(cellUnit: month)</span></h3>
+          <MonthSelector />
         </section>
       </div>
 
@@ -195,15 +201,14 @@ export function App() {
         <h4>PoC 검증 포인트</h4>
         <ul>
           <li>✅ Core zero-dependency: 외부 의존성 없음 (Native Date only)</li>
-          <li>✅ 6개 UI 패턴: 월간 / 잔디 / N-Day / Google Day / Agenda / Year</li>
-          <li>✅ 유틸리티 조합: withPadding, toMatrix, groupBy</li>
+          <li>✅ 7개 UI 패턴: Month / Grass / N-Day / Day / Agenda / Year Selector / Month Selector</li>
+          <li>✅ 다양한 cellUnit: day, hour, month, year</li>
           <li>✅ 플러그인 시스템: selection, navigation, events</li>
-          <li>✅ 데이터 바인딩: getItemDate로 이벤트 매핑</li>
+          <li>✅ fillWeeks 옵션: 월간 달력에서 완전한 주 생성</li>
           <li>✅ Navigation Plugin: 이전/다음/오늘 버튼으로 이동</li>
           <li>✅ Selection Plugin: 날짜 클릭 시 선택 상태 표시</li>
           <li>✅ Events Plugin: 시간대별 이벤트 필터링</li>
           <li>✅ 동적 범위: N-Day View에서 표시 일수 변경</li>
-          <li>✅ Year View: 12개의 createTimeGrid 인스턴스로 연간 조망</li>
         </ul>
       </footer>
 
