@@ -49,18 +49,16 @@ import { getUnit } from './units';
  * });
  */
 export function createTimeGrid<
-  TData = unknown,
   const TPlugins extends readonly Plugin<any>[] = [],
 >(
-  options: CreateTimeGridOptions<TData, TPlugins>
-): TimeGrid<TData> & InferPluginExtensions<TPlugins> {
+  options: CreateTimeGridOptions<TPlugins>
+): TimeGrid & InferPluginExtensions<TPlugins> {
   const {
     range: rawRange,
     cellUnit,
     weekStartsOn = 0,
-    data = [],
-    getItemDate,
     plugins = [] as unknown as TPlugins,
+    pluginStates = {},
   } = options;
 
   // 범위 정규화 (문자열이면 Date로 변환)
@@ -69,26 +67,23 @@ export function createTimeGrid<
     end: normalizeDate(rawRange.end),
   };
 
-  // 데이터를 날짜별로 그룹화
-  const dataByDate = groupDataByDate(data, getItemDate);
-
   // 셀 생성
-  const cells = generateCells<TData>(range, cellUnit, weekStartsOn, dataByDate);
+  const cells = generateCells(range, cellUnit, weekStartsOn);
 
   // TimeGrid 객체 생성
-  let grid: TimeGrid<TData> = {
+  let grid: TimeGrid = {
     cells,
     range,
     cellUnit,
     weekStartsOn,
     cellCount: cells.length,
 
-    getCellByDate(date: Date): Cell<TData> | null {
+    getCellByDate(date: Date): Cell | null {
       const targetKey = getCellKey(date, cellUnit);
       return cells.find((cell) => cell.key === targetKey) ?? null;
     },
 
-    getCellsInRange(targetRange: TimeRange): Cell<TData>[] {
+    getCellsInRange(targetRange: TimeRange): Cell[] {
       return cells.filter((cell) => {
         const date = cell.date;
         return !isBefore(date, targetRange.start) && !isAfter(date, targetRange.end);
@@ -96,12 +91,13 @@ export function createTimeGrid<
     },
   };
 
-  // 플러그인 적용
+  // 플러그인 적용 (상태 주입)
   for (const plugin of plugins) {
-    grid = plugin.extend(grid) as TimeGrid<TData>;
+    const state = pluginStates[plugin.name];
+    grid = plugin.extend(grid, state) as TimeGrid;
   }
 
-  return grid as TimeGrid<TData> & InferPluginExtensions<TPlugins>;
+  return grid as TimeGrid & InferPluginExtensions<TPlugins>;
 }
 
 // ============ Helper Functions ============
@@ -112,29 +108,6 @@ function normalizeDate(date: string | Date): Date {
   }
   // Date 객체는 그대로 반환 (hour 그리드에서 시간 정보 필요)
   return date;
-}
-
-function groupDataByDate<TData>(
-  data: TData[],
-  getItemDate: ((item: TData) => Date) | undefined
-): Map<string, TData[]> {
-  const map = new Map<string, TData[]>();
-
-  if (!getItemDate) {
-    return map;
-  }
-
-  for (const item of data) {
-    const date = getItemDate(item);
-    const key = toISODateString(date);
-
-    if (!map.has(key)) {
-      map.set(key, []);
-    }
-    map.get(key)!.push(item);
-  }
-
-  return map;
 }
 
 /**
@@ -156,13 +129,12 @@ function getCellKey(date: Date, cellUnit: CellUnit): string {
 /**
  * Unit 기반 셀 생성
  */
-function generateCells<TData>(
+function generateCells(
   range: TimeRange,
   cellUnit: CellUnit,
-  _weekStartsOn: WeekDay,
-  dataByDate: Map<string, TData[]>
-): Cell<TData>[] {
-  const cells: Cell<TData>[] = [];
+  _weekStartsOn: WeekDay
+): Cell[] {
+  const cells: Cell[] = [];
   const todayDate = today();
   const unit = getUnit(cellUnit);
 
@@ -171,14 +143,10 @@ function generateCells<TData>(
 
   while (!unit.isAfter(current, end)) {
     const key = getCellKey(current, cellUnit);
-    // 일별 데이터 바인딩 (hour 단위에서도 같은 날의 데이터 사용)
-    const dateKey = toISODateString(current);
-    const cellData = dataByDate.get(dateKey) ?? [];
 
-    const cell: Cell<TData> = {
+    const cell: Cell = {
       key,
       date: new Date(current),
-      data: cellData,
       isToday: isSameDay(current, todayDate),
       weekday: getDay(current),
       dayOfMonth: getDate(current),

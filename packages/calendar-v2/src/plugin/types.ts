@@ -2,26 +2,43 @@
  * Plugin Types - 플러그인 시스템 타입 정의
  *
  * 단순화된 플러그인 인터페이스.
- * TData만 제네릭으로 사용 (Date는 고정).
+ * - Core는 순수 함수 유지
+ * - Plugin은 상태 초기값과 순수 로직 제공
+ * - React Adapter가 상태 관리 담당
  */
 
-import type { TimeGrid } from '../core/types';
+import type { TimeGrid, TimeRange } from '../core/types';
 
 /**
  * 플러그인 인터페이스
  *
  * @template TExtension - 플러그인이 추가하는 확장 타입
+ * @template TState - 플러그인 상태 타입
  */
-export interface Plugin<TExtension = unknown> {
-  /** 플러그인 이름 (디버깅용) */
+export interface Plugin<TExtension = unknown, TState = unknown> {
+  /** 플러그인 이름 */
   name: string;
 
   /**
-   * TimeGrid를 확장하는 함수
-   * TData는 createTimeGrid에서 추론됨
+   * 초기 상태 생성 (옵션)
+   * 상태가 필요한 플러그인만 구현
    */
-  extend: <TData>(grid: TimeGrid<TData>) => TimeGrid<TData> & TExtension;
+  getInitialState?: (range: TimeRange) => TState;
+
+  /**
+   * TimeGrid를 확장하는 함수
+   * @param grid - 기본 TimeGrid
+   * @param state - 플러그인 상태 (getInitialState가 있는 경우)
+   */
+  extend: (grid: TimeGrid, state?: TState) => TimeGrid & TExtension;
 }
+
+/**
+ * 플러그인에서 상태 타입 추출
+ */
+export type InferPluginState<TPlugin> = TPlugin extends Plugin<any, infer TState>
+  ? TState
+  : never;
 
 /**
  * 플러그인 배열에서 확장 타입 추출
@@ -39,6 +56,5 @@ export type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
  * 확장된 TimeGrid 타입
  */
 export type ExtendedTimeGrid<
-  TData,
   TPlugins extends readonly Plugin<any>[],
-> = TimeGrid<TData> & InferPluginExtensions<TPlugins>;
+> = TimeGrid & InferPluginExtensions<TPlugins>;

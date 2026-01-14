@@ -2,19 +2,18 @@
  * AgendaView - 리스트 스타일 아젠다 뷰
  *
  * 이벤트가 있는 날만 필터링하여 리스트로 표시.
- * Events Plugin으로 날짜별 이벤트 그룹핑, Navigation Plugin으로 월 이동.
+ * useTimeGrid로 상태 관리 자동화, Events Plugin으로 날짜별 이벤트 그룹핑.
  */
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import {
-  createTimeGrid,
+  useTimeGrid,
   events,
   navigation,
   startOfMonth,
   endOfMonth,
   isSameDay,
 } from '../src';
-import type { NavigationState } from '../src';
 
 interface CalendarEvent {
   id: string;
@@ -36,47 +35,22 @@ export function AgendaView({
   initialDate = new Date(),
   events: initialEvents = [],
 }: AgendaViewProps) {
-  // Navigation 상태
-  const [navState, setNavState] = useState<NavigationState>(() => {
-    const monthStart = startOfMonth(initialDate);
-    const monthEnd = endOfMonth(initialDate);
-    return {
-      cursor: monthStart,
-      rangeStart: monthStart,
-      rangeEnd: monthEnd,
-    };
+  // 초기 범위 (한 달)
+  const monthStart = startOfMonth(initialDate);
+  const monthEnd = endOfMonth(initialDate);
+
+  // useTimeGrid - 상태 관리 자동화
+  const 이 = useTimeGrid({
+    range: { start: monthStart, end: monthEnd },
+    cellUnit: 'day',
+    plugins: [
+      events({
+        data: initialEvents,
+        getEventRange: (e) => ({ start: e.start, end: e.end }),
+      }),
+      navigation({ unit: 'month' }),
+    ] as const,
   });
-
-  // 월 범위의 그리드 생성
-  const grid = useMemo(() => {
-    return createTimeGrid({
-      range: { start: navState.rangeStart, end: navState.rangeEnd },
-      cellUnit: 'day',
-      plugins: [
-        events({
-          data: initialEvents,
-          getEventRange: (e) => ({ start: e.start, end: e.end }),
-        }),
-        navigation({ unit: 'month' }),
-      ],
-    });
-  }, [navState.rangeStart, navState.rangeEnd, initialEvents]);
-
-  // Navigation 핸들러
-  const handleGoNext = useCallback(() => {
-    const newState = grid.navigation.goNext();
-    setNavState(newState);
-  }, [grid]);
-
-  const handleGoPrev = useCallback(() => {
-    const newState = grid.navigation.goPrev();
-    setNavState(newState);
-  }, [grid]);
-
-  const handleGoToday = useCallback(() => {
-    const newState = grid.navigation.goToday();
-    setNavState(newState);
-  }, [grid]);
 
   // 이벤트가 있는 날만 그룹화
   const daysWithEvents = useMemo(() => {
@@ -125,11 +99,11 @@ export function AgendaView({
     <div className="agenda-view">
       <div className="header">
         <div className="nav-buttons">
-          <button type="button" onClick={handleGoPrev}>◀</button>
-          <button type="button" onClick={handleGoToday}>이번 달</button>
-          <button type="button" onClick={handleGoNext}>▶</button>
+          <button type="button" onClick={grid.navigation.goPrev}>◀</button>
+          <button type="button" onClick={grid.navigation.goToday}>이번 달</button>
+          <button type="button" onClick={grid.navigation.goNext}>▶</button>
         </div>
-        <h3 className="month-title">{formatMonthTitle(navState.rangeStart)}</h3>
+        <h3 className="month-title">{formatMonthTitle(grid.navigation.state.rangeStart)}</h3>
       </div>
 
       <div className="agenda-list">

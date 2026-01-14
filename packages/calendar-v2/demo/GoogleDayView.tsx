@@ -2,12 +2,11 @@
  * GoogleDayView - Events + Navigation Plugin을 활용한 일간 캘린더
  *
  * Google Calendar 스타일의 Day View를 구현.
- * Events Plugin으로 시간대별 이벤트 필터링, Navigation Plugin으로 날짜 이동.
+ * useTimeGrid로 상태 관리 자동화, Events Plugin으로 이벤트 필터링.
  */
 
-import React, { useMemo, useState, useCallback } from 'react';
-import { createTimeGrid, events, navigation, startOfDay } from '../src';
-import type { NavigationState } from '../src';
+import React from 'react';
+import { useTimeGrid, events, navigation, startOfDay } from '../src';
 
 interface CalendarEvent {
   id: string;
@@ -29,55 +28,23 @@ export function GoogleDayView({
   initialDate = new Date(),
   events: initialEvents = [],
 }: GoogleDayViewProps) {
-  // Navigation 상태
-  const [navState, setNavState] = useState<NavigationState>(() => {
-    const dayStart = startOfDay(initialDate);
-    const dayEnd = new Date(dayStart);
-    dayEnd.setHours(23, 59, 59, 999);
-    return {
-      cursor: dayStart,
-      rangeStart: dayStart,
-      rangeEnd: dayEnd,
-    };
+  // 초기 범위 (하루)
+  const dayStart = startOfDay(initialDate);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setHours(23, 59, 59, 999);
+
+  // useTimeGrid - 상태 관리 자동화
+  const grid = useTimeGrid({
+    range: { start: dayStart, end: dayEnd },
+    cellUnit: 'hour',
+    plugins: [
+      events({
+        data: initialEvents,
+        getEventRange: (e) => ({ start: e.start, end: e.end }),
+      }),
+      navigation({ unit: 'day' }),
+    ] as const,
   });
-
-  // 시간 기반 Grid 생성 (24시간)
-  const grid = useMemo(() => {
-    return createTimeGrid({
-      range: { start: navState.rangeStart, end: navState.rangeEnd },
-      cellUnit: 'hour',
-      plugins: [
-        events({
-          data: initialEvents,
-          getEventRange: (e) => ({ start: e.start, end: e.end }),
-        }),
-        navigation({ unit: 'day' }),
-      ],
-    });
-  }, [navState.rangeStart, navState.rangeEnd, initialEvents]);
-
-  // Navigation 핸들러
-  const handleGoNext = useCallback(() => {
-    const newState = grid.navigation.goNext();
-    // day 단위이므로 rangeEnd도 같은 날 23:59:59로 설정
-    const dayEnd = new Date(newState.rangeStart);
-    dayEnd.setHours(23, 59, 59, 999);
-    setNavState({ ...newState, rangeEnd: dayEnd });
-  }, [grid]);
-
-  const handleGoPrev = useCallback(() => {
-    const newState = grid.navigation.goPrev();
-    const dayEnd = new Date(newState.rangeStart);
-    dayEnd.setHours(23, 59, 59, 999);
-    setNavState({ ...newState, rangeEnd: dayEnd });
-  }, [grid]);
-
-  const handleGoToday = useCallback(() => {
-    const newState = grid.navigation.goToday();
-    const dayEnd = new Date(newState.rangeStart);
-    dayEnd.setHours(23, 59, 59, 999);
-    setNavState({ ...newState, rangeEnd: dayEnd });
-  }, [grid]);
 
   const formatDate = (d: Date) => {
     const year = d.getFullYear();
@@ -94,15 +61,15 @@ export function GoogleDayView({
     return `${hours}:${minutes}`;
   };
 
-  // 이벤트 위치 계산 (단순 버전 - 겹침 처리 없음)
+  // 이벤트 위치 계산
   const getEventStyle = (event: CalendarEvent): React.CSSProperties => {
-    const dayStart = startOfDay(navState.rangeStart);
+    const currentDayStart = startOfDay(grid.navigation.state.rangeStart);
     const msPerHour = 60 * 60 * 1000;
 
-    const eventStart = Math.max(event.start.getTime(), dayStart.getTime());
-    const eventEnd = Math.min(event.end.getTime(), dayStart.getTime() + 24 * msPerHour);
+    const eventStart = Math.max(event.start.getTime(), currentDayStart.getTime());
+    const eventEnd = Math.min(event.end.getTime(), currentDayStart.getTime() + 24 * msPerHour);
 
-    const top = (eventStart - dayStart.getTime()) / msPerHour * CELL_HEIGHT;
+    const top = (eventStart - currentDayStart.getTime()) / msPerHour * CELL_HEIGHT;
     const height = Math.max((eventEnd - eventStart) / msPerHour * CELL_HEIGHT - 2, 20);
 
     return {
@@ -126,11 +93,11 @@ export function GoogleDayView({
     <div className="google-day-view">
       <div className="header">
         <div className="nav-buttons">
-          <button type="button" onClick={handleGoPrev}>◀</button>
-          <button type="button" onClick={handleGoToday}>오늘</button>
-          <button type="button" onClick={handleGoNext}>▶</button>
+          <button type="button" onClick={grid.navigation.goPrev}>◀</button>
+          <button type="button" onClick={grid.navigation.goToday}>오늘</button>
+          <button type="button" onClick={grid.navigation.goNext}>▶</button>
         </div>
-        <h3 className="date-title">{formatDate(navState.rangeStart)}</h3>
+        <h3 className="date-title">{formatDate(grid.navigation.state.rangeStart)}</h3>
       </div>
 
       <div className="timeline-wrapper">

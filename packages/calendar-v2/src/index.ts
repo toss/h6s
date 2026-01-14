@@ -1,8 +1,10 @@
 /**
  * @h6s/calendar-v2
  *
- * TanStack 스타일 헤드리스 캘린더 Core
- * Zero-dependency, Native Date 기반
+ * TanStack 스타일 헤드리스 캘린더
+ * - Core: 순수 함수 (createTimeGrid)
+ * - Plugin: 순수 로직 (navigation, selection, events)
+ * - React Adapter: 상태 관리 (useTimeGrid)
  */
 
 // ============ Core ============
@@ -14,6 +16,10 @@ export type {
   TimeGrid,
   TimeRange,
 } from './core';
+
+// ============ React Adapter ============
+export { useTimeGrid } from './react';
+export type { UseTimeGridOptions, UseTimeGridResult } from './react';
 
 // ============ Utils ============
 export {
@@ -52,6 +58,7 @@ export { applyPlugin, pipe } from './plugin';
 export type {
   ExtendedTimeGrid,
   InferPluginExtensions,
+  InferPluginState,
   Plugin,
 } from './plugin';
 

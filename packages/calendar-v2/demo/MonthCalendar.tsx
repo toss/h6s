@@ -1,22 +1,21 @@
 /**
  * MonthCalendar - 전통적인 월간 달력 데모
  *
- * createTimeGrid + plugins (selection, navigation) + isWeekend 유틸리티 조합.
- * navigation 플러그인으로 이전/다음/오늘 동작 구현.
+ * useTimeGrid + plugins (selection, navigation) + isWeekend 유틸리티 조합.
+ * React Adapter가 상태 관리를 자동으로 처리.
  */
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import {
-  createTimeGrid,
+  useTimeGrid,
   withPadding,
   toMatrix,
   selection,
   navigation,
   isWeekend,
-  startOfMonth,
   endOfMonth,
 } from '../src';
-import type { Cell, PaddedCell, WeekDay, NavigationState } from '../src';
+import type { PaddedCell, WeekDay } from '../src';
 
 const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -32,67 +31,26 @@ export function MonthCalendar({
   weekStartsOn = 0,
 }: MonthCalendarProps) {
   const today = new Date();
+  const year = initialYear ?? today.getFullYear();
+  const month = initialMonth ?? today.getMonth();
+  const initialDate = new Date(year, month, 1);
 
-  // 초기 범위 계산
-  const initialRange = useMemo(() => {
-    const year = initialYear ?? today.getFullYear();
-    const month = initialMonth ?? today.getMonth();
-    const start = new Date(year, month, 1);
-    return {
-      start,
-      end: endOfMonth(start),
-    };
-  }, [initialYear, initialMonth, today]);
-
-  // Navigation 상태 (React 상태로 관리 - 범위 변경 시 리렌더링 트리거)
-  const [navState, setNavState] = useState<NavigationState>({
-    cursor: initialRange.start,
-    rangeStart: initialRange.start,
-    rangeEnd: initialRange.end,
+  // useTimeGrid - 모든 상태 관리가 자동으로 처리됨
+  const grid = useTimeGrid({
+    range: { start: initialDate, end: endOfMonth(initialDate) },
+    cellUnit: 'day',
+    weekStartsOn,
+    plugins: [
+      selection({ mode: 'single' }),
+      navigation({ unit: 'month' }),
+    ] as const,
   });
-
-  // Selection 상태 (React 상태로 관리)
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
-
-  // TimeGrid 생성 (plugins 옵션으로 전달)
-  const grid = useMemo(() => {
-    return createTimeGrid({
-      range: { start: navState.rangeStart, end: navState.rangeEnd },
-      cellUnit: 'day',
-      weekStartsOn,
-      plugins: [
-        selection({ mode: 'single' }),
-        navigation({ unit: 'month' }),
-      ],
-    });
-  }, [navState.rangeStart, navState.rangeEnd, weekStartsOn]);
 
   // 패딩 추가 + 행렬 변환
   const matrix = useMemo(() => {
     const paddedGrid = withPadding(grid);
     return toMatrix(paddedGrid.cells, 7);
   }, [grid]);
-
-  // Navigation 핸들러 (플러그인 메서드 사용)
-  const handleGoNext = useCallback(() => {
-    const newState = grid.navigation.goNext();
-    setNavState(newState);
-  }, [grid]);
-
-  const handleGoPrev = useCallback(() => {
-    const newState = grid.navigation.goPrev();
-    setNavState(newState);
-  }, [grid]);
-
-  const handleGoToday = useCallback(() => {
-    const newState = grid.navigation.goToday();
-    setNavState(newState);
-  }, [grid]);
-
-  // Selection 핸들러
-  const handleCellClick = useCallback((cell: Cell<unknown>) => {
-    setSelectedKey((prev) => (prev === cell.key ? null : cell.key));
-  }, []);
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
   const headers = useMemo(() => {
@@ -103,17 +61,17 @@ export function MonthCalendar({
   }, [weekStartsOn]);
 
   // 현재 표시 중인 연/월
-  const displayYear = navState.rangeStart.getFullYear();
-  const displayMonth = navState.rangeStart.getMonth();
+  const displayYear = grid.navigation.state.rangeStart.getFullYear();
+  const displayMonth = grid.navigation.state.rangeStart.getMonth();
 
   return (
     <div className="month-calendar">
-      {/* Navigation */}
+      {/* Navigation - 직접 메서드 호출 */}
       <div className="calendar-header">
-        <button onClick={handleGoPrev} className="nav-btn">◀</button>
+        <button type="button" onClick={grid.navigation.goPrev} className="nav-btn">◀</button>
         <h3>{displayYear}년 {displayMonth + 1}월</h3>
-        <button onClick={handleGoNext} className="nav-btn">▶</button>
-        <button onClick={handleGoToday} className="today-btn">오늘</button>
+        <button type="button" onClick={grid.navigation.goNext} className="nav-btn">▶</button>
+        <button type="button" onClick={grid.navigation.goToday} className="today-btn">오늘</button>
       </div>
 
       <table>
@@ -134,13 +92,13 @@ export function MonthCalendar({
             <tr key={weekIndex}>
               {week.map((cell) => {
                 const paddedCell = cell as PaddedCell<unknown>;
-                const isSelected = selectedKey === cell.key;
+                const isSelected = grid.selection.isSelected(cell);
                 const isCellWeekend = isWeekend(cell.weekday);
 
                 return (
                   <td
                     key={cell.key}
-                    onClick={() => handleCellClick(cell)}
+                    onClick={() => grid.selection.select(cell)}
                     style={{
                       opacity: paddedCell.isPadding ? 0.3 : 1,
                       backgroundColor: isSelected
@@ -165,9 +123,9 @@ export function MonthCalendar({
         </tbody>
       </table>
 
-      {selectedKey && (
+      {grid.selection.state.selectedKey && (
         <div className="selection-info">
-          선택된 날짜: {selectedKey}
+          선택된 날짜: {grid.selection.state.selectedKey}
         </div>
       )}
 

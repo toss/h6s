@@ -18,15 +18,12 @@ export interface TimeRange {
 
 // ============ Cell - 그리드의 단위 ============
 
-export interface Cell<TData = unknown> {
+export interface Cell {
   /** 고유 키 (React key로 사용, ISO date string) */
   key: string;
 
   /** 셀의 날짜 */
   date: Date;
-
-  /** 이 셀에 연결된 데이터 */
-  data: TData[];
 
   // ============ 계산된 속성 ============
 
@@ -51,9 +48,9 @@ export interface Cell<TData = unknown> {
 
 // ============ TimeGrid - Core가 반환하는 결과물 ============
 
-export interface TimeGrid<TData = unknown> {
+export interface TimeGrid {
   /** 그리드의 모든 셀 (1D 배열) */
-  cells: Cell<TData>[];
+  cells: Cell[];
 
   /** 그리드 범위 */
   range: TimeRange;
@@ -68,17 +65,16 @@ export interface TimeGrid<TData = unknown> {
   cellCount: number;
 
   /** 날짜로 셀 찾기 */
-  getCellByDate(date: Date): Cell<TData> | null;
+  getCellByDate(date: Date): Cell | null;
 
   /** 범위 내 셀 찾기 */
-  getCellsInRange(range: TimeRange): Cell<TData>[];
+  getCellsInRange(range: TimeRange): Cell[];
 }
 
 // ============ createTimeGrid 옵션 ============
 
 export interface CreateTimeGridOptions<
-  TData = unknown,
-  TPlugins extends readonly Plugin<any>[] = [],
+  TPlugins extends readonly Plugin<any, any>[] = [],
 > {
   /** 그리드 범위 (Date 또는 ISO 문자열) */
   range: {
@@ -92,12 +88,12 @@ export interface CreateTimeGridOptions<
   /** 주 시작 요일 (기본값: 0 = 일요일) */
   weekStartsOn?: WeekDay;
 
-  /** 바인딩할 데이터 */
-  data?: TData[];
-
-  /** 데이터에서 날짜 추출 함수 */
-  getItemDate?: (item: TData) => Date;
-
   /** 플러그인 배열 */
   plugins?: TPlugins;
+
+  /**
+   * 플러그인 상태 (React Adapter에서 주입)
+   * 키: 플러그인 이름, 값: 플러그인 상태
+   */
+  pluginStates?: Record<string, unknown>;
 }
