@@ -2,9 +2,9 @@
  * useTimeGrid - React Adapter
  *
  * Core의 createTimeGrid를 React와 통합.
- * - 플러그인 상태를 내부 useState로 관리
- * - 액션 메서드 호출 시 자동으로 상태 업데이트
- * - 동일한 API, 다른 동작 (Core: 상태 반환, React: setState 호출)
+ * - 플러그인 상태를 내부 useState로 자동 관리
+ * - 액션 메서드는 void 반환 (내부 setState 호출)
+ * - 플러그인 타입은 InferBoundExtensions로 자동 추론
  */
 
 import { useMemo, useState, useCallback } from 'react';
@@ -15,9 +15,7 @@ import type {
   TimeGrid,
   TimeRange,
 } from '../core/types';
-import type { Plugin, InferPluginExtensions } from '../plugin/types';
-import type { NavigationState, NavigationExtension } from '../plugins/navigation';
-import type { SelectionState, SelectionExtension } from '../plugins/selection';
+import type { Plugin } from '../plugin/types';
 import type { WeekDay } from '../utils/date';
 
 // ============ Types ============
@@ -41,49 +39,49 @@ export interface UseTimeGridOptions<
 }
 
 /**
- * useTimeGrid용 바인딩된 타입
+ * 메서드 반환 타입이 TState면 void로 변환
  *
- * 액션 메서드의 반환 타입을 void로 변환
- * - createTimeGrid: goNext() → NavigationState
- * - useTimeGrid: goNext() → void
+ * - TState가 unknown이면 변환하지 않음 (stateless plugin)
+ * - TState가 구체적이면 해당 타입 반환 메서드를 void로 변환
  */
-type BoundNavigation = {
-  state: NavigationState;
-  goNext: () => void;
-  goPrev: () => void;
-  goToday: () => void;
-  goTo: (date: Date) => void;
-  getRange: () => { start: Date; end: Date };
-};
+type BindStateReturns<T, TState> =
+  unknown extends TState
+    ? T
+    : {
+        [K in keyof T]: T[K] extends (...args: infer A) => TState
+          ? (...args: A) => void
+          : T[K];
+      };
 
-type BoundSelection = {
-  state: SelectionState;
-  select: (cell: Cell) => void;
-  clear: () => void;
-  isSelected: (cell: Cell) => boolean;
-  isInRange: (cell: Cell) => boolean;
+/**
+ * Extension 객체의 중첩 메서드들을 바인딩
+ */
+type BindExtension<TExt, TState> = {
+  [K in keyof TExt]: TExt[K] extends object
+    ? BindStateReturns<TExt[K], TState>
+    : TExt[K];
 };
 
 /**
- * 플러그인 확장을 React 바인딩 타입으로 변환
+ * React용 바인딩된 확장 타입 추출
  *
- * - NavigationExtension → BoundNavigation (void 반환)
- * - SelectionExtension → BoundSelection (void 반환)
- * - 기타 플러그인 → 그대로 유지
+ * 각 플러그인의 State 타입을 기반으로 액션 메서드의 반환 타입을 void로 변환.
+ * - Stateful plugin: goNext() → void, select() → void
+ * - Stateless plugin: getEventsForDate() → TEvent[] (그대로)
  */
-type BindExtensions<T> =
-  T extends NavigationExtension & SelectionExtension
-    ? Omit<T, 'navigation' | 'selection'> & { navigation: BoundNavigation; selection: BoundSelection }
-    : T extends NavigationExtension
-      ? Omit<T, 'navigation'> & { navigation: BoundNavigation }
-      : T extends SelectionExtension
-        ? Omit<T, 'selection'> & { selection: BoundSelection }
-        : T;
+type InferBoundExtensions<TPlugins extends readonly Plugin<any, any>[]> =
+  TPlugins extends readonly [infer First extends Plugin<any, any>, ...infer Rest extends readonly Plugin<any, any>[]]
+    ? (First extends Plugin<infer Ext, infer State>
+        ? BindExtension<Ext, State>
+        : never) & InferBoundExtensions<Rest>
+    : unknown;
 
-// useTimeGrid 반환 타입
+/**
+ * useTimeGrid 반환 타입
+ */
 export type UseTimeGridResult<
   TPlugins extends readonly Plugin<any, any>[],
-> = TimeGrid & BindExtensions<InferPluginExtensions<TPlugins>>;
+> = TimeGrid & InferBoundExtensions<TPlugins>;
 
 // ============ Hook ============
 
@@ -97,9 +95,8 @@ export type UseTimeGridResult<
  *   plugins: [navigation({ unit: 'month' }), selection({ mode: 'single' })],
  * });
  *
- * // 동일한 API - Core와 React 모두 goNext, select 사용
- * <button onClick={grid.navigation.goNext}>Next</button>
- * <div onClick={() => grid.selection.select(cell)}>{cell.dayOfMonth}</div>
+ * grid.navigation.goNext();  // void - 내부 상태 업데이트
+ * grid.selection.select(cell);  // void - 내부 상태 업데이트
  */
 export function useTimeGrid<
   const TPlugins extends readonly Plugin<any, any>[] = [],
@@ -136,8 +133,8 @@ export function useTimeGrid<
 
   // Navigation 상태에서 현재 범위 가져오기
   const currentRange = useMemo(() => {
-    const navState = pluginStates.navigation as NavigationState | undefined;
-    if (navState) {
+    const navState = pluginStates.navigation as { rangeStart: Date; rangeEnd: Date } | undefined;
+    if (navState?.rangeStart && navState?.rangeEnd) {
       return { start: navState.rangeStart, end: navState.rangeEnd };
     }
     return initialRange;
@@ -163,7 +160,7 @@ export function useTimeGrid<
     []
   );
 
-  // Navigation 메서드 바인딩 (반환값 → void로 변환)
+  // Navigation 메서드 바인딩
   const boundNavigation = useMemo(() => {
     const nav = (grid as any).navigation;
     if (!nav) return undefined;
@@ -178,7 +175,7 @@ export function useTimeGrid<
     };
   }, [grid, updatePluginState]);
 
-  // Selection 메서드 바인딩 (반환값 → void로 변환)
+  // Selection 메서드 바인딩
   const boundSelection = useMemo(() => {
     const sel = (grid as any).selection;
     if (!sel) return undefined;
