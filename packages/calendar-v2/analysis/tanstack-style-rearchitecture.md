@@ -587,21 +587,39 @@ const grid = createTimeGrid({
 ### 5.2 플러그인 인터페이스
 
 ```typescript
-interface Plugin<TExtension = unknown> {
-  /** 플러그인 이름 (디버깅용) */
+interface Plugin<TExtension = unknown, TState = unknown> {
+  /** 플러그인 이름 */
   name: string;
+
+  /**
+   * 액션 메서드 이름 목록 (React Adapter에서 자동 바인딩)
+   *
+   * 여기 명시된 메서드는 useTimeGrid에서 호출 시:
+   * - 반환된 상태를 내부 setState로 업데이트
+   * - void 반환으로 변환
+   */
+  actions?: string[];
+
+  /**
+   * 초기 상태 생성 (옵션)
+   * 상태가 필요한 플러그인만 구현
+   */
+  getInitialState?: (range: TimeRange) => TState;
 
   /**
    * TimeGrid를 확장하는 함수
    */
-  extend: <TData>(grid: TimeGrid<TData>) => TimeGrid<TData> & TExtension;
+  extend: (grid: TimeGrid, state?: TState) => TimeGrid & TExtension;
 }
 
-// 플러그인 배열에서 확장 타입 추출
-type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
-  TPlugins extends readonly [Plugin<infer First>, ...infer Rest extends readonly Plugin<any>[]]
+// 플러그인 배열에서 확장 타입 추출 (createTimeGrid용)
+type InferPluginExtensions<TPlugins extends readonly Plugin<any, any>[]> =
+  TPlugins extends readonly [Plugin<infer First, any>, ...infer Rest extends readonly Plugin<any, any>[]]
     ? First & InferPluginExtensions<Rest>
     : unknown;
+
+// React Adapter용 바인딩 타입 (액션 메서드 → void 반환)
+type InferBoundExtensions<TPlugins extends readonly Plugin<any, any>[]> = ...;
 ```
 
 ### 5.3 내장 플러그인
@@ -620,28 +638,38 @@ const grid = createTimeGrid({
 
 // API
 grid.selection.state;              // { selectedKey, rangeStartKey, rangeEndKey }
-grid.selection.select(cell);       // 셀 선택
-grid.selection.clear();            // 선택 해제
-grid.selection.isSelected(cell);   // 선택 여부
-grid.selection.isInRange(cell);    // 범위 내 여부
+grid.selection.select(cell);       // 셀 선택 → SelectionState 반환
+grid.selection.clear();            // 선택 해제 → SelectionState 반환
+grid.selection.isSelected(cell);   // 선택 여부 → boolean
+grid.selection.isInRange(cell);    // 범위 내 여부 → boolean
 ```
 
 ```typescript
-// Selection 타입
-interface SelectionExtension {
-  selection: {
-    state: SelectionState;
-    select: (cell: Cell<any>) => SelectionState;
-    clear: () => SelectionState;
-    isSelected: (cell: Cell<any>) => boolean;
-    isInRange: (cell: Cell<any>) => boolean;
-  };
-}
+// Selection 플러그인 구현
+function selection(options: SelectionOptions): Plugin<SelectionExtension, SelectionState> {
+  return {
+    name: 'selection',
+    actions: ['select', 'clear'],  // React Adapter에서 자동 바인딩
 
-interface SelectionState {
-  selectedKey: string | null;
-  rangeStartKey: string | null;
-  rangeEndKey: string | null;
+    getInitialState: () => ({
+      selectedKey: null,
+      rangeStartKey: null,
+      rangeEndKey: null,
+    }),
+
+    extend(grid, state) {
+      return {
+        ...grid,
+        selection: {
+          state,
+          select: (cell) => newState,   // SelectionState 반환
+          clear: () => initialState,     // SelectionState 반환
+          isSelected: (cell) => boolean, // 쿼리 메서드
+          isInRange: (cell) => boolean,  // 쿼리 메서드
+        },
+      };
+    },
+  };
 }
 ```
 
@@ -653,38 +681,45 @@ import { navigation } from '@h6s/calendar-v2';
 const grid = createTimeGrid({
   ...options,
   plugins: [
-    navigation({ unit: 'month', weekStartsOn: 1 }),
+    navigation({ unit: 'month', step: 1 }),
   ],
 });
 
 // API
-grid.navigation.state;        // { cursor, rangeStart, rangeEnd }
-grid.navigation.goNext();     // 다음으로 이동
-grid.navigation.goPrev();     // 이전으로 이동
-grid.navigation.goToday();    // 오늘로 이동
-grid.navigation.goTo(date);   // 특정 날짜로 이동
-grid.navigation.getRange();   // 현재 범위 반환
+grid.navigation.state;        // { rangeStart, rangeEnd }
+grid.navigation.goNext();     // 다음으로 이동 → NavigationState 반환
+grid.navigation.goPrev();     // 이전으로 이동 → NavigationState 반환
+grid.navigation.goToday();    // 오늘로 이동 → NavigationState 반환
+grid.navigation.goTo(date);   // 특정 날짜로 이동 → NavigationState 반환
+grid.navigation.getRange();   // 현재 범위 반환 → { start, end }
 ```
 
 ```typescript
-// Navigation 타입
-type NavigationUnit = 'day' | 'week' | 'month' | 'year';
+// Navigation 플러그인 구현
+function navigation(options: NavigationOptions): Plugin<NavigationExtension, NavigationState> {
+  return {
+    name: 'navigation',
+    actions: ['goNext', 'goPrev', 'goToday', 'goTo'],  // React Adapter에서 자동 바인딩
 
-interface NavigationExtension {
-  navigation: {
-    state: NavigationState;
-    goNext: () => NavigationState;
-    goPrev: () => NavigationState;
-    goToday: () => NavigationState;
-    goTo: (date: Date) => NavigationState;
-    getRange: () => { start: Date; end: Date };
+    getInitialState: (range) => ({
+      rangeStart: range.start,
+      rangeEnd: range.end,
+    }),
+
+    extend(grid, state) {
+      return {
+        ...grid,
+        navigation: {
+          state,
+          goNext: () => newState,     // NavigationState 반환
+          goPrev: () => newState,     // NavigationState 반환
+          goToday: () => newState,    // NavigationState 반환
+          goTo: (date) => newState,   // NavigationState 반환
+          getRange: () => ({ start, end }), // 쿼리 메서드
+        },
+      };
+    },
   };
-}
-
-interface NavigationState {
-  cursor: Date;
-  rangeStart: Date;
-  rangeEnd: Date;
 }
 ```
 
@@ -758,6 +793,8 @@ grid.holidays.isHoliday(cell);    // ❌ Error: holidays 플러그인 없음
 
 ### 5.5 커스텀 플러그인 만들기
 
+#### Stateless 플러그인 (쿼리만)
+
 ```typescript
 // 1. 플러그인이 추가하는 타입 정의
 interface HolidaysExtension {
@@ -767,11 +804,14 @@ interface HolidaysExtension {
   };
 }
 
-// 2. 플러그인 팩토리 함수
+// 2. 플러그인 팩토리 함수 (TState = unknown, actions 없음)
 function holidays(options: { data: Holiday[] }): Plugin<HolidaysExtension> {
   return {
     name: 'holidays',
-    extend<TData>(grid: TimeGrid<TData>) {
+    // actions 없음 - 모든 메서드가 쿼리
+    // getInitialState 없음 - 상태 불필요
+
+    extend(grid) {
       const holidayMap = new Map(
         options.data.map(h => [toISODateString(h.date), h.name])
       );
@@ -786,16 +826,65 @@ function holidays(options: { data: Holiday[] }): Plugin<HolidaysExtension> {
     },
   };
 }
+```
 
-// 3. 사용 - 공식 플러그인과 동일한 방식
+#### Stateful 플러그인 (액션 + 쿼리)
+
+```typescript
+// 1. 타입 정의
+interface HighlightState {
+  highlightedKey: string | null;
+}
+
+interface HighlightExtension {
+  highlight: {
+    state: HighlightState;
+    highlight: (cell: Cell) => HighlightState;    // 액션
+    clear: () => HighlightState;                   // 액션
+    isHighlighted: (cell: Cell) => boolean;        // 쿼리
+  };
+}
+
+// 2. 플러그인 구현
+function highlight(): Plugin<HighlightExtension, HighlightState> {
+  return {
+    name: 'highlight',
+    actions: ['highlight', 'clear'],  // ⭐ React Adapter에서 자동 바인딩
+
+    getInitialState: () => ({ highlightedKey: null }),
+
+    extend(grid, state) {
+      const currentState = state ?? { highlightedKey: null };
+
+      return {
+        ...grid,
+        highlight: {
+          state: currentState,
+          highlight: (cell) => ({ highlightedKey: cell.key }),
+          clear: () => ({ highlightedKey: null }),
+          isHighlighted: (cell) => currentState.highlightedKey === cell.key,
+        },
+      };
+    },
+  };
+}
+```
+
+#### 사용
+
+```typescript
+// createTimeGrid - 직접 상태 관리
 const grid = createTimeGrid({
-  plugins: [
-    navigation({ unit: 'month' }),
-    holidays({ data: koreanHolidays }),  // 커스텀도 동등!
-  ],
+  plugins: [highlight()],
 });
+const newState = grid.highlight.highlight(cell);  // HighlightState 반환
+setHighlightState(newState);
 
-grid.holidays.isHoliday(cell);  // ✅ 타입 추론 동작
+// useTimeGrid - 자동 상태 관리
+const grid = useTimeGrid({
+  plugins: [highlight()] as const,
+});
+grid.highlight.highlight(cell);  // void - 내부 setState 호출
 ```
 
 ### 5.6 Core vs Plugin 구분 기준
@@ -860,34 +949,86 @@ const grid = createTimeGrid({
 - 대부분의 캘린더 UI에 충분
 - 번들 사이즈 최소화
 
-### 6.2 Framework Adapters (미구현)
+### 6.2 React Adapter (구현됨)
 
 ```typescript
-// React Adapter (미래)
-import { useTimeGrid } from '@h6s/calendar-react';
+import { useTimeGrid, navigation, selection } from '@h6s/calendar-v2';
 
 function Calendar() {
-  const [cursor, setCursor] = useState(new Date());
-
+  // useTimeGrid: 플러그인 상태를 내부 useState로 자동 관리
   const grid = useTimeGrid({
-    range: { start: startOfMonth(cursor), end: endOfMonth(cursor) },
+    range: { start: '2026-01-01', end: '2026-01-31' },
     cellUnit: 'day',
     plugins: [
       navigation({ unit: 'month' }),
       selection({ mode: 'single' }),
-    ],
+    ] as const,
   });
 
   return (
     <div>
-      <button onClick={() => {
-        const newState = grid.navigation.goNext();
-        setCursor(newState.cursor);
-      }}>Next</button>
-      {/* ... */}
+      {/* 액션 메서드는 void 반환 (내부 setState 호출) */}
+      <button onClick={grid.navigation.goNext}>Next</button>
+      <button onClick={grid.navigation.goPrev}>Prev</button>
+
+      {grid.cells.map(cell => (
+        <div
+          key={cell.key}
+          onClick={() => grid.selection.select(cell)}
+          style={{
+            background: grid.selection.isSelected(cell) ? 'blue' : 'white'
+          }}
+        >
+          {cell.dayOfMonth}
+        </div>
+      ))}
     </div>
   );
 }
+```
+
+**Core vs React Adapter 차이:**
+
+| | createTimeGrid (Core) | useTimeGrid (React) |
+|---|---|---|
+| **상태 관리** | 사용자가 직접 | 내부 useState |
+| **액션 반환** | `goNext() → NavigationState` | `goNext() → void` |
+| **쿼리 반환** | `isSelected() → boolean` | `isSelected() → boolean` (동일) |
+| **리렌더** | 수동 | 자동 |
+
+**동적 액션 바인딩:**
+
+```typescript
+// useTimeGrid 내부 구현
+for (const plugin of plugins) {
+  const extension = result[plugin.name];
+  if (!extension || !plugin.actions?.length) continue;
+
+  const boundExtension = { ...extension };  // 전체 복사
+  for (const actionName of plugin.actions) {
+    const originalMethod = extension[actionName];
+    if (typeof originalMethod === 'function') {
+      // actions에 명시된 메서드만 래핑
+      boundExtension[actionName] = (...args) => {
+        const newState = originalMethod(...args);
+        updatePluginState(plugin.name, newState);
+      };
+    }
+  }
+  result[plugin.name] = boundExtension;
+}
+```
+
+**타입 추론:**
+
+```typescript
+// createTimeGrid: InferPluginExtensions 사용
+type CreateResult = TimeGrid & InferPluginExtensions<TPlugins>;
+// goNext: () => NavigationState
+
+// useTimeGrid: InferBoundExtensions 사용
+type UseResult = TimeGrid & InferBoundExtensions<TPlugins>;
+// goNext: () => void (actions에 명시된 메서드만 void로 변환)
 ```
 
 ### 6.3 추가 플러그인 (미구현)
@@ -909,7 +1050,7 @@ function Calendar() {
 
 ---
 
-**문서 버전**: 3.0
+**문서 버전**: 4.0
 **최종 업데이트**: 2026-01-15
 
 ### 변경 이력
@@ -919,3 +1060,4 @@ function Calendar() {
 | 1.0 | 2026-01-12 | 최초 작성 |
 | 2.0 | 2026-01-13 | Cell vs Event 구분, 플러그인 철학, Core vs Plugin 기준 등 추가 |
 | 3.0 | 2026-01-15 | **실제 구현과 동기화**: DateAdapter 제거 (Native Date만 사용), CellUnit에 'year' 추가, Unit 기반 아키텍처 문서화, 플러그인 인터페이스 단순화 (`{ name, extend }`), Navigation/Selection/Events API 실제 구현 반영, 미구현 기능 명시 (Framework Adapters 등) |
+| 4.0 | 2026-01-15 | **Plugin Adapter 패턴**: Plugin에 `actions`, `getInitialState` 추가, useTimeGrid 동적 액션 바인딩 구현, InferBoundExtensions 타입 추론, Stateful/Stateless 커스텀 플러그인 가이드 추가 |
