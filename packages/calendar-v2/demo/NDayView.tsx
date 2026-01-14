@@ -10,6 +10,7 @@ import {
   createTimeGrid,
   isWeekend,
   addDays,
+  events,
 } from '../src';
 import type { Cell } from '../src';
 
@@ -35,7 +36,7 @@ const DAY_OPTIONS = [1, 2, 3, 4, 5, 7, 14];
 export function NDayView({
   initialDate,
   initialDays = 4,
-  events = [],
+  events: eventList = [],
 }: NDayViewProps) {
   const today = new Date();
 
@@ -48,15 +49,19 @@ export function NDayView({
     return addDays(startDate, days - 1);
   }, [startDate, days]);
 
-  // TimeGrid 생성
+  // TimeGrid 생성 (Events Plugin으로 데이터 바인딩)
   const grid = useMemo(() => {
-    return createTimeGrid<Event>({
+    return createTimeGrid({
       range: { start: startDate, end: endDate },
       cellUnit: 'day',
-      data: events,
-      getItemDate: (event) => event.date,
+      plugins: [
+        events({
+          data: eventList,
+          getEventRange: (event) => ({ start: event.date, end: event.date }),
+        }),
+      ] as const,
     });
-  }, [startDate, endDate, events]);
+  }, [startDate, endDate, eventList]);
 
   // Navigation
   const goNext = useCallback(() => {
@@ -80,7 +85,7 @@ export function NDayView({
   }, []);
 
   // 날짜 포맷
-  const formatDate = (cell: Cell<Event>) => {
+  const formatDate = (cell: Cell) => {
     return `${cell.month + 1}/${cell.dayOfMonth}`;
   };
 
@@ -154,7 +159,8 @@ export function NDayView({
               className={`day-column ${cell.isToday ? 'today' : ''} ${isWeekend(cell.weekday) ? 'weekend' : ''}`}
             >
               {HOURS.map((hour) => {
-                const hourEvents = cell.data.filter((e) => e.hour === hour);
+                const cellEvents = grid.events.getEventsForCell(cell);
+                const hourEvents = cellEvents.filter((e) => e.hour === hour);
                 return (
                   <div key={hour} className="hour-cell">
                     {hourEvents.map((event) => (

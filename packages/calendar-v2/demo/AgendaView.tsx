@@ -40,7 +40,7 @@ export function AgendaView({
   const monthEnd = endOfMonth(initialDate);
 
   // useTimeGrid - 상태 관리 자동화
-  const 이 = useTimeGrid({
+  const grid = useTimeGrid({
     range: { start: monthStart, end: monthEnd },
     cellUnit: 'day',
     plugins: [

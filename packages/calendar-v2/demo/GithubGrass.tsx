@@ -3,17 +3,20 @@
  *
  * 동일한 createTimeGrid 결과를 사용하여 GitHub Contribution Graph 스타일 UI 렌더링.
  * groupBy('weekday') 유틸리티로 요일별 그룹화.
+ * Events Plugin으로 날짜별 데이터 조회.
  */
 
 import React from 'react';
 import {
   createTimeGrid,
   groupBy,
+  events,
 } from '../src';
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 interface ContributionData {
+  id: string;
   date: Date;
   count: number;
 }
@@ -41,17 +44,18 @@ const COLORS = [
 ];
 
 export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps) {
-  // TimeGrid 생성 (데이터 바인딩)
-  const grid = createTimeGrid<ContributionData>({
+  // TimeGrid 생성 (Events Plugin으로 데이터 바인딩)
+  const grid = createTimeGrid({
     range: { start: startDate, end: endDate },
     cellUnit: 'day',
     weekStartsOn: 0, // GitHub은 일요일 시작
-    data,
-    getItemDate: (item) => item.date,
+    plugins: [
+      events({
+        data,
+        getEventRange: (item) => ({ start: item.date, end: item.date }),
+      }),
+    ] as const,
   });
-
-  // 요일별 그룹화 (GitHub 잔디 레이아웃)
-  const weekdayGroups = groupBy(grid, 'weekday');
 
   // 주 단위로 그룹화 (열 생성)
   const weekGroups = groupBy(grid, 'week');
@@ -79,7 +83,8 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
                   return <div key={dayIndex} className="cell empty" />;
                 }
 
-                const totalCount = cell.data.reduce(
+                const cellData = grid.events.getEventsForCell(cell);
+                const totalCount = cellData.reduce(
                   (sum, item) => sum + item.count,
                   0
                 );
