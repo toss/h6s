@@ -2,8 +2,8 @@
  * Navigation Plugin - 네비게이션 플러그인
  *
  * 이전/다음/오늘 이동 기능을 제공하는 플러그인.
- * - step: 이동 속도 (몇 unit씩 이동할지)
- * - range 크기: 초기 range에서 결정, navigation이 유지
+ * - createTimeGrid: goNext() → NavigationState 반환
+ * - useTimeGrid: goNext() → void (내부 setState)
  */
 
 import type { TimeGrid, TimeRange } from '../core/types';
@@ -41,13 +41,13 @@ export interface NavigationExtension {
     /** 현재 상태 */
     state: NavigationState;
     /** 다음으로 이동 (새 상태 반환) */
-    computeNext: () => NavigationState;
+    goNext: () => NavigationState;
     /** 이전으로 이동 (새 상태 반환) */
-    computePrev: () => NavigationState;
+    goPrev: () => NavigationState;
     /** 오늘로 이동 (새 상태 반환) */
-    computeToday: () => NavigationState;
+    goToday: () => NavigationState;
     /** 특정 날짜로 이동 (새 상태 반환) */
-    computeGoTo: (date: Date) => NavigationState;
+    goTo: (date: Date) => NavigationState;
     /** 범위 가져오기 */
     getRange: () => { start: Date; end: Date };
   };
@@ -56,15 +56,16 @@ export interface NavigationExtension {
 /**
  * Navigation 플러그인 생성
  *
- * step은 이동 속도만 제어, range 크기는 초기값 유지.
+ * @example
+ * // createTimeGrid - 직접 상태 관리
+ * const grid = createTimeGrid({ plugins: [navigation({ unit: 'month' })] });
+ * const newState = grid.navigation.goNext();
+ * setNavigationState(newState);
  *
  * @example
- * // 월간 달력: 1개월씩 이동
- * navigation({ unit: 'month' })
- *
- * @example
- * // 연도 선택기: 12년씩 이동 (range는 초기값으로 12년 설정)
- * navigation({ unit: 'year', step: 12 })
+ * // useTimeGrid - 자동 상태 관리
+ * const grid = useTimeGrid({ plugins: [navigation({ unit: 'month' })] });
+ * grid.navigation.goNext(); // 내부적으로 setState 호출
  */
 export function navigation(
   options: NavigationOptions
@@ -165,10 +166,11 @@ export function navigation(
         navigation: {
           state: currentState,
 
-          computeNext: () => shiftRange(currentState, 1),
-          computePrev: () => shiftRange(currentState, -1),
+          // 액션 메서드: 새 상태 반환
+          goNext: () => shiftRange(currentState, 1),
+          goPrev: () => shiftRange(currentState, -1),
 
-          computeToday: () => {
+          goToday: () => {
             const todayDate = today();
             const range = calculateDefaultRange(todayDate);
             return {
@@ -177,7 +179,7 @@ export function navigation(
             };
           },
 
-          computeGoTo: (date: Date) => {
+          goTo: (date: Date) => {
             const range = calculateDefaultRange(date);
             return {
               rangeStart: range.start,

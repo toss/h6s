@@ -2,8 +2,8 @@
  * Selection Plugin - 셀 선택 플러그인
  *
  * 단일 선택 및 범위 선택을 지원하는 플러그인.
- * - Plugin은 순수 로직만 제공
- * - 상태 관리는 React Adapter에서 담당
+ * - createTimeGrid: select() → SelectionState 반환
+ * - useTimeGrid: select() → void (내부 setState)
  */
 
 import type { Cell, TimeGrid, TimeRange } from '../core/types';
@@ -30,9 +30,9 @@ export interface SelectionExtension {
     /** 현재 상태 */
     state: SelectionState;
     /** 셀 선택 (새 상태 반환) */
-    computeSelect: (cell: Cell) => SelectionState;
+    select: (cell: Cell) => SelectionState;
     /** 선택 해제 (새 상태 반환) */
-    computeClear: () => SelectionState;
+    clear: () => SelectionState;
     /** 셀이 선택되었는지 확인 */
     isSelected: (cell: Cell) => boolean;
     /** 셀이 범위 내에 있는지 확인 */
@@ -50,19 +50,16 @@ const INITIAL_STATE: SelectionState = {
 /**
  * Selection 플러그인 생성
  *
- * @param options - 선택 옵션
- * @returns Selection Plugin
+ * @example
+ * // createTimeGrid - 직접 상태 관리
+ * const grid = createTimeGrid({ plugins: [selection({ mode: 'single' })] });
+ * const newState = grid.selection.select(cell);
+ * setSelectionState(newState);
  *
  * @example
- * const grid = createTimeGrid({
- *   range: { start: '2026-01-01', end: '2026-01-31' },
- *   cellUnit: 'day',
- *   plugins: [selection({ mode: 'single' })],
- * });
- *
- * // React Adapter에서 상태 변경 시:
- * const newState = grid.selection.computeSelect(cell);
- * setSelState(newState);
+ * // useTimeGrid - 자동 상태 관리
+ * const grid = useTimeGrid({ plugins: [selection({ mode: 'single' })] });
+ * grid.selection.select(cell); // 내부적으로 setState 호출
  */
 export function selection(
   options: SelectionOptions
@@ -70,7 +67,7 @@ export function selection(
   const { mode } = options;
 
   // 선택 로직 (순수 함수)
-  const computeSelectFn = (state: SelectionState, cell: Cell): SelectionState => {
+  const selectFn = (state: SelectionState, cell: Cell): SelectionState => {
     if (mode === 'single') {
       return {
         selectedKey: cell.key,
@@ -136,11 +133,11 @@ export function selection(
         selection: {
           state: currentState,
 
-          // 순수 함수들: 새 상태 반환
-          computeSelect: (cell: Cell) => computeSelectFn(currentState, cell),
-          computeClear: () => ({ ...INITIAL_STATE }),
+          // 액션 메서드: 새 상태 반환
+          select: (cell: Cell) => selectFn(currentState, cell),
+          clear: () => ({ ...INITIAL_STATE }),
 
-          // 조회 함수들
+          // 조회 메서드
           isSelected: (cell: Cell) => {
             if (mode === 'single') {
               return currentState.selectedKey === cell.key;

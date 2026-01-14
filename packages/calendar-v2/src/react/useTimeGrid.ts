@@ -3,8 +3,8 @@
  *
  * Core의 createTimeGrid를 React와 통합.
  * - 플러그인 상태를 내부 useState로 관리
- * - 메서드 호출 시 자동으로 상태 업데이트
- * - 사용자는 useState 보일러플레이트 없이 사용 가능
+ * - 액션 메서드 호출 시 자동으로 상태 업데이트
+ * - 동일한 API, 다른 동작 (Core: 상태 반환, React: setState 호출)
  */
 
 import { useMemo, useState, useCallback } from 'react';
@@ -40,7 +40,13 @@ export interface UseTimeGridOptions<
   plugins?: TPlugins;
 }
 
-// Navigation이 바인딩된 확장 타입
+/**
+ * useTimeGrid용 바인딩된 타입
+ *
+ * 액션 메서드의 반환 타입을 void로 변환
+ * - createTimeGrid: goNext() → NavigationState
+ * - useTimeGrid: goNext() → void
+ */
 type BoundNavigation = {
   state: NavigationState;
   goNext: () => void;
@@ -50,7 +56,6 @@ type BoundNavigation = {
   getRange: () => { start: Date; end: Date };
 };
 
-// Selection이 바인딩된 확장 타입
 type BoundSelection = {
   state: SelectionState;
   select: (cell: Cell) => void;
@@ -59,21 +64,20 @@ type BoundSelection = {
   isInRange: (cell: Cell) => boolean;
 };
 
-// 플러그인 확장에서 navigation/selection을 바인딩된 타입으로 변환
+/**
+ * 플러그인 확장을 React 바인딩 타입으로 변환
+ *
+ * - NavigationExtension → BoundNavigation (void 반환)
+ * - SelectionExtension → BoundSelection (void 반환)
+ * - 기타 플러그인 → 그대로 유지
+ */
 type BindExtensions<T> =
-  // navigation과 selection 둘 다 있는 경우
   T extends NavigationExtension & SelectionExtension
-    ? Omit<T, 'navigation' | 'selection'> & {
-        navigation: BoundNavigation;
-        selection: BoundSelection;
-      }
-    // navigation만 있는 경우
+    ? Omit<T, 'navigation' | 'selection'> & { navigation: BoundNavigation; selection: BoundSelection }
     : T extends NavigationExtension
       ? Omit<T, 'navigation'> & { navigation: BoundNavigation }
-      // selection만 있는 경우
       : T extends SelectionExtension
         ? Omit<T, 'selection'> & { selection: BoundSelection }
-        // 둘 다 없는 경우
         : T;
 
 // useTimeGrid 반환 타입
@@ -87,24 +91,15 @@ export type UseTimeGridResult<
  * useTimeGrid - React용 TimeGrid Hook
  *
  * @example
- * function Calendar() {
- *   const grid = useTimeGrid({
- *     range: { start: '2026-01-01', end: '2026-01-31' },
- *     cellUnit: 'day',
- *     plugins: [navigation({ unit: 'month' }), selection({ mode: 'single' })],
- *   });
+ * const grid = useTimeGrid({
+ *   range: { start: '2026-01-01', end: '2026-01-31' },
+ *   cellUnit: 'day',
+ *   plugins: [navigation({ unit: 'month' }), selection({ mode: 'single' })],
+ * });
  *
- *   return (
- *     <div>
- *       <button onClick={grid.navigation.goNext}>Next</button>
- *       {grid.cells.map(cell => (
- *         <div key={cell.key} onClick={() => grid.selection.select(cell)}>
- *           {cell.dayOfMonth}
- *         </div>
- *       ))}
- *     </div>
- *   );
- * }
+ * // 동일한 API - Core와 React 모두 goNext, select 사용
+ * <button onClick={grid.navigation.goNext}>Next</button>
+ * <div onClick={() => grid.selection.select(cell)}>{cell.dayOfMonth}</div>
  */
 export function useTimeGrid<
   const TPlugins extends readonly Plugin<any, any>[] = [],
@@ -168,30 +163,30 @@ export function useTimeGrid<
     []
   );
 
-  // Navigation 메서드 바인딩
+  // Navigation 메서드 바인딩 (반환값 → void로 변환)
   const boundNavigation = useMemo(() => {
     const nav = (grid as any).navigation;
     if (!nav) return undefined;
 
     return {
       state: nav.state,
-      goNext: () => updatePluginState('navigation', nav.computeNext()),
-      goPrev: () => updatePluginState('navigation', nav.computePrev()),
-      goToday: () => updatePluginState('navigation', nav.computeToday()),
-      goTo: (date: Date) => updatePluginState('navigation', nav.computeGoTo(date)),
+      goNext: () => updatePluginState('navigation', nav.goNext()),
+      goPrev: () => updatePluginState('navigation', nav.goPrev()),
+      goToday: () => updatePluginState('navigation', nav.goToday()),
+      goTo: (date: Date) => updatePluginState('navigation', nav.goTo(date)),
       getRange: nav.getRange,
     };
   }, [grid, updatePluginState]);
 
-  // Selection 메서드 바인딩
+  // Selection 메서드 바인딩 (반환값 → void로 변환)
   const boundSelection = useMemo(() => {
     const sel = (grid as any).selection;
     if (!sel) return undefined;
 
     return {
       state: sel.state,
-      select: (cell: Cell) => updatePluginState('selection', sel.computeSelect(cell)),
-      clear: () => updatePluginState('selection', sel.computeClear()),
+      select: (cell: Cell) => updatePluginState('selection', sel.select(cell)),
+      clear: () => updatePluginState('selection', sel.clear()),
       isSelected: sel.isSelected,
       isInRange: sel.isInRange,
     };
