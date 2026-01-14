@@ -165,7 +165,7 @@ export function NDayView({
                   <div key={hour} className="hour-cell">
                     {hourEvents.map((event) => (
                       <div key={event.id} className="event">
-                        <span className="event-time">
+                        <span style={{ fontWeight: 600 }}>
                           {hour.toString().padStart(2, '0')}:{(event.minute ?? 0).toString().padStart(2, '0')}
                         </span>
                         {' '}{event.title}
@@ -365,10 +365,6 @@ export function NDayView({
           white-space: nowrap;
         }
 
-        .event-time {
-          font-weight: 600;
-          opacity: 0.9;
-        }
       `}</style>
     </div>
   );
