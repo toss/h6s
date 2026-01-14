@@ -49,7 +49,7 @@ import { getUnit } from './units';
  * });
  */
 export function createTimeGrid<
-  const TPlugins extends readonly Plugin<any>[] = [],
+  const TPlugins extends readonly Plugin<any, any>[] = [],
 >(
   options: CreateTimeGridOptions<TPlugins>
 ): TimeGrid & InferPluginExtensions<TPlugins> {

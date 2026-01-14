@@ -47,8 +47,8 @@ export type InferPluginState<TPlugin> = TPlugin extends Plugin<any, infer TState
  * type Extensions = InferPluginExtensions<[Plugin<SelectionExt>, Plugin<NavExt>]>;
  * // SelectionExt & NavExt
  */
-export type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
-  TPlugins extends readonly [Plugin<infer First>, ...infer Rest extends readonly Plugin<any>[]]
+export type InferPluginExtensions<TPlugins extends readonly Plugin<any, any>[]> =
+  TPlugins extends readonly [Plugin<infer First, any>, ...infer Rest extends readonly Plugin<any, any>[]]
     ? First & InferPluginExtensions<Rest>
     : unknown;
 
@@ -56,5 +56,5 @@ export type InferPluginExtensions<TPlugins extends readonly Plugin<any>[]> =
  * 확장된 TimeGrid 타입
  */
 export type ExtendedTimeGrid<
-  TPlugins extends readonly Plugin<any>[],
+  TPlugins extends readonly Plugin<any, any>[],
 > = TimeGrid & InferPluginExtensions<TPlugins>;
