@@ -97,6 +97,14 @@ export function createTimeGrid<
         return !isBefore(date, targetRange.start) && !isAfter(date, targetRange.end);
       });
     },
+
+    getRows(columns: number = 7): Cell[][] {
+      const rows: Cell[][] = [];
+      for (let i = 0; i < cells.length; i += columns) {
+        rows.push(cells.slice(i, i + columns));
+      }
+      return rows;
+    },
   };
 
   // 플러그인 적용 (상태 주입)

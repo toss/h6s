@@ -6,7 +6,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { useTimeGrid, selection, navigation, toMatrix } from '../src';
+import { useTimeGrid, selection, navigation } from '../src';
 
 interface YearSelectorProps {
   initialYear?: number;
@@ -32,9 +32,7 @@ export function YearSelector({ initialYear, onSelect }: YearSelectorProps) {
   });
 
   // 3x4 행렬로 변환
-  const matrix = useMemo(() => {
-    return toMatrix(grid.cells, 4);
-  }, [grid.cells]);
+  const rows = useMemo(() => grid.getRows(4), [grid]);
 
   const currentYear = today.getFullYear();
   const rangeStart = grid.navigation.state.rangeStart.getFullYear();
@@ -49,7 +47,7 @@ export function YearSelector({ initialYear, onSelect }: YearSelectorProps) {
       </div>
 
       <div className="year-grid">
-        {matrix.map((row, rowIndex) => (
+        {rows.map((row, rowIndex) => (
           <div key={rowIndex} className="year-row">
             {row.map((cell) => {
               const isSelected = grid.selection.isSelected(cell);

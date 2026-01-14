@@ -8,7 +8,6 @@
 import React, { useMemo } from 'react';
 import {
   useTimeGrid,
-  toMatrix,
   selection,
   navigation,
   isWeekend,
@@ -50,9 +49,7 @@ export function MonthCalendarRangeSelector({
   const displayMonth = grid.navigation.state.rangeStart.getMonth();
 
   // 행렬 변환
-  const matrix = useMemo(() => {
-    return toMatrix(grid.cells, 7);
-  }, [grid.cells]);
+  const rows = useMemo(() => grid.getRows(7), [grid]);
 
   // 헤더 생성 (주 시작 요일에 따라 정렬)
   const headers = useMemo(() => {
@@ -95,7 +92,7 @@ export function MonthCalendarRangeSelector({
           </tr>
         </thead>
         <tbody>
-          {matrix.map((week, weekIndex) => (
+          {rows.map((week, weekIndex) => (
             <tr key={weekIndex}>
               {week.map((cell) => {
                 const isPadding = cell.month !== displayMonth;

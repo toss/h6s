@@ -6,7 +6,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { useTimeGrid, selection, navigation, toMatrix } from '../src';
+import { useTimeGrid, selection, navigation } from '../src';
 
 const MONTH_NAMES = [
   '1월', '2월', '3월', '4월', '5월', '6월',
@@ -36,9 +36,7 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
   });
 
   // 3x4 행렬로 변환
-  const matrix = useMemo(() => {
-    return toMatrix(grid.cells, 4);
-  }, [grid.cells]);
+  const rows = useMemo(() => grid.getRows(4), [grid]);
 
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
@@ -53,7 +51,7 @@ export function MonthSelector({ initialYear, onSelect }: MonthSelectorProps) {
       </div>
 
       <div className="month-grid">
-        {matrix.map((row, rowIndex) => (
+        {rows.map((row, rowIndex) => (
           <div key={rowIndex} className="month-row">
             {row.map((cell) => {
               const isSelected = grid.selection.isSelected(cell);
