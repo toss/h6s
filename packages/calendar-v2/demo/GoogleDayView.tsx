@@ -3,9 +3,10 @@
  *
  * Google Calendar 스타일의 Day View를 구현.
  * useTimeGrid로 상태 관리 자동화, Events Plugin으로 이벤트 필터링.
+ * 겹치는 이벤트는 column 레이아웃으로 나란히 표시.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTimeGrid, events, navigation, startOfDay } from '../src';
 
 interface CalendarEvent {
@@ -23,6 +24,40 @@ interface GoogleDayViewProps {
 
 const CELL_HEIGHT = 48; // 1시간 = 48px
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
+
+// 두 이벤트가 시간상 겹치는지 확인
+function eventsOverlap(a: CalendarEvent, b: CalendarEvent): boolean {
+  return a.start < b.end && a.end > b.start;
+}
+
+// 이벤트의 스택 순서 계산 (겹치는 이벤트 중 몇 번째인지)
+const STACK_OFFSET = 80; // 겹칠 때마다 추가되는 left offset
+
+function calculateStackOrder(eventList: CalendarEvent[]): Map<string, number> {
+  const stackOrders = new Map<string, number>();
+
+  if (eventList.length === 0) return stackOrders;
+
+  // 시작 시간순 정렬
+  const sorted = [...eventList].sort((a, b) => a.start.getTime() - b.start.getTime());
+
+  for (let i = 0; i < sorted.length; i++) {
+    const event = sorted[i];
+    let stackIndex = 0;
+
+    // 이전 이벤트들 중 겹치는 것의 최대 stackIndex + 1
+    for (let j = 0; j < i; j++) {
+      if (eventsOverlap(sorted[j], event)) {
+        const prevStack = stackOrders.get(sorted[j].id) ?? 0;
+        stackIndex = Math.max(stackIndex, prevStack + 1);
+      }
+    }
+
+    stackOrders.set(event.id, stackIndex);
+  }
+
+  return stackOrders;
+}
 
 export function GoogleDayView({
   initialDate = new Date(),
@@ -46,6 +81,11 @@ export function GoogleDayView({
     ] as const,
   });
 
+  // 이벤트 스택 순서 계산
+  const stackOrders = useMemo(() => {
+    return calculateStackOrder(grid.events.eventsInView);
+  }, [grid.events.eventsInView]);
+
   const formatDate = (d: Date) => {
     const year = d.getFullYear();
     const month = d.getMonth() + 1;
@@ -61,7 +101,7 @@ export function GoogleDayView({
     return `${hours}:${minutes}`;
   };
 
-  // 이벤트 위치 계산
+  // 이벤트 위치 계산 (스택 레이아웃 적용)
   const getEventStyle = (event: CalendarEvent): React.CSSProperties => {
     const currentDayStart = startOfDay(grid.navigation.state.rangeStart);
     const msPerHour = 60 * 60 * 1000;
@@ -72,11 +112,15 @@ export function GoogleDayView({
     const top = (eventStart - currentDayStart.getTime()) / msPerHour * CELL_HEIGHT;
     const height = Math.max((eventEnd - eventStart) / msPerHour * CELL_HEIGHT - 2, 20);
 
+    // 스택 offset 적용
+    const stackIndex = stackOrders.get(event.id) ?? 0;
+    const leftOffset = stackIndex * STACK_OFFSET;
+
     return {
       position: 'absolute',
       top,
       height,
-      left: 4,
+      left: 4 + leftOffset,
       right: 4,
       backgroundColor: event.color,
       borderRadius: 4,
@@ -86,6 +130,7 @@ export function GoogleDayView({
       overflow: 'hidden',
       boxSizing: 'border-box',
       cursor: 'pointer',
+      zIndex: stackIndex, // 나중 이벤트가 위에 표시
     };
   };
 
