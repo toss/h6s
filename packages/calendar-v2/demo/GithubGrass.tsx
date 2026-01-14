@@ -58,8 +58,6 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
 
   return (
     <div className="github-grass">
-      <h3>GitHub Contribution Graph 스타일 (잔디)</h3>
-
       <div className="grass-container">
         {/* 요일 라벨 */}
         <div className="weekday-labels">

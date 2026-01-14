@@ -56,8 +56,11 @@ export type {
 } from './plugin';
 
 // ============ Built-in Plugins ============
-export { navigation, selection } from './plugins';
+export { events, navigation, selection } from './plugins';
 export type {
+  EventRange,
+  EventsExtension,
+  EventsOptions,
   NavigationExtension,
   NavigationOptions,
   NavigationState,

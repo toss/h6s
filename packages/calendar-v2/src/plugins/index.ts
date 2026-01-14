@@ -13,3 +13,6 @@ export type {
   NavigationState,
   NavigationUnit,
 } from './navigation';
+
+export { events } from './events';
+export type { EventRange, EventsExtension, EventsOptions } from './events';

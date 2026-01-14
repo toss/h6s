@@ -109,7 +109,8 @@ function normalizeDate(date: string | Date): Date {
   if (typeof date === 'string') {
     return fromISODateString(date);
   }
-  return startOfDay(date);
+  // Date 객체는 그대로 반환 (hour 그리드에서 시간 정보 필요)
+  return date;
 }
 
 function groupDataByDate<TData>(

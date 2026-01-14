@@ -20,6 +20,7 @@ interface Event {
   title: string;
   date: Date;
   hour: number; // 0-23
+  minute?: number; // 0-59 (optional)
 }
 
 interface NDayViewProps {
@@ -158,7 +159,10 @@ export function NDayView({
                   <div key={hour} className="hour-cell">
                     {hourEvents.map((event) => (
                       <div key={event.id} className="event">
-                        {event.title}
+                        <span className="event-time">
+                          {hour.toString().padStart(2, '0')}:{(event.minute ?? 0).toString().padStart(2, '0')}
+                        </span>
+                        {' '}{event.title}
                       </div>
                     ))}
                   </div>
@@ -311,10 +315,16 @@ export function NDayView({
 
         .time-label {
           height: 48px;
-          padding: 4px 8px;
+          padding: 0 8px;
           font-size: 11px;
           color: #666;
           text-align: right;
+          box-sizing: border-box;
+          border-bottom: 1px solid transparent;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-end;
+          transform: translateY(-7px);
         }
 
         .day-column {
@@ -322,18 +332,18 @@ export function NDayView({
           border-left: 1px solid #eee;
         }
 
-        .day-column.today {
-          background: #f5faff;
-        }
-
-        .day-column.weekend {
-          background: #fff8f8;
-        }
-
         .hour-cell {
           height: 48px;
           border-bottom: 1px solid #eee;
           padding: 2px;
+        }
+
+        .day-column.today .hour-cell {
+          background: #f5faff;
+        }
+
+        .day-column.weekend .hour-cell {
+          background: #fff8f8;
         }
 
         .event {
@@ -346,6 +356,11 @@ export function NDayView({
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        .event-time {
+          font-weight: 600;
+          opacity: 0.9;
         }
       `}</style>
     </div>
