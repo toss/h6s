@@ -15,6 +15,8 @@ import { YearSelector } from './YearSelector';
 import { MonthSelector } from './MonthSelector';
 import { AgendaView } from './AgendaView';
 import { DualMonthRangePicker } from './DualMonthRangePicker';
+import { CircularSchedule } from './CircularSchedule';
+import { RadarActivityChart } from './RadarActivityChart';
 
 // 샘플 데이터 생성
 function generateContributionData() {
@@ -216,13 +218,25 @@ export function App() {
           <p className="plugin-info">Plugin: events, navigation</p>
           <AgendaView initialDate={today} events={calendarEvents} />
         </section>
+
+        <section className="demo-section">
+          <h3 className="section-title">Circular Schedule</h3>
+          <p className="plugin-info">cellUnit: hour (원형 레이아웃 - Grid 아님!)</p>
+          <CircularSchedule />
+        </section>
+
+        <section className="demo-section">
+          <h3 className="section-title">Radar Activity Chart</h3>
+          <p className="plugin-info">cellUnit: day (레이더 차트 - Grid 아님!)</p>
+          <RadarActivityChart />
+        </section>
       </div>
 
       <footer className="demo-footer">
         <h4>PoC 검증 포인트</h4>
         <ul>
           <li>✅ Core zero-dependency: 외부 의존성 없음 (Native Date only)</li>
-          <li>✅ 8개 UI 패턴: Month / Range Selector / Grass / N-Day / Day / Agenda / Year Selector / Month Selector</li>
+          <li>✅ 10개 UI 패턴: Grid뿐 아니라 원형 레이아웃도 지원</li>
           <li>✅ 다양한 cellUnit: day, hour, month, year</li>
           <li>✅ 플러그인 시스템: selection, navigation, events</li>
           <li>✅ fillWeeks 옵션: 월간 달력에서 완전한 주 생성</li>
