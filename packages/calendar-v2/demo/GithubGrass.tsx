@@ -121,32 +121,32 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
         }
         .grass-container {
           display: flex;
-          gap: 4px;
+          gap: 6px;
         }
         .weekday-labels {
           display: flex;
           flex-direction: column;
-          gap: 2px;
-          font-size: 10px;
+          gap: 3px;
+          font-size: 12px;
           color: #586069;
         }
         .weekday-labels .label {
-          height: 12px;
-          line-height: 12px;
+          height: 18px;
+          line-height: 18px;
         }
         .grass-grid {
           display: flex;
-          gap: 2px;
+          gap: 3px;
         }
         .week-column {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 3px;
         }
         .cell {
-          width: 12px;
-          height: 12px;
-          border-radius: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 3px;
         }
         .cell.empty {
           background: transparent;
@@ -154,15 +154,15 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
         .legend {
           display: flex;
           align-items: center;
-          gap: 4px;
-          margin-top: 8px;
-          font-size: 11px;
+          gap: 6px;
+          margin-top: 12px;
+          font-size: 12px;
           color: #586069;
         }
         .legend-cell {
-          width: 12px;
-          height: 12px;
-          border-radius: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 3px;
         }
       `}</style>
     </div>
