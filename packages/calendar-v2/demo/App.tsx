@@ -14,6 +14,7 @@ import { GoogleDayView } from './GoogleDayView';
 import { YearSelector } from './YearSelector';
 import { MonthSelector } from './MonthSelector';
 import { AgendaView } from './AgendaView';
+import { DualMonthRangePicker } from './DualMonthRangePicker';
 
 // 샘플 데이터 생성
 function generateContributionData() {
@@ -168,6 +169,12 @@ export function App() {
           <h3 className="section-title">Range Selector</h3>
           <p className="plugin-info">Plugin: selection (range), navigation</p>
           <MonthCalendarRangeSelector weekStartsOn={0} />
+        </section>
+
+        <section className="demo-section wide">
+          <h3 className="section-title">Dual Month Range Picker</h3>
+          <p className="plugin-info">Plugin: selection (range), navigation (step: 1)</p>
+          <DualMonthRangePicker />
         </section>
 
         <section className="demo-section">

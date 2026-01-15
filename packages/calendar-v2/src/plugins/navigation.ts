@@ -4,6 +4,10 @@
  * 이전/다음/오늘 이동 기능을 제공하는 플러그인.
  * - createTimeGrid: goNext() → NavigationState 반환
  * - useTimeGrid: goNext() → void (내부 setState)
+ *
+ * TanStack 철학: Range Duration 보존
+ * - goNext/goPrev: step 만큼 이동, duration 유지
+ * - goToday/goTo: 목표 날짜로 이동, duration 유지
  */
 
 import type { TimeGrid, TimeRange } from '../core/types';
@@ -44,9 +48,9 @@ export interface NavigationExtension {
     goNext: () => NavigationState;
     /** 이전으로 이동 (새 상태 반환) */
     goPrev: () => NavigationState;
-    /** 오늘로 이동 (새 상태 반환) */
+    /** 오늘로 이동 (새 상태 반환, duration 유지) */
     goToday: () => NavigationState;
-    /** 특정 날짜로 이동 (새 상태 반환) */
+    /** 특정 날짜로 이동 (새 상태 반환, duration 유지) */
     goTo: (date: Date) => NavigationState;
     /** 범위 가져오기 */
     getRange: () => { start: Date; end: Date };
@@ -57,20 +61,48 @@ export interface NavigationExtension {
  * Navigation 플러그인 생성
  *
  * @example
- * // createTimeGrid - 직접 상태 관리
- * const grid = createTimeGrid({ plugins: [navigation({ unit: 'month' })] });
- * const newState = grid.navigation.goNext();
- * setNavigationState(newState);
+ * // 1달 달력 - goToday 시 1달 유지
+ * const grid = useTimeGrid({
+ *   range: { start: startOfMonth(today), end: endOfMonth(today) },
+ *   plugins: [navigation({ unit: 'month' })],
+ * });
  *
  * @example
- * // useTimeGrid - 자동 상태 관리
- * const grid = useTimeGrid({ plugins: [navigation({ unit: 'month' })] });
- * grid.navigation.goNext(); // 내부적으로 setState 호출
+ * // 2달 달력 - goToday 시 2달 유지
+ * const grid = useTimeGrid({
+ *   range: { start: startOfMonth(today), end: endOfMonth(addMonths(today, 1)) },
+ *   plugins: [navigation({ unit: 'month' })],
+ * });
  */
 export function navigation(
   options: NavigationOptions
 ): Plugin<NavigationExtension, NavigationState> {
   const { unit, step = 1, weekStartsOn = 0 } = options;
+
+  /**
+   * 범위 내 unit 수 계산 (inclusive)
+   */
+  const countUnits = (start: Date, end: Date): number => {
+    switch (unit) {
+      case 'day': {
+        const startDay = startOfDay(start).getTime();
+        const endDay = startOfDay(end).getTime();
+        return Math.round((endDay - startDay) / (1000 * 60 * 60 * 24)) + 1;
+      }
+      case 'week': {
+        const startWeek = startOfWeek(start, weekStartsOn).getTime();
+        const endWeek = startOfWeek(end, weekStartsOn).getTime();
+        return Math.round((endWeek - startWeek) / (1000 * 60 * 60 * 24 * 7)) + 1;
+      }
+      case 'month': {
+        return (end.getFullYear() - start.getFullYear()) * 12
+             + (end.getMonth() - start.getMonth()) + 1;
+      }
+      case 'year': {
+        return end.getFullYear() - start.getFullYear() + 1;
+      }
+    }
+  };
 
   /**
    * 범위를 unit * step 만큼 이동 (duration 유지)
@@ -110,35 +142,38 @@ export function navigation(
   };
 
   /**
-   * 특정 날짜를 포함하는 기본 범위 계산 (goToday, goTo용)
+   * 목표 날짜로 이동 (duration 유지)
+   *
+   * - 현재 range의 unit 수를 계산
+   * - 목표 날짜를 시작으로 동일한 unit 수의 새 range 생성
    */
-  const calculateDefaultRange = (date: Date): { start: Date; end: Date } => {
+  const navigateTo = (state: NavigationState, targetDate: Date): NavigationState => {
+    const unitCount = countUnits(state.rangeStart, state.rangeEnd);
+
     switch (unit) {
       case 'day': {
-        const dayStart = startOfDay(date);
-        const dayEnd = new Date(dayStart);
-        dayEnd.setHours(23, 59, 59, 999);
-        return { start: dayStart, end: dayEnd };
+        const newStart = startOfDay(targetDate);
+        const newEnd = addDays(newStart, unitCount - 1);
+        return { rangeStart: newStart, rangeEnd: newEnd };
       }
 
       case 'week': {
-        const weekStart = startOfWeek(date, weekStartsOn);
-        const weekEnd = addDays(weekStart, 6);
-        return { start: weekStart, end: weekEnd };
+        const newStart = startOfWeek(targetDate, weekStartsOn);
+        const newEnd = addDays(newStart, unitCount * 7 - 1);
+        return { rangeStart: newStart, rangeEnd: newEnd };
       }
 
       case 'month': {
-        const monthStart = startOfMonth(date);
-        const monthEnd = endOfMonth(date);
-        return { start: monthStart, end: monthEnd };
+        const newStart = startOfMonth(targetDate);
+        const newEnd = endOfMonth(addMonths(newStart, unitCount - 1));
+        return { rangeStart: newStart, rangeEnd: newEnd };
       }
 
       case 'year': {
-        const year = date.getFullYear();
-        return {
-          start: new Date(year, 0, 1),
-          end: new Date(year, 11, 31),
-        };
+        const year = targetDate.getFullYear();
+        const newStart = new Date(year, 0, 1);
+        const newEnd = new Date(year + unitCount - 1, 11, 31);
+        return { rangeStart: newStart, rangeEnd: newEnd };
       }
     }
   };
@@ -171,22 +206,9 @@ export function navigation(
           goNext: () => shiftRange(currentState, 1),
           goPrev: () => shiftRange(currentState, -1),
 
-          goToday: () => {
-            const todayDate = today();
-            const range = calculateDefaultRange(todayDate);
-            return {
-              rangeStart: range.start,
-              rangeEnd: range.end,
-            };
-          },
-
-          goTo: (date: Date) => {
-            const range = calculateDefaultRange(date);
-            return {
-              rangeStart: range.start,
-              rangeEnd: range.end,
-            };
-          },
+          // Duration 보존 navigation
+          goToday: () => navigateTo(currentState, today()),
+          goTo: (date: Date) => navigateTo(currentState, date),
 
           getRange: () => ({
             start: currentState.rangeStart,
