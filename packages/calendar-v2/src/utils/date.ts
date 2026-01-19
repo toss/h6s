@@ -26,10 +26,18 @@ export function addDays(date: Date, days: number): Date {
 
 /**
  * 월 추가
+ *
+ * 월말 overflow 보정: Jan 31 + 1 month → Feb 28/29 (Mar 2/3이 아님)
  */
 export function addMonths(date: Date, months: number): Date {
   const result = new Date(date);
+  const dayOfMonth = result.getDate();
   result.setMonth(result.getMonth() + months);
+
+  // 월말 overflow 보정 (예: 31일이 28일로 변경된 경우)
+  if (result.getDate() !== dayOfMonth) {
+    result.setDate(0); // 이전 달의 마지막 날로 설정
+  }
   return result;
 }
 

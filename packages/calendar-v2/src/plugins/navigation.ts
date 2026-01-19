@@ -14,6 +14,8 @@ import type { TimeGrid, TimeRange } from '../core/types';
 import type { Plugin } from '../plugin/types';
 import {
   addDays,
+  addMonths,
+  addYears,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -218,23 +220,4 @@ export function navigation(
       };
     },
   };
-}
-
-// ============ Helper Functions ============
-
-function addMonths(date: Date, amount: number): Date {
-  const result = new Date(date);
-  const currentMonth = result.getMonth();
-  const currentYear = result.getFullYear();
-  const totalMonths = currentYear * 12 + currentMonth + amount;
-  const newYear = Math.floor(totalMonths / 12);
-  const newMonth = ((totalMonths % 12) + 12) % 12;
-  result.setFullYear(newYear, newMonth);
-  return result;
-}
-
-function addYears(date: Date, amount: number): Date {
-  const result = new Date(date);
-  result.setFullYear(result.getFullYear() + amount);
-  return result;
 }
