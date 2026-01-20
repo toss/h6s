@@ -1,14 +1,24 @@
-<img width="200" src="./assets/logo.png" alt="" />
+<div align="center">
+  <img width="200" src="./assets/logo.png" alt="h6s" />
 
-# [h6s.dev](https://h6s.dev/)
+  <h1>h6s</h1>
+  <p>Headless component development kit for React</p>
 
-Serve headless component development kit for React production apps
+  [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+</div>
 
-## Contributors ✨
+---
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+## Packages
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **@h6s/calendar** | Headless calendar hook for React | [Docs](https://h6s.slash.page/calendar) · [Package](./packages/calendar/) |
+| **@h6s/table** | Headless table components for React | [Docs](https://h6s.dev) · [Package](./packages/table/) |
+
+---
+
+## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -39,13 +49,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-## Show your support
+## Support
 
 Give a ⭐️ if this project helped you!
-
-<div align="center">
-  <sub>
-    <sup>Managed by <a href="https://github.com/JaeYeopHan">@Jbee</a></sup>
-  </sub>
-  <small>✌</small>
-</div>
