@@ -48,6 +48,7 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
     range: { start: startDate, end: endDate },
     cellUnit: 'day',
     weekStartsOn: 0, // GitHub은 일요일 시작
+    fillWeeks: true, // 완전한 주로 확장 (모든 주가 7일)
     plugins: [
       events({
         data,
@@ -75,13 +76,7 @@ export function GithubGrass({ startDate, endDate, data = [] }: GithubGrassProps)
         <div className="grass-grid">
           {weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="week-column">
-              {/* 주 내 7개 셀을 요일 순으로 정렬 */}
-              {Array.from({ length: 7 }, (_, dayIndex) => {
-                const cell = week.find((c) => c.weekday === dayIndex);
-                if (!cell) {
-                  return <div key={dayIndex} className="cell empty" />;
-                }
-
+              {week.map((cell) => {
                 const cellData = grid.events.getEventsForCell(cell);
                 const totalCount = cellData.reduce(
                   (sum, item) => sum + item.count,
