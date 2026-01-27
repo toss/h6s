@@ -2,11 +2,11 @@
  * Navigation Plugin - 네비게이션 플러그인
  *
  * 이전/다음/오늘 이동 기능을 제공하는 플러그인.
- * - createTimeGrid: goNext() → NavigationState 반환
- * - useTimeGrid: goNext() → void (내부 setState)
+ * - createTimeGrid: goNext(step?) → NavigationState 반환
+ * - useTimeGrid: goNext(step?) → void (내부 setState)
  *
  * TanStack 철학: Range Duration 보존
- * - goNext/goPrev: step 만큼 이동, duration 유지
+ * - goNext(step?)/goPrev(step?): step 만큼 이동 (기본값: 1), duration 유지
  * - goToday/goTo: 목표 날짜로 이동, duration 유지
  */
 
@@ -29,8 +29,6 @@ export type NavigationUnit = 'day' | 'week' | 'month' | 'year';
 export interface NavigationOptions {
   /** 이동 단위 */
   unit: NavigationUnit;
-  /** 이동 스텝 (기본값: 1) - 모든 unit에서 동일하게 동작 */
-  step?: number;
   /** 주 시작 요일 (week 단위에서 사용, 기본값: 0) */
   weekStartsOn?: WeekDay;
 }
@@ -47,9 +45,9 @@ export interface NavigationExtension {
     /** 현재 상태 */
     state: NavigationState;
     /** 다음으로 이동 (새 상태 반환) */
-    goNext: () => NavigationState;
+    goNext: (step?: number) => NavigationState;
     /** 이전으로 이동 (새 상태 반환) */
-    goPrev: () => NavigationState;
+    goPrev: (step?: number) => NavigationState;
     /** 오늘로 이동 (새 상태 반환, duration 유지) */
     goToday: () => NavigationState;
     /** 특정 날짜로 이동 (새 상태 반환, duration 유지) */
@@ -88,7 +86,7 @@ function isLastDayOfMonth(date: Date): boolean {
 export function navigation(
   options: NavigationOptions
 ): Plugin<NavigationExtension, NavigationState> {
-  const { unit, step = 1, weekStartsOn = 0 } = options;
+  const { unit, weekStartsOn = 0 } = options;
 
   /**
    * 범위 내 unit 수 계산 (inclusive)
@@ -118,8 +116,8 @@ export function navigation(
   /**
    * 범위를 unit * step 만큼 이동 (duration 유지)
    */
-  const shiftRange = (state: NavigationState, direction: number): NavigationState => {
-    const amount = direction * step;
+  const shiftRange = (state: NavigationState, step: number): NavigationState => {
+    const amount = step;
     let newStart: Date;
     let newEnd: Date;
 
@@ -218,8 +216,8 @@ export function navigation(
           state: currentState,
 
           // 액션 메서드: 새 상태 반환
-          goNext: () => shiftRange(currentState, 1),
-          goPrev: () => shiftRange(currentState, -1),
+          goNext: (step: number = 1) => shiftRange(currentState, step),
+          goPrev: (step: number = 1) => shiftRange(currentState, -step),
 
           // Duration 보존 navigation
           goToday: () => navigateTo(currentState, today()),
