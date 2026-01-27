@@ -76,6 +76,15 @@ export interface NavigationExtension {
  *   plugins: [navigation({ unit: 'month' })],
  * });
  */
+/**
+ * 날짜가 해당 월의 마지막 날인지 확인
+ */
+function isLastDayOfMonth(date: Date): boolean {
+  const nextDay = new Date(date);
+  nextDay.setDate(nextDay.getDate() + 1);
+  return nextDay.getMonth() !== date.getMonth();
+}
+
 export function navigation(
   options: NavigationOptions
 ): Plugin<NavigationExtension, NavigationState> {
@@ -130,6 +139,10 @@ export function navigation(
       case 'month': {
         newStart = addMonths(state.rangeStart, amount);
         newEnd = addMonths(state.rangeEnd, amount);
+        // 원래 월말이었다면 새 월에서도 월말 유지
+        if (isLastDayOfMonth(state.rangeEnd)) {
+          newEnd = endOfMonth(newEnd);
+        }
         break;
       }
 
