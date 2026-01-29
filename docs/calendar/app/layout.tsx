@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     template: "%s | @h6s/calendar",
   },
   description: "Headless calendar library for React.",
+  icons: {
+    icon: "/calendar/favicon.png",
+  },
   openGraph: {
     title: "@h6s/calendar - Logic-first Calendar Hook for React",
     description: "Headless calendar library for React.",
