@@ -10,12 +10,12 @@ runs:
   steps:
     - name: Setup Node.js
       if: ${{ inputs.node-version-matrix == 'false' }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version-file: .tool-versions
     - name: Setup Node.js
       if: ${{ inputs.node-version-matrix != 'false' }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: ${{ inputs.node-version-matrix }}
     - name: Enable corepack

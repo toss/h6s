@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Setup
         uses: ./.github/actions/setup
       - name: Run CI
@@ -18,7 +18,7 @@ jobs:
       - name: Slack Notify Sanity
         if: success()
         id: react-calendar-sanity-notification-success
-        uses: voxmedia/github-action-slack-notify-build@v1.5.0
+        uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985 # v1.5.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
@@ -29,7 +29,7 @@ jobs:
       - name: Slack Notify Sanity
         if: failure()
         id: react-calendar-sanity-notification-fail
-        uses: voxmedia/github-action-slack-notify-build@v1.5.0
+        uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985 # v1.5.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
