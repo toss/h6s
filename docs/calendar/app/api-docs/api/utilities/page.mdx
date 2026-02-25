@@ -10,7 +10,7 @@ Metadata properties and utility methods provided by `useCalendar`.
 
 ```tsx
 const { cursorDate } = useCalendar();
-console.log(format(cursorDate, 'MMMM yyyy')); // "January 2024"
+console.log(cursorDate.toLocaleDateString('en', { month: 'long', year: 'numeric' })); // "January 2024"
 ```
 
 ### `year`, `month`, `day`
@@ -94,7 +94,7 @@ console.log(cell.value); // Date object
 
 // Get the date in the third week, fourth day
 const midMonthCell = getDateCellByIndex(2, 3);
-console.log(format(midMonthCell.value, 'MMM d, yyyy')); // "Jan 18, 2024"
+console.log(midMonthCell.value.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })); // "Jan 18, 2024"
 ```
 
 **Note**: For most use cases, iterating over `body.value` is simpler and more straightforward. This method is mainly useful for custom grid rendering or event positioning.
@@ -105,14 +105,13 @@ console.log(format(midMonthCell.value, 'MMM d, yyyy')); // "Jan 18, 2024"
 
 ```tsx
 import { useCalendar } from '@h6s/calendar';
-import { format } from 'date-fns';
 
 function CalendarHeader() {
   const { cursorDate, year, month } = useCalendar();
 
   return (
     <div>
-      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      <h2>{cursorDate.toLocaleDateString('en', { month: 'long', year: 'numeric' })}</h2>
       {/* Or build it manually: */}
       <p>Year: {year}, Month: {month + 1}</p>
     </div>
@@ -140,7 +139,7 @@ function CalendarWithTodayHighlight() {
                 key={key}
                 className={isToday ? 'bg-blue-100 font-bold' : ''}
               >
-                {format(value, 'd')}
+                {value.getDate()}
               </td>
             );
           })}
