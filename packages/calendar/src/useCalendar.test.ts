@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { DecemberFirstWeekData, DecemberMonthMatrix } from "./mocks/mockDate";
 import CalendarViewType from "./models/CalendarViewType";
 import { useCalendar } from "./useCalendar";
-import resetTimeOfDate from "./utils/resetTimeOfDate";
+import isSameDate from "./utils/isSameDate";
 
 describe("useCalendar hooks test", () => {
   describe("result.header", () => {
@@ -346,7 +346,7 @@ describe("useCalendar hooks test", () => {
       });
       rerender();
       // Then
-      expect(resetTimeOfDate(result.current.cursorDate)).toEqual(resetTimeOfDate(new Date()));
+      expect(isSameDate(result.current.cursorDate, new Date())).toBe(true);
     });
 
     it("return next week by toNext when defaultWeekStart: 1", () => {

@@ -1,5 +1,3 @@
-import { isWeekend as _isWeekend, getDate } from "date-fns";
-
 import type { DateCell } from "../models";
 import { isSameDate, isSameYearAndMonth } from "../utils";
 
@@ -8,11 +6,12 @@ export default function withDateProps(baseDate: Date, cursorDate: Date) {
     const { value: targetDate } = cell;
     const isCurrentMonth = isSameYearAndMonth(cursorDate, targetDate);
     const isCurrentDate = isSameDate(baseDate, targetDate);
-    const isWeekend = _isWeekend(targetDate);
+    const day = targetDate.getDay();
+    const isWeekend = day === 0 || day === 6;
 
     return {
       ...cell,
-      date: getDate(targetDate),
+      date: targetDate.getDate(),
       isCurrentMonth,
       isCurrentDate,
       isWeekend,
