@@ -1,4 +1,3 @@
-import { addDays, addMonths, addWeeks, startOfMonth, startOfWeek, subDays, subMonths, subWeeks } from "date-fns";
 import { useCallback, useMemo, useState } from "react";
 
 import { createCalendarInfo } from "./core";
@@ -7,6 +6,9 @@ import { CalendarViewType, type WeekDayType } from "./models";
 import { withDateProps } from "./plugins";
 import withKeyProps from "./plugins/withKeyProps";
 import { arrayOf, generateID, pipeWith, withKey } from "./utils";
+import addDays from "./utils/addDays";
+import startOfMonth from "./utils/startOfMonth";
+import startOfWeek from "./utils/startOfWeek";
 
 export interface UseCalendarOptions {
   defaultDate?: Date | number | string;
@@ -93,9 +95,9 @@ export function useCalendar({
   const setNext = useMemo(() => {
     switch (viewType) {
       case CalendarViewType.Month:
-        return (date: Date) => addMonths(startOfMonth(date), 1);
+        return (date: Date) => addDays(startOfMonth(date), 32);
       case CalendarViewType.Week:
-        return (date: Date) => addWeeks(startOfWeek(date, { weekStartsOn }), 1);
+        return (date: Date) => addDays(startOfWeek(date, weekStartsOn), 7);
       case CalendarViewType.Day:
         return (date: Date) => addDays(date, 1);
     }
@@ -104,11 +106,11 @@ export function useCalendar({
   const setPrev = useMemo(() => {
     switch (viewType) {
       case CalendarViewType.Month:
-        return (date: Date) => subMonths(startOfMonth(date), 1);
+        return (date: Date) => addDays(startOfMonth(date), -1);
       case CalendarViewType.Week:
-        return (date: Date) => subWeeks(startOfWeek(date, { weekStartsOn }), 1);
+        return (date: Date) => addDays(startOfWeek(date, weekStartsOn), -7);
       case CalendarViewType.Day:
-        return (date: Date) => subDays(date, 1);
+        return (date: Date) => addDays(date, -1);
     }
   }, [viewType, weekStartsOn]);
 
