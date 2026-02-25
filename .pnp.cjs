@@ -13206,12 +13206,11 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/dom", "npm:10.4.0"],\
           ["@testing-library/jest-dom", "npm:6.4.8"],\
           ["@testing-library/react", "virtual:abe90f875b5beef0e38403a8454ea0eefda549e95aac1ad297da0ed29b55095ad3cd9f38a14e4c3a5db914b694221e8d36299db8cd6f79f3c9dd1443e69fb6a3#npm:16.0.0"],\
-          ["@types/date-fns", null],\
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
           ["@types/react-dom", "npm:18.2.17"],\
           ["@types/react-native", null],\
-          ["date-fns", "npm:2.30.0"],\
+          ["date-fns", "npm:4.1.0"],\
           ["jsdom", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:24.1.3"],\
           ["playwright", "npm:1.17.1"],\
           ["react", "npm:18.3.1"],\
@@ -13223,11 +13222,9 @@ const RAW_RUNTIME_STATE =
           ["vitest", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:2.0.5"]\
         ],\
         "packagePeers": [\
-          "@types/date-fns",\
           "@types/react-dom",\
           "@types/react-native",\
           "@types/react",\
-          "date-fns",\
           "react-dom",\
           "react-native",\
           "react"\
@@ -13243,7 +13240,6 @@ const RAW_RUNTIME_STATE =
           ["@testing-library/dom", "npm:10.4.0"],\
           ["@testing-library/jest-dom", "npm:6.4.8"],\
           ["@testing-library/react", "virtual:7290e51b32e70b0afb09c3720e4184f34940c3b820723c699e6521ca9616a9efe135b596ff99442805e5dd67d24a65ed1a4a73172e8157f28cd79130761bd9f2#npm:16.0.0"],\
-          ["@types/date-fns", null],\
           ["@types/node", "npm:22.7.4"],\
           ["@types/react", "npm:18.3.10"],\
           ["@types/react-dom", "virtual:d9e218c110877c926f836d55065f0e786a637b7a92df25c5dd0725e0a75fb3f821cfa8a54ad9928eddbc9573fd7c537273db10d2e8ce70ec892da957b3ef9dd3#npm:18.3.7"],\
@@ -13260,11 +13256,9 @@ const RAW_RUNTIME_STATE =
           ["vitest", "virtual:abf59ffe433a9dd4bbaca062eb7bd9e362b80a73d9304e4d8e587a76736b2ea454dcce4a0bfbee94b505e09a8cc5901c05c4bb781ca089484664c4ca13a9e345#npm:2.0.5"]\
         ],\
         "packagePeers": [\
-          "@types/date-fns",\
           "@types/react-dom",\
           "@types/react-native",\
           "@types/react",\
-          "date-fns",\
           "react-dom",\
           "react-native",\
           "react"\
