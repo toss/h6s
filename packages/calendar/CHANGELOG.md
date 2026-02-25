@@ -1,5 +1,11 @@
 # @h6s/calendar
 
+## 2.1.0
+
+### Minor Changes
+
+- 274f507: Remove date-fns runtime dependency and replace with native Date API. date-fns is no longer required as a peer dependency. Bundle size reduced by ~45%.
+
 ## 2.0.3
 
 ### Patch Changes
