@@ -60,7 +60,6 @@
     "vitest": "*"
   },
   "peerDependencies": {
-    "date-fns": ">= 2",
     "react": ">= 18"
   },
   "peerDependenciesMeta": {
