@@ -7,7 +7,7 @@ Get started with @h6s/calendar in your React application.
 ## Installation
 
 ```bash npm2yarn
-npm install @h6s/calendar date-fns
+npm install @h6s/calendar
 ```
 
 ## Quick Start
@@ -16,7 +16,6 @@ Here's a simple example to get you started with a basic calendar:
 
 ```tsx filename="MyCalendar.tsx"
 import { useCalendar } from '@h6s/calendar';
-import { format } from 'date-fns';
 
 function MyCalendar() {
   const { headers, body, navigation, cursorDate } = useCalendar();
@@ -25,7 +24,7 @@ function MyCalendar() {
     <div>
       <div>
         <button onClick={navigation.toPrev}>Previous</button>
-        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <h2>{cursorDate.toLocaleDateString('en', { month: 'long', year: 'numeric' })}</h2>
         <button onClick={navigation.toNext}>Next</button>
       </div>
 
@@ -33,7 +32,7 @@ function MyCalendar() {
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key}>{format(value, 'EEEEEE')}</th>
+              <th key={key}>{value.toLocaleDateString('en', { weekday: 'short' })}</th>
             ))}
           </tr>
         </thead>
@@ -48,7 +47,7 @@ function MyCalendar() {
                     fontWeight: isCurrentDate ? 'bold' : 'normal',
                   }}
                 >
-                  {format(value, 'd')}
+                  {value.getDate()}
                 </td>
               ))}
             </tr>
@@ -95,8 +94,8 @@ A styled calendar with date selection and month navigation:
 - **Flexible markup**: Build any calendar UI pattern you need
 - **Framework agnostic**: Works with React Server Components, Next.js, and any React setup
 
-### Minimal Dependencies
+### Zero Dependencies
 
-@h6s/calendar depends only on React and date-fns, keeping your bundle size small. The library uses date-fns internally for date calculations, ensuring reliable and well-tested date handling.
+@h6s/calendar depends only on React with no external date library required. All date calculations use the native Date API, keeping your bundle size minimal.
 
-While date-fns is required, you're free to use it or any other date library for formatting and displaying dates in your UI. The hook returns native Date objects, giving you complete flexibility in how you present calendar data.
+The hook returns native Date objects, giving you complete flexibility in how you present calendar data — use `Intl.DateTimeFormat`, `toLocaleDateString()`, or any date library you prefer for formatting.
