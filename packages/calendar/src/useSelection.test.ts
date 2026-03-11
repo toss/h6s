@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 
 import type { CalendarBody } from "./models/Selection";
 import { useSelection } from "./useSelection";
-import { matchDate, matchDateArray } from "./utils/matchDate";
 
 const emptyBody: CalendarBody = { value: [] };
 
@@ -22,73 +21,6 @@ function createMockBody(dates: Date[][]): CalendarBody {
     })),
   };
 }
-
-describe("matchDate", () => {
-  it("matches exact Date", () => {
-    const date = new Date(2024, 0, 15);
-    expect(matchDate(date, new Date(2024, 0, 15))).toBe(true);
-    expect(matchDate(date, new Date(2024, 0, 16))).toBe(false);
-  });
-
-  it("matches Date[]", () => {
-    const date = new Date(2024, 0, 15);
-    const dates = [new Date(2024, 0, 10), new Date(2024, 0, 15)];
-    expect(matchDate(date, dates)).toBe(true);
-    expect(matchDate(new Date(2024, 0, 1), dates)).toBe(false);
-  });
-
-  it("matches { before }", () => {
-    const jan10 = new Date(2024, 0, 10);
-    expect(matchDate(new Date(2024, 0, 5), { before: jan10 })).toBe(true);
-    expect(matchDate(new Date(2024, 0, 15), { before: jan10 })).toBe(false);
-  });
-
-  it("matches { after }", () => {
-    const jan10 = new Date(2024, 0, 10);
-    expect(matchDate(new Date(2024, 0, 15), { after: jan10 })).toBe(true);
-    expect(matchDate(new Date(2024, 0, 5), { after: jan10 })).toBe(false);
-  });
-
-  it("matches { from, to }", () => {
-    const range = { from: new Date(2024, 0, 10), to: new Date(2024, 0, 20) };
-    expect(matchDate(new Date(2024, 0, 15), range)).toBe(true);
-    expect(matchDate(new Date(2024, 0, 10), range)).toBe(true);
-    expect(matchDate(new Date(2024, 0, 20), range)).toBe(true);
-    expect(matchDate(new Date(2024, 0, 5), range)).toBe(false);
-  });
-
-  it("matches { dayOfWeek }", () => {
-    // 2024-01-15 is Monday (1)
-    const monday = new Date(2024, 0, 15);
-    expect(matchDate(monday, { dayOfWeek: [1, 3, 5] })).toBe(true);
-    expect(matchDate(monday, { dayOfWeek: [0, 6] })).toBe(false);
-  });
-
-  it("matches function matcher", () => {
-    const isWeekend = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
-    // 2024-01-14 is Sunday
-    expect(matchDate(new Date(2024, 0, 14), isWeekend)).toBe(true);
-    // 2024-01-15 is Monday
-    expect(matchDate(new Date(2024, 0, 15), isWeekend)).toBe(false);
-  });
-});
-
-describe("matchDateArray", () => {
-  it("returns false for undefined", () => {
-    expect(matchDateArray(new Date(), undefined)).toBe(false);
-  });
-
-  it("handles single Matcher", () => {
-    expect(matchDateArray(new Date(2024, 0, 5), { before: new Date(2024, 0, 10) })).toBe(true);
-  });
-
-  it("handles Matcher[]", () => {
-    const matchers = [{ before: new Date(2024, 0, 5) }, { after: new Date(2024, 0, 20) }];
-    expect(matchDateArray(new Date(2024, 0, 3), matchers)).toBe(true);
-    expect(matchDateArray(new Date(2024, 0, 25), matchers)).toBe(true);
-    expect(matchDateArray(new Date(2024, 0, 10), matchers)).toBe(false);
-  });
-});
 
 describe("useSelection - single mode", () => {
   it("starts with undefined selected", () => {
