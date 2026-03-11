@@ -49,10 +49,7 @@ export function matchDate(date: Date, matcher: Matcher): boolean {
   return false;
 }
 
-export function matchDateArray(
-  date: Date,
-  matchers: Matcher | Matcher[] | undefined,
-): boolean {
+export function matchDateArray(date: Date, matchers: Matcher | Matcher[] | undefined): boolean {
   if (matchers === undefined) {
     return false;
   }
