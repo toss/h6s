@@ -83,10 +83,7 @@ describe("matchDateArray", () => {
   });
 
   it("handles Matcher[]", () => {
-    const matchers = [
-      { before: new Date(2024, 0, 5) },
-      { after: new Date(2024, 0, 20) },
-    ];
+    const matchers = [{ before: new Date(2024, 0, 5) }, { after: new Date(2024, 0, 20) }];
     expect(matchDateArray(new Date(2024, 0, 3), matchers)).toBe(true);
     expect(matchDateArray(new Date(2024, 0, 25), matchers)).toBe(true);
     expect(matchDateArray(new Date(2024, 0, 10), matchers)).toBe(false);
@@ -150,9 +147,7 @@ describe("useSelection - single mode", () => {
   it("does not toggle off when required is true", () => {
     // Given
     const date = new Date(2024, 0, 15);
-    const { result } = renderHook(() =>
-      useSelection({ mode: "single", required: true, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "single", required: true, body: emptyBody }));
     // When
     act(() => {
       result.current.select(date);
@@ -167,9 +162,7 @@ describe("useSelection - single mode", () => {
   it("ignores disabled dates", () => {
     // Given
     const disabled = new Date(2024, 0, 15);
-    const { result } = renderHook(() =>
-      useSelection({ mode: "single", disabled, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "single", disabled, body: emptyBody }));
     // When
     act(() => {
       result.current.select(new Date(2024, 0, 15));
@@ -292,9 +285,7 @@ describe("useSelection - range mode", () => {
     // Given — min 5 days
     const from = new Date(2024, 0, 10);
     const tooClose = new Date(2024, 0, 12); // 3 days
-    const { result } = renderHook(() =>
-      useSelection({ mode: "range", min: 5, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "range", min: 5, body: emptyBody }));
     // When
     act(() => {
       result.current.select(from);
@@ -310,9 +301,7 @@ describe("useSelection - range mode", () => {
     // Given — max 5 days
     const from = new Date(2024, 0, 10);
     const tooFar = new Date(2024, 0, 20); // 11 days
-    const { result } = renderHook(() =>
-      useSelection({ mode: "range", max: 5, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "range", max: 5, body: emptyBody }));
     // When
     act(() => {
       result.current.select(from);
@@ -327,9 +316,7 @@ describe("useSelection - range mode", () => {
   it("ignores disabled dates", () => {
     // Given
     const disabled = new Date(2024, 0, 15);
-    const { result } = renderHook(() =>
-      useSelection({ mode: "range", disabled, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "range", disabled, body: emptyBody }));
     // When
     act(() => {
       result.current.select(new Date(2024, 0, 15));
@@ -414,9 +401,7 @@ describe("useSelection - multiple mode", () => {
 
   it("respects max constraint", () => {
     // Given — max 2
-    const { result } = renderHook(() =>
-      useSelection({ mode: "multiple", max: 2, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "multiple", max: 2, body: emptyBody }));
     act(() => {
       result.current.select(new Date(2024, 0, 10));
     });
@@ -434,9 +419,7 @@ describe("useSelection - multiple mode", () => {
   it("respects min constraint on deselect", () => {
     // Given — min 1
     const date = new Date(2024, 0, 10);
-    const { result } = renderHook(() =>
-      useSelection({ mode: "multiple", min: 1, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "multiple", min: 1, body: emptyBody }));
     act(() => {
       result.current.select(date);
     });
@@ -451,9 +434,7 @@ describe("useSelection - multiple mode", () => {
   it("ignores disabled dates", () => {
     // Given
     const disabled = new Date(2024, 0, 15);
-    const { result } = renderHook(() =>
-      useSelection({ mode: "multiple", disabled, body: emptyBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "multiple", disabled, body: emptyBody }));
     // When
     act(() => {
       result.current.select(new Date(2024, 0, 15));
@@ -518,9 +499,7 @@ describe("useSelection - body enrichment", () => {
   });
 
   it("range mode: enriches cells with range props", () => {
-    const { result } = renderHook(() =>
-      useSelection({ mode: "range", body: mockBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "range", body: mockBody }));
 
     // Select range: jan15 → jan18
     act(() => {
@@ -554,9 +533,7 @@ describe("useSelection - body enrichment", () => {
   });
 
   it("multiple mode: enriched body updates on toggle", () => {
-    const { result } = renderHook(() =>
-      useSelection({ mode: "multiple", body: mockBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "multiple", body: mockBody }));
 
     // Select jan15 and jan17
     act(() => {
@@ -582,9 +559,7 @@ describe("useSelection - body enrichment", () => {
   });
 
   it("preserves original body cell properties", () => {
-    const { result } = renderHook(() =>
-      useSelection({ mode: "single", body: mockBody }),
-    );
+    const { result } = renderHook(() => useSelection({ mode: "single", body: mockBody }));
 
     const cell = result.current.body.value[0].value[0];
     // Original properties preserved

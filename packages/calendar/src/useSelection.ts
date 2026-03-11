@@ -19,10 +19,7 @@ function diffInDays(a: Date, b: Date): number {
 }
 
 function useDisabled(disabled: SingleSelectionOptions["disabled"]) {
-  return useCallback(
-    (date: Date) => matchDateArray(date, disabled),
-    [disabled],
-  );
+  return useCallback((date: Date) => matchDateArray(date, disabled), [disabled]);
 }
 
 // ─── Single Selection ───────────────────────────────────
@@ -54,21 +51,21 @@ export function useSingleSelection<C extends CalendarBodyCell>(
     }
   }, [options.required]);
 
-  const isSelected = useCallback(
-    (date: Date) => (selected ? isSameDate(selected, date) : false),
-    [selected],
-  );
+  const isSelected = useCallback((date: Date) => (selected ? isSameDate(selected, date) : false), [selected]);
 
-  const body = useMemo(() => ({
-    value: options.body.value.map((week) => ({
-      ...week,
-      value: week.value.map((cell) => ({
-        ...cell,
-        isSelected: selected ? isSameDate(selected, cell.value) : false,
-        isDisabled: isDisabled(cell.value),
+  const body = useMemo(
+    () => ({
+      value: options.body.value.map((week) => ({
+        ...week,
+        value: week.value.map((cell) => ({
+          ...cell,
+          isSelected: selected ? isSameDate(selected, cell.value) : false,
+          isDisabled: isDisabled(cell.value),
+        })),
       })),
-    })),
-  }), [options.body, selected, isDisabled]);
+    }),
+    [options.body, selected, isDisabled],
+  );
 
   return { selected, select, deselect, isSelected, isDisabled, body };
 }
@@ -132,16 +129,9 @@ export function useRangeSelection<C extends CalendarBodyCell>(
     [selected],
   );
 
-  const isRangeStart = useCallback(
-    (date: Date) => (selected ? isSameDate(selected.from, date) : false),
-    [selected],
-  );
+  const isRangeStart = useCallback((date: Date) => (selected ? isSameDate(selected.from, date) : false), [selected]);
 
-  const isRangeEnd = useCallback(
-    (date: Date) =>
-      selected?.to ? isSameDate(selected.to, date) : false,
-    [selected],
-  );
+  const isRangeEnd = useCallback((date: Date) => (selected?.to ? isSameDate(selected.to, date) : false), [selected]);
 
   const isInRange = useCallback(
     (date: Date) => {
@@ -151,34 +141,37 @@ export function useRangeSelection<C extends CalendarBodyCell>(
     [selected],
   );
 
-  const body = useMemo(() => ({
-    value: options.body.value.map((week) => ({
-      ...week,
-      value: week.value.map((cell) => {
-        const cellDate = cell.value;
-        let cellIsSelected = false;
-        let cellIsRangeStart = false;
-        let cellIsRangeEnd = false;
-        let cellIsInRange = false;
+  const body = useMemo(
+    () => ({
+      value: options.body.value.map((week) => ({
+        ...week,
+        value: week.value.map((cell) => {
+          const cellDate = cell.value;
+          let cellIsSelected = false;
+          let cellIsRangeStart = false;
+          let cellIsRangeEnd = false;
+          let cellIsInRange = false;
 
-        if (selected) {
-          cellIsRangeStart = isSameDate(selected.from, cellDate);
-          cellIsRangeEnd = selected.to ? isSameDate(selected.to, cellDate) : false;
-          cellIsInRange = selected.to ? cellDate > selected.from && cellDate < selected.to : false;
-          cellIsSelected = cellIsRangeStart || cellIsRangeEnd || cellIsInRange;
-        }
+          if (selected) {
+            cellIsRangeStart = isSameDate(selected.from, cellDate);
+            cellIsRangeEnd = selected.to ? isSameDate(selected.to, cellDate) : false;
+            cellIsInRange = selected.to ? cellDate > selected.from && cellDate < selected.to : false;
+            cellIsSelected = cellIsRangeStart || cellIsRangeEnd || cellIsInRange;
+          }
 
-        return {
-          ...cell,
-          isSelected: cellIsSelected,
-          isDisabled: isDisabled(cellDate),
-          isRangeStart: cellIsRangeStart,
-          isRangeEnd: cellIsRangeEnd,
-          isInRange: cellIsInRange,
-        };
-      }),
-    })),
-  }), [options.body, selected, isDisabled]);
+          return {
+            ...cell,
+            isSelected: cellIsSelected,
+            isDisabled: isDisabled(cellDate),
+            isRangeStart: cellIsRangeStart,
+            isRangeEnd: cellIsRangeEnd,
+            isInRange: cellIsInRange,
+          };
+        }),
+      })),
+    }),
+    [options.body, selected, isDisabled],
+  );
 
   return {
     selected,
@@ -240,21 +233,21 @@ export function useMultipleSelection<C extends CalendarBodyCell>(
     [options.min],
   );
 
-  const isSelected = useCallback(
-    (date: Date) => selected.some((d) => isSameDate(d, date)),
-    [selected],
-  );
+  const isSelected = useCallback((date: Date) => selected.some((d) => isSameDate(d, date)), [selected]);
 
-  const body = useMemo(() => ({
-    value: options.body.value.map((week) => ({
-      ...week,
-      value: week.value.map((cell) => ({
-        ...cell,
-        isSelected: selected.some((d) => isSameDate(d, cell.value)),
-        isDisabled: isDisabled(cell.value),
+  const body = useMemo(
+    () => ({
+      value: options.body.value.map((week) => ({
+        ...week,
+        value: week.value.map((cell) => ({
+          ...cell,
+          isSelected: selected.some((d) => isSameDate(d, cell.value)),
+          isDisabled: isDisabled(cell.value),
+        })),
       })),
-    })),
-  }), [options.body, selected, isDisabled]);
+    }),
+    [options.body, selected, isDisabled],
+  );
 
   return { selected, select, deselect, isSelected, isDisabled, body };
 }
@@ -262,12 +255,8 @@ export function useMultipleSelection<C extends CalendarBodyCell>(
 // ─── Convenience Wrapper ────────────────────────────────
 // Note: `mode` must remain constant across renders (Rules of Hooks).
 
-export function useSelection<C extends CalendarBodyCell>(
-  options: SingleSelectionOptions<C>,
-): SingleSelectionReturn<C>;
-export function useSelection<C extends CalendarBodyCell>(
-  options: RangeSelectionOptions<C>,
-): RangeSelectionReturn<C>;
+export function useSelection<C extends CalendarBodyCell>(options: SingleSelectionOptions<C>): SingleSelectionReturn<C>;
+export function useSelection<C extends CalendarBodyCell>(options: RangeSelectionOptions<C>): RangeSelectionReturn<C>;
 export function useSelection<C extends CalendarBodyCell>(
   options: MultipleSelectionOptions<C>,
 ): MultipleSelectionReturn<C>;
