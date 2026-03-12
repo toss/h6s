@@ -1,0 +1,21 @@
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const filesBasic = loadExample('app/docs/examples/n-day-view/vanilla/basic', [
+  'App.tsx',
+  'App.css',
+  'NDayCalendar.tsx',
+  'NDayCalendar.css',
+  'useNDayView.ts',
+]);
+
+# Vanilla CSS
+
+## N-Day View
+
+Display N consecutive days starting from a cursor date. Switch between 3, 5, 7, or 14 day views and navigate forward/backward by N days at a time.
+
+<Sandpack
+  files={filesBasic}
+  height={550}
+/>

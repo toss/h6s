@@ -1,0 +1,130 @@
+import Link from 'next/link';
+
+# useNDayView
+
+A hook that provides N consecutive days of calendar data with navigation and view controls.
+
+## Import
+
+```tsx
+import { useNDayView } from '@h6s/calendar';
+```
+
+## Usage
+
+```tsx
+function MyNDayCalendar() {
+  const { headers, body, navigation, cursorDate, view } = useNDayView({
+    numberOfDays: 3,
+  });
+
+  return (
+    <div>
+      <div>
+        <button onClick={navigation.toPrev}>&larr;</button>
+        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <button onClick={navigation.toNext}>&rarr;</button>
+      </div>
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        {body.value.map(({ key, value: days }) => (
+          <div key={key} style={{ display: 'flex', gap: '0.5rem' }}>
+            {days.map(({ key, value, isCurrentDate, isWeekend }) => (
+              <div key={key}>
+                <span>{format(value, 'EEE')}</span>
+                <span>{format(value, 'd')}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## Parameters
+
+```tsx
+function useNDayView(options?: UseNDayViewOptions)
+
+interface UseNDayViewOptions {
+  defaultDate?: Date | number | string;
+  defaultWeekStart?: WeekDayType;
+  numberOfDays?: number;
+}
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `defaultDate` | `Date \| number \| string` | `new Date()` | Initial date to display |
+| `defaultWeekStart` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | First day of week (0 = Sunday) |
+| `numberOfDays` | `number` | `3` | Number of consecutive days to display (1-14) |
+
+## Return Value
+
+The hook returns an object with the following structure:
+
+```tsx
+{
+  // Render data
+  headers: { weekdays: Array<{ key: string; value: Date }> };
+  body: { value: Array<{ key: string; value: Array<Day> }> };
+
+  // Navigation
+  navigation: {
+    toNext: () => void;     // Move forward by N days
+    toPrev: () => void;     // Move backward by N days
+    setToday: () => void;
+    setDate: (date: Date) => void;
+  };
+
+  // View controls
+  view: {
+    numberOfDays: number;
+    setNumberOfDays: (n: number) => void;
+    setWeekStartsOn: (day: WeekDayType) => void;
+  };
+
+  // Metadata
+  cursorDate: Date;
+  year: number;
+  month: number;
+  day: number;
+  weekStartsOn: WeekDayType;
+  numberOfDays: number;
+}
+```
+
+### Day Properties
+
+Each day cell in `body.value[].value[]` includes the following properties (via plugins):
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `Date` | The date object |
+| `key` | `string` | Unique key for React rendering |
+| `date` | `number` | Day of month (1-31) |
+| `isCurrentMonth` | `boolean` | Whether the date is in the same month as cursorDate |
+| `isCurrentDate` | `boolean` | Whether the date is today |
+| `isWeekend` | `boolean` | Whether the date falls on Saturday or Sunday |
+| `hours` | `Array<{ hour: number; key: string }>` | 24 hourly slots (0-23) for timetable rendering |
+
+## Comparison with useCalendar
+
+| Feature | useCalendar | useNDayView |
+|---------|-------------|-------------|
+| View types | Month, Week, Day | N consecutive days |
+| Navigation unit | Varies by view type | Always N days |
+| Body structure | 2D matrix (weeks x days) | Single row of N days |
+| Day count | Fixed (28-42 for month, 7 for week, 1 for day) | Configurable (1-14) |
+| Plugin support | withDateProps, withKeyProps | withDateProps, withKeyProps |
+
+## Type Exports
+
+```tsx
+import {
+  type UseNDayViewOptions,
+} from '@h6s/calendar';
+```

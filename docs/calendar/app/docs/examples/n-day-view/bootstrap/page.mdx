@@ -1,0 +1,25 @@
+import { Sandpack } from '@/components/Sandpack';
+import { loadExample } from '@/components/Sandpack/loadExample';
+
+export const filesBasic = loadExample('app/docs/examples/n-day-view/bootstrap/basic', [
+  'App.tsx',
+  'NDayCalendar.tsx',
+  'useNDayView.ts',
+  'public/index.html',
+]);
+
+# Bootstrap 5
+
+## N-Day View
+
+Display N consecutive days with a timetable grid, styled with Bootstrap 5 utility classes. Switch between 3, 5, 7, or 14 day views.
+
+<Sandpack
+  files={filesBasic}
+  providerOptions={{
+    externalResources: [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+    ],
+  }}
+  height={550}
+/>
