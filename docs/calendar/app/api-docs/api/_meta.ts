@@ -4,6 +4,9 @@ const meta: MetaRecord = {
   "use-calendar": {
     title: "useCalendar",
   },
+  "use-n-day-view": {
+    title: "useNDayView",
+  },
   headers: {
     title: "headers",
   },

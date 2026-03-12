@@ -9,6 +9,10 @@ const meta: MetaRecord = {
     title: "Date Range Picker",
     type: "separator",
   },
+  "n-day-view": {
+    title: "N-Day View",
+    type: "separator",
+  },
 };
 
 export default meta;
