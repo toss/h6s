@@ -23,5 +23,5 @@ coverage
 
 # AI context files
 CLAUDE.md
-.ai/
 .claude/
+.omc/
