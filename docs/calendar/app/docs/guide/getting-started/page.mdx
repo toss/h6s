@@ -84,6 +84,23 @@ A styled calendar with date selection and month navigation:
   </Link>
 </div>
 
+## Selection
+
+Use the <Link href="/api-docs/api/use-selection" className="text-blue-600 dark:text-blue-400 hover:underline">useSelection</Link> hook to add date selection to your calendar. It supports three modes: **single**, **range**, and **multiple**.
+
+```tsx
+import { useCalendar, useSelection } from '@h6s/calendar';
+
+const { body, headers, navigation } = useCalendar();
+const selection = useSelection({ mode: 'single', body });
+
+// selection.body has isSelected, isDisabled on each cell
+// selection.select(date) to select a date
+// selection.selected to read the current selection
+```
+
+See the <Link href="/api-docs/api/use-selection" className="text-blue-600 dark:text-blue-400 hover:underline">useSelection API reference</Link> for full documentation.
+
 ## Key Concepts
 
 ### Headless Design
