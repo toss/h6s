@@ -14,7 +14,7 @@ export function DateRangeCalendar() {
   const selection = useSelection({ mode: "range", body });
 
   function isInRangeWithHover(date: Date): boolean {
-    if (selection.selected?.to) return selection.isInRange(date) || selection.isSelected(date);
+    if (selection.selected?.to) return selection.isInRange(date);
     if (!selection.selected?.from || !hoverDate) return false;
     const [start, end] = selection.selected.from < hoverDate
       ? [selection.selected.from, hoverDate]
@@ -86,7 +86,7 @@ export function DateRangeCalendar() {
                       <tr key={key}>
                         {days.map(({ key, value, isCurrentMonth }) => {
                           const inRange = isInRangeWithHover(value);
-                          const selected = selection.isSelected(value);
+                          const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
                           const today = isToday(value);
 
                           let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
