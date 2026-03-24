@@ -1,0 +1,248 @@
+import Link from 'next/link';
+
+# useSelection
+
+A companion hook for <Link href="/api-docs/api/use-calendar" className="text-blue-600 dark:text-blue-400 hover:underline">useCalendar</Link> that manages date selection state and enriches the calendar body with selection properties.
+
+## Import
+
+```tsx
+import { useSelection } from '@h6s/calendar';
+```
+
+## Usage
+
+### Single Selection
+
+```tsx
+function MyCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+  const selection = useSelection({
+    mode: 'single',
+    body,
+  });
+
+  return (
+    <table>
+      <tbody>
+        {selection.body.value.map(({ key, value: days }) => (
+          <tr key={key}>
+            {days.map(({ key, value, isSelected, isDisabled }) => (
+              <td key={key}>
+                <button
+                  onClick={() => selection.select(value)}
+                  disabled={isDisabled}
+                  style={{ fontWeight: isSelected ? 'bold' : 'normal' }}
+                >
+                  {format(value, 'd')}
+                </button>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
+
+### Range Selection
+
+```tsx
+function MyRangeCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+  const selection = useSelection({
+    mode: 'range',
+    body,
+  });
+
+  return (
+    <table>
+      <tbody>
+        {selection.body.value.map(({ key, value: days }) => (
+          <tr key={key}>
+            {days.map(({ key, value, isSelected, isRangeStart, isRangeEnd, isInRange }) => (
+              <td key={key}>
+                <button
+                  onClick={() => selection.select(value)}
+                  className={[
+                    isRangeStart && 'range-start',
+                    isRangeEnd && 'range-end',
+                    isInRange && 'in-range',
+                    isSelected && 'selected',
+                  ].filter(Boolean).join(' ')}
+                >
+                  {format(value, 'd')}
+                </button>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
+
+### Multiple Selection
+
+```tsx
+function MyMultiCalendar() {
+  const { headers, body, navigation, cursorDate } = useCalendar();
+  const selection = useSelection({
+    mode: 'multiple',
+    body,
+    max: 5,
+  });
+
+  return (
+    <div>
+      <p>Selected: {selection.selected.length} / 5</p>
+      {/* Render calendar using selection.body ... */}
+    </div>
+  );
+}
+```
+
+## Parameters
+
+```tsx
+function useSelection(options: SelectionOptions)
+```
+
+### Common Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `mode` | `'single' \| 'range' \| 'multiple'` | Selection mode (must remain constant across renders) |
+| `body` | `CalendarBody` | The `body` returned from `useCalendar` |
+| `disabled` | `Matcher \| Matcher[]` | Dates to disable from selection |
+
+### Single Mode Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `required` | `boolean` | `false` | Prevent deselecting the current selection |
+
+### Range Mode Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `min` | `number` | Minimum number of days in the range |
+| `max` | `number` | Maximum number of days in the range |
+
+### Multiple Mode Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `min` | `number` | Minimum number of selected dates |
+| `max` | `number` | Maximum number of selected dates |
+
+## Return Value
+
+### Single Mode
+
+```tsx
+{
+  selected: Date | undefined;
+  select: (date: Date) => void;
+  deselect: () => void;
+  isSelected: (date: Date) => boolean;
+  isDisabled: (date: Date) => boolean;
+  body: CalendarBody<Cell & { isSelected: boolean; isDisabled: boolean }>;
+}
+```
+
+### Range Mode
+
+```tsx
+{
+  selected: DateRange | undefined;  // { from: Date; to?: Date }
+  select: (date: Date) => void;
+  deselect: () => void;
+  isSelected: (date: Date) => boolean;
+  isDisabled: (date: Date) => boolean;
+  isRangeStart: (date: Date) => boolean;
+  isRangeEnd: (date: Date) => boolean;
+  isInRange: (date: Date) => boolean;
+  body: CalendarBody<Cell & {
+    isSelected: boolean;
+    isDisabled: boolean;
+    isRangeStart: boolean;
+    isRangeEnd: boolean;
+    isInRange: boolean;
+  }>;
+}
+```
+
+### Multiple Mode
+
+```tsx
+{
+  selected: Date[];
+  select: (date: Date) => void;
+  deselect: (date: Date) => void;
+  isSelected: (date: Date) => boolean;
+  isDisabled: (date: Date) => boolean;
+  body: CalendarBody<Cell & { isSelected: boolean; isDisabled: boolean }>;
+}
+```
+
+> The `body` returned from `useSelection` enriches each cell with selection properties.
+> Use `selection.body` instead of the original `body` from `useCalendar` when rendering.
+
+## Matcher
+
+The `disabled` option accepts one or more `Matcher` values to determine which dates should be disabled.
+
+```tsx
+type Matcher =
+  | Date                          // Exact date
+  | Date[]                        // List of dates
+  | { before: Date }              // All dates before
+  | { after: Date }               // All dates after
+  | { from: Date; to: Date }      // Date range
+  | { dayOfWeek: number[] }       // Days of week (0=Sun, 6=Sat)
+  | ((date: Date) => boolean);    // Custom function
+```
+
+### Examples
+
+```tsx
+// Disable weekends
+useSelection({ mode: 'single', body, disabled: { dayOfWeek: [0, 6] } });
+
+// Disable past dates
+useSelection({ mode: 'single', body, disabled: { before: new Date() } });
+
+// Disable specific dates
+useSelection({ mode: 'single', body, disabled: [new Date(2024, 11, 25), new Date(2024, 11, 31)] });
+
+// Combine multiple matchers
+useSelection({
+  mode: 'range',
+  body,
+  disabled: [
+    { dayOfWeek: [0, 6] },
+    { before: new Date() },
+  ],
+});
+```
+
+## Type Exports
+
+```tsx
+import type {
+  DateRange,
+  Matcher,
+  SelectionCellProps,
+  RangeSelectionCellProps,
+  SelectionOptions,
+  SingleSelectionOptions,
+  RangeSelectionOptions,
+  MultipleSelectionOptions,
+  SingleSelectionReturn,
+  RangeSelectionReturn,
+  MultipleSelectionReturn,
+} from '@h6s/calendar';
+```
