@@ -1,35 +1,34 @@
 "use client";
 
-import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay } from "date-fns";
-import { useState } from "react";
+import { useCalendar, useSelection } from "@h6s/calendar";
+import { format } from "date-fns";
 import "./DateCalendar.css";
 
 export function DateCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
   const { headers, body, navigation, cursorDate } = useCalendar({
-    defaultDate: selectedDate ?? new Date(),
+    defaultDate: new Date(),
   });
+
+  const selection = useSelection({ mode: "single", body });
 
   function handleDateSelect(date: Date, isCurrentMonth: boolean) {
     if (!isCurrentMonth) {
       navigation.setDate(date);
     }
-    setSelectedDate(date);
+    selection.select(date);
   }
 
   return (
     <div className="datecalendar">
       <div className="datecalendar-selection">
         <div>
-          <p className="datecalendar-selection-value">{selectedDate ? format(selectedDate, "PPP") : "Pick a date"}</p>
+          <p className="datecalendar-selection-value">{selection.selected ? format(selection.selected, "PPP") : "Pick a date"}</p>
         </div>
         <button
           type="button"
           onClick={() => {
             navigation.setToday();
-            setSelectedDate(new Date());
+            selection.select(new Date());
           }}
           className="datecalendar-today-button"
         >
@@ -63,10 +62,9 @@ export function DateCalendar() {
           </tr>
         </thead>
         <tbody>
-          {body.value.map(({ key, value: days }) => (
+          {selection.body.value.map(({ key, value: days }) => (
             <tr key={key}>
-              {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                const isSelected = selectedDate && isSameDay(value, selectedDate);
+              {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
                 const classNames = [
                   "datecalendar-day",
                   !isCurrentMonth && "datecalendar-day--outside",

@@ -1,21 +1,20 @@
 "use client";
 
-import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay } from "date-fns";
-import { useState } from "react";
+import { useCalendar, useSelection } from "@h6s/calendar";
+import { format } from "date-fns";
 
 export function DateCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
   const { headers, body, navigation, cursorDate } = useCalendar({
-    defaultDate: selectedDate ?? new Date(),
+    defaultDate: new Date(),
   });
+
+  const selection = useSelection({ mode: "single", body });
 
   function handleDateSelect(date: Date, isCurrentMonth: boolean) {
     if (!isCurrentMonth) {
       navigation.setDate(date);
     }
-    setSelectedDate(date);
+    selection.select(date);
   }
 
   return (
@@ -23,14 +22,14 @@ export function DateCalendar() {
       <div className="flex items-start justify-between border-b border-slate-200 pb-2 dark:border-slate-700">
         <div>
           <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+            {selection.selected ? format(selection.selected, "PPP") : "Pick a date"}
           </p>
         </div>
         <button
           type="button"
           onClick={() => {
             navigation.setToday();
-            setSelectedDate(new Date());
+            selection.select(new Date());
           }}
           className="rounded-md border border-slate-300 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:border-slate-500 dark:focus:ring-slate-400"
         >
@@ -73,10 +72,9 @@ export function DateCalendar() {
             </tr>
           </thead>
           <tbody>
-            {body.value.map(({ key, value: days }) => (
+            {selection.body.value.map(({ key, value: days }) => (
               <tr key={key}>
-                {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                  const isSelected = selectedDate && isSameDay(value, selectedDate);
+                {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
 
                   return (
                     <td key={key} className="w-[calc(100%/7)] p-0 text-center">

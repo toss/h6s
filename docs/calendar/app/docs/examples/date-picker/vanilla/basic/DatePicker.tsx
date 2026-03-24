@@ -1,6 +1,6 @@
-import { useCalendar } from "@h6s/calendar";
+import { useCalendar, useSelection } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
-import { format, isSameDay } from "date-fns";
+import { format } from "date-fns";
 import { useMemo, useState } from "react";
 import "./DatePicker.css";
 
@@ -56,7 +56,10 @@ function DatePickerContent({
     defaultDate: selectedDate ?? new Date(),
   });
 
+  const selection = useSelection({ mode: "single", body });
+
   const handleSelectDate = (date: Date) => {
+    selection.select(date);
     setSelectedDate(date);
     close();
   };
@@ -95,10 +98,9 @@ function DatePickerContent({
             </tr>
           </thead>
           <tbody>
-            {body.value.map(({ key, value: days }) => (
+            {selection.body.value.map(({ key, value: days }) => (
               <tr key={key}>
-                {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                  const isSelected = selectedDate && isSameDay(value, selectedDate);
+                {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
 
                   const classes = [
                     "datepicker-popover__day",
