@@ -1,5 +1,11 @@
 # @h6s/calendar
 
+## 2.2.0
+
+### Minor Changes
+
+- 2df7d09: Add `useSelection` hook for date selection with single, range, and multiple modes
+
 ## 2.1.0
 
 ### Minor Changes
