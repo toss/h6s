@@ -75,7 +75,6 @@ export function DateCalendar() {
             {selection.body.value.map(({ key, value: days }) => (
               <tr key={key}>
                 {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
-
                   return (
                     <td key={key} className="w-[calc(100%/7)] p-0 text-center">
                       <button

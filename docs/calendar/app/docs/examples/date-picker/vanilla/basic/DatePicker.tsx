@@ -101,7 +101,6 @@ function DatePickerContent({
             {selection.body.value.map(({ key, value: days }) => (
               <tr key={key}>
                 {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
-
                   const classes = [
                     "datepicker-popover__day",
                     isCurrentDate && "datepicker-popover__day--today",

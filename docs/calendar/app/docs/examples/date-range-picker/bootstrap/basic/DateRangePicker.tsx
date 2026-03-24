@@ -95,9 +95,8 @@ function DateRangePickerContent({
   function isInRangeWithHover(date: Date): boolean {
     if (selection.selected?.to) return selection.isInRange(date);
     if (!selection.selected?.from || !hoverDate) return false;
-    const [start, end] = selection.selected.from < hoverDate
-      ? [selection.selected.from, hoverDate]
-      : [hoverDate, selection.selected.from];
+    const [start, end] =
+      selection.selected.from < hoverDate ? [selection.selected.from, hoverDate] : [hoverDate, selection.selected.from];
     return date > start && date < end;
   }
 
@@ -182,7 +181,11 @@ function DateRangePickerContent({
                           type="button"
                           onClick={() => selection.select(value)}
                           onMouseEnter={() => {
-                            if (selection.selected?.from && !selection.selected?.to && !isSameDay(value, hoverDate || new Date(0))) {
+                            if (
+                              selection.selected?.from &&
+                              !selection.selected?.to &&
+                              !isSameDay(value, hoverDate || new Date(0))
+                            ) {
                               setHoverDate(value);
                             }
                           }}
