@@ -1,25 +1,14 @@
 "use client";
 
 import { useCalendar, useSelection } from "@h6s/calendar";
-import { format, isSameDay, isToday } from "date-fns";
-import { useState } from "react";
+import { format, isToday } from "date-fns";
 
 export function DateRangeCalendar() {
-  const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
   const { headers, body, navigation, cursorDate } = useCalendar({
     defaultDate: new Date(),
   });
 
   const selection = useSelection({ mode: "range", body });
-
-  function isInRangeWithHover(date: Date): boolean {
-    if (selection.selected?.to) return selection.isInRange(date);
-    if (!selection.selected?.from || !hoverDate) return false;
-    const [start, end] =
-      selection.selected.from < hoverDate ? [selection.selected.from, hoverDate] : [hoverDate, selection.selected.from];
-    return date > start && date < end;
-  }
 
   const formatRange = () => {
     if (!selection.selected) return "Pick a start date";
@@ -66,7 +55,7 @@ export function DateRangeCalendar() {
               </div>
 
               <div style={{ display: "inline-block", width: "fit-content" }}>
-                <table className="table table-borderless text-center mb-0" onMouseLeave={() => setHoverDate(null)}>
+                <table className="table table-borderless text-center mb-0">
                   <thead>
                     <tr>
                       {headers.weekdays.map(({ key, value }) => (
@@ -83,9 +72,8 @@ export function DateRangeCalendar() {
                   <tbody>
                     {selection.body.value.map(({ key, value: days }) => (
                       <tr key={key}>
-                        {days.map(({ key, value, isCurrentMonth }) => {
-                          const inRange = isInRangeWithHover(value);
-                          const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
+                        {days.map(({ key, value, isCurrentMonth, isInRange, isRangeStart, isRangeEnd }) => {
+                          const selected = isRangeStart || isRangeEnd;
                           const today = isToday(value);
 
                           let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;
@@ -108,7 +96,7 @@ export function DateRangeCalendar() {
                             padding: "0",
                           };
 
-                          const rangeStyle: React.CSSProperties | undefined = inRange
+                          const rangeStyle: React.CSSProperties | undefined = isInRange
                             ? {
                                 content: '""',
                                 position: "absolute",
@@ -128,7 +116,7 @@ export function DateRangeCalendar() {
 
                           if (selected) {
                             btnClass += " btn-primary fw-semibold";
-                          } else if (inRange) {
+                          } else if (isInRange) {
                             btnClass += " text-primary-emphasis";
                             style.fontWeight = 500;
                           } else if (isCurrentMonth) {
@@ -139,19 +127,10 @@ export function DateRangeCalendar() {
 
                           return (
                             <td key={key} className="p-0" style={cellStyle}>
-                              {inRange && <div style={rangeStyle} />}
+                              {isInRange && <div style={rangeStyle} />}
                               <button
                                 type="button"
                                 onClick={() => selection.select(value)}
-                                onMouseEnter={() => {
-                                  if (
-                                    selection.selected?.from &&
-                                    !selection.selected?.to &&
-                                    !isSameDay(value, hoverDate || new Date(0))
-                                  ) {
-                                    setHoverDate(value);
-                                  }
-                                }}
                                 className={btnClass}
                                 style={style}
                                 aria-label={format(value, "PPP")}

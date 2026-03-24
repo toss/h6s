@@ -1,12 +1,9 @@
 "use client";
 
 import { useCalendar, useSelection } from "@h6s/calendar";
-import { addMonths, format, isSameDay, isToday, subMonths } from "date-fns";
-import { useState } from "react";
+import { addMonths, format, isToday, subMonths } from "date-fns";
 
 export function DateRangeCalendarDual() {
-  const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
   const leftCalendar = useCalendar({
     defaultDate: new Date(),
   });
@@ -17,14 +14,6 @@ export function DateRangeCalendarDual() {
 
   const selection = useSelection({ mode: "range", body: leftCalendar.body });
 
-  function isInRangeWithHover(date: Date): boolean {
-    if (selection.selected?.to) return selection.isInRange(date);
-    if (!selection.selected?.from || !hoverDate) return false;
-    const [start, end] =
-      selection.selected.from < hoverDate ? [selection.selected.from, hoverDate] : [hoverDate, selection.selected.from];
-    return date > start && date < end;
-  }
-
   const formatRange = () => {
     if (!selection.selected) return "Pick a start date";
     if (!selection.selected.to) return `${format(selection.selected.from, "MM/dd/yyyy")} - ...`;
@@ -34,7 +23,7 @@ export function DateRangeCalendarDual() {
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
       <div className="w-fit">
-        <table className="w-fit border-collapse table-fixed" onMouseLeave={() => setHoverDate(null)}>
+        <table className="w-fit border-collapse table-fixed">
           <thead>
             <tr>
               {calendar.headers.weekdays.map(({ key, value }) => (
@@ -51,7 +40,7 @@ export function DateRangeCalendarDual() {
             {calendar.body.value.map(({ key, value: days }) => (
               <tr key={key}>
                 {days.map(({ key, value, isCurrentMonth }) => {
-                  const inRange = isInRangeWithHover(value);
+                  const inRange = selection.isInRange(value);
                   const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
                   const today = isToday(value);
 
@@ -67,15 +56,6 @@ export function DateRangeCalendarDual() {
                         <button
                           type="button"
                           onClick={() => selection.select(value)}
-                          onMouseEnter={() => {
-                            if (
-                              selection.selected?.from &&
-                              !selection.selected?.to &&
-                              !isSameDay(value, hoverDate || new Date(0))
-                            ) {
-                              setHoverDate(value);
-                            }
-                          }}
                           className={`
                           box-border relative z-10 w-full h-9 rounded-md text-xs font-medium transition-all duration-150
                           ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}

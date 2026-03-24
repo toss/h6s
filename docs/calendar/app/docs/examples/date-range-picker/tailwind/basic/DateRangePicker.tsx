@@ -2,7 +2,7 @@
 
 import { useCalendar, useSelection } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
-import { addMonths, format, isSameDay, isToday, subMonths } from "date-fns";
+import { addMonths, format, isToday, subMonths } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 
 export function DateRangePicker() {
@@ -63,8 +63,6 @@ function DateRangePickerContent({
   onRangeChange: (range: { from: Date; to?: Date } | undefined) => void;
   close: () => void;
 }) {
-  const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
   const leftCalendar = useCalendar({
     defaultDate: new Date(),
   });
@@ -82,17 +80,9 @@ function DateRangePickerContent({
     }
   }, [selection.selected, onRangeChange, close]);
 
-  function isInRangeWithHover(date: Date): boolean {
-    if (selection.selected?.to) return selection.isInRange(date);
-    if (!selection.selected?.from || !hoverDate) return false;
-    const [start, end] =
-      selection.selected.from < hoverDate ? [selection.selected.from, hoverDate] : [hoverDate, selection.selected.from];
-    return date > start && date < end;
-  }
-
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
+      <table className="w-full border-collapse">
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
@@ -106,7 +96,7 @@ function DateRangePickerContent({
           {calendar.body.value.map(({ key, value: days }) => (
             <tr key={key}>
               {days.map(({ key, value, isCurrentMonth }) => {
-                const inRange = isInRangeWithHover(value);
+                const inRange = selection.isInRange(value);
                 const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
                 const today = isToday(value);
 
@@ -122,15 +112,6 @@ function DateRangePickerContent({
                       <button
                         type="button"
                         onClick={() => selection.select(value)}
-                        onMouseEnter={() => {
-                          if (
-                            selection.selected?.from &&
-                            !selection.selected?.to &&
-                            !isSameDay(value, hoverDate || new Date(0))
-                          ) {
-                            setHoverDate(value);
-                          }
-                        }}
                         className={`
                           box-border relative z-10 w-9 h-9 rounded-md text-xs font-medium transition-all duration-150
                           ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}

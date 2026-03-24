@@ -1,25 +1,14 @@
 "use client";
 
 import { useCalendar, useSelection } from "@h6s/calendar";
-import { format, isSameDay, isToday } from "date-fns";
-import { useState } from "react";
+import { format, isToday } from "date-fns";
 
 export function DateRangeCalendar() {
-  const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
   const { headers, body, navigation, cursorDate } = useCalendar({
     defaultDate: new Date(),
   });
 
   const selection = useSelection({ mode: "range", body });
-
-  function isInRangeWithHover(date: Date): boolean {
-    if (selection.selected?.to) return selection.isInRange(date);
-    if (!selection.selected?.from || !hoverDate) return false;
-    const [start, end] =
-      selection.selected.from < hoverDate ? [selection.selected.from, hoverDate] : [hoverDate, selection.selected.from];
-    return date > start && date < end;
-  }
 
   const formatRange = () => {
     if (!selection.selected) return "Pick a start date";
@@ -56,7 +45,7 @@ export function DateRangeCalendar() {
       </div>
 
       <div className="w-full">
-        <table className="w-full border-collapse" onMouseLeave={() => setHoverDate(null)}>
+        <table className="w-full border-collapse">
           <thead>
             <tr>
               {headers.weekdays.map(({ key, value }) => (
@@ -72,9 +61,8 @@ export function DateRangeCalendar() {
           <tbody>
             {selection.body.value.map(({ key, value: days }) => (
               <tr key={key}>
-                {days.map(({ key, value, isCurrentMonth }) => {
-                  const inRange = isInRangeWithHover(value);
-                  const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
+                {days.map(({ key, value, isCurrentMonth, isInRange, isRangeStart, isRangeEnd }) => {
+                  const selected = isRangeStart || isRangeEnd;
                   const today = isToday(value);
 
                   return (
@@ -82,27 +70,18 @@ export function DateRangeCalendar() {
                       key={key}
                       className={`
                       relative w-[calc(100%/7)] p-0 text-center
-                      ${inRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-[1.8rem] before:-translate-y-1/2 before:bg-slate-200 before:dark:bg-slate-700"}
+                      ${isInRange && "before:absolute before:inset-y-1/2 before:left-0 before:right-0 before:h-[1.8rem] before:-translate-y-1/2 before:bg-slate-200 before:dark:bg-slate-700"}
                     `}
                     >
                       <button
                         type="button"
                         onClick={() => selection.select(value)}
-                        onMouseEnter={() => {
-                          if (
-                            selection.selected?.from &&
-                            !selection.selected?.to &&
-                            !isSameDay(value, hoverDate || new Date(0))
-                          ) {
-                            setHoverDate(value);
-                          }
-                        }}
                         className={`
                         box-border relative z-10 w-full h-9 rounded-md text-xs font-medium transition-all duration-150
                         ${!isCurrentMonth && "text-slate-400 dark:text-slate-600"}
                         ${isCurrentMonth && !selected && "text-slate-900 dark:text-slate-100"}
                         ${!selected && "hover:bg-slate-100 dark:hover:bg-slate-700"}
-                        ${inRange && "text-slate-700 dark:text-slate-300"}
+                        ${isInRange && "text-slate-700 dark:text-slate-300"}
                         ${selected && "!bg-slate-600 !text-white shadow-md shadow-slate-600/30 hover:!bg-slate-700 dark:!bg-slate-500 dark:shadow-slate-500/30 dark:hover:!bg-slate-400"}
                         ${today && "border-2 border-slate-600 font-bold text-slate-700 dark:border-slate-400 dark:text-slate-300"}
                       `}
