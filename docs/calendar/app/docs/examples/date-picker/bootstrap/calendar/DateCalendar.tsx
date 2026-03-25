@@ -1,19 +1,18 @@
-import { useCalendar } from "@h6s/calendar";
-import { format, isSameDay } from "date-fns";
-import { useState } from "react";
+import { useCalendar, useSelection } from "@h6s/calendar";
+import { format } from "date-fns";
 
 export default function DateCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
   const { headers, body, navigation, cursorDate } = useCalendar({
-    defaultDate: selectedDate ?? new Date(),
+    defaultDate: new Date(),
   });
+
+  const selection = useSelection({ mode: "single", body });
 
   function handleDateSelect(date: Date, isCurrentMonth: boolean) {
     if (!isCurrentMonth) {
       navigation.setDate(date);
     }
-    setSelectedDate(date);
+    selection.select(date);
   }
 
   return (
@@ -25,7 +24,7 @@ export default function DateCalendar() {
               <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
                 <div>
                   <p className="text-body-emphasis fw-semibold mb-0" style={{ fontSize: "0.875rem" }}>
-                    {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                    {selection.selected ? format(selection.selected, "PPP") : "Pick a date"}
                   </p>
                 </div>
                 <button
@@ -33,7 +32,7 @@ export default function DateCalendar() {
                   onClick={() => {
                     const today = new Date();
                     navigation.setToday();
-                    setSelectedDate(today);
+                    selection.select(today);
                   }}
                   className="btn btn-primary btn-sm px-2 py-1 fw-medium"
                   style={{ fontSize: "0.75rem" }}
@@ -82,10 +81,9 @@ export default function DateCalendar() {
                     </tr>
                   </thead>
                   <tbody>
-                    {body.value.map(({ key, value: days }) => (
+                    {selection.body.value.map(({ key, value: days }) => (
                       <tr key={key}>
-                        {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => {
-                          const isSelected = selectedDate && isSameDay(value, selectedDate);
+                        {days.map(({ key, value, isCurrentDate, isCurrentMonth, isSelected }) => {
                           const today = isCurrentDate;
 
                           let btnClass = `btn btn-sm ${today ? "" : "border-0"}`;

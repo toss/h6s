@@ -1,32 +1,27 @@
 "use client";
 
-import { useCalendar } from "@h6s/calendar";
+import { useCalendar, useSelection } from "@h6s/calendar";
 import * as Popover from "@radix-ui/react-popover";
-import { addMonths, format, isAfter, isSameDay, isToday, subMonths } from "date-fns";
-import { useMemo, useState } from "react";
+import { addMonths, format, isToday, subMonths } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 import "./DateRangePicker.css";
 
-type DateRange = {
-  start: Date | null;
-  end: Date | null;
-};
-
 export function DateRangePicker() {
-  const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
+  const [displayRange, setDisplayRange] = useState<{ from: Date; to?: Date } | undefined>(undefined);
   const [open, setOpen] = useState(false);
 
   const displayValue = useMemo(() => {
-    if (!dateRange.start) return "Pick a date range";
-    if (!dateRange.end) return `${format(dateRange.start, "PP")} - ...`;
-    return `${format(dateRange.start, "PP")} - ${format(dateRange.end, "PP")}`;
-  }, [dateRange]);
+    if (!displayRange?.from) return "Pick a date range";
+    if (!displayRange.to) return `${format(displayRange.from, "PP")} - ...`;
+    return `${format(displayRange.from, "PP")} - ${format(displayRange.to, "PP")}`;
+  }, [displayRange]);
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <div className="daterangepicker-field">
         <Popover.Trigger asChild>
           <button type="button" className="daterangepicker-field__trigger">
-            <span className={`daterangepicker-field__value ${dateRange.start ? "is-selected" : ""}`}>
+            <span className={`daterangepicker-field__value ${displayRange?.from ? "is-selected" : ""}`}>
               {displayValue}
             </span>
             <svg className="daterangepicker-field__icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -44,7 +39,7 @@ export function DateRangePicker() {
           collisionPadding={12}
           className="daterangepicker-popover"
         >
-          <DateRangePickerContent dateRange={dateRange} setDateRange={setDateRange} close={() => setOpen(false)} />
+          <DateRangePickerContent onRangeChange={setDisplayRange} close={() => setOpen(false)} />
           <Popover.Arrow className="daterangepicker-popover__arrow" />
         </Popover.Content>
       </Popover.Portal>
@@ -53,54 +48,32 @@ export function DateRangePicker() {
 }
 
 function DateRangePickerContent({
-  dateRange,
-  setDateRange,
+  onRangeChange,
   close,
 }: {
-  dateRange: DateRange;
-  setDateRange: (range: DateRange) => void;
+  onRangeChange: (range: { from: Date; to?: Date } | undefined) => void;
   close: () => void;
 }) {
-  const [hoverDate, setHoverDate] = useState<Date | null>(null);
-
   const leftCalendar = useCalendar({
-    defaultDate: dateRange.start ?? new Date(),
+    defaultDate: new Date(),
   });
 
   const rightCalendar = useCalendar({
-    defaultDate: addMonths(dateRange.start ?? new Date(), 1),
+    defaultDate: addMonths(new Date(), 1),
   });
 
-  function handleDateSelect(date: Date) {
-    if (!dateRange.start || (dateRange.start && dateRange.end)) {
-      setDateRange({ start: date, end: null });
-    } else {
-      if (isAfter(date, dateRange.start)) {
-        setDateRange({ start: dateRange.start, end: date });
-      } else {
-        setDateRange({ start: date, end: null });
-      }
+  const selection = useSelection({ mode: "range", body: leftCalendar.body });
+
+  useEffect(() => {
+    onRangeChange(selection.selected);
+    if (selection.selected?.to) {
+      close();
     }
-  }
-
-  function isInRange(date: Date): boolean {
-    if (!dateRange.start) return false;
-
-    const end = dateRange.end || (hoverDate && isAfter(hoverDate, dateRange.start) ? hoverDate : null);
-    if (!end) return false;
-
-    return isAfter(date, dateRange.start) && isAfter(end, date);
-  }
-
-  function isSelected(date: Date): boolean {
-    if (dateRange.start && isSameDay(date, dateRange.start)) return true;
-    if (dateRange.end && isSameDay(date, dateRange.end)) return true;
-    return false;
-  }
+  }, [selection.selected, onRangeChange, close]);
 
   const renderCalendar = (calendar: ReturnType<typeof useCalendar>) => {
     return (
-      <table className="daterangepicker-popover__calendar" onMouseLeave={() => setHoverDate(null)}>
+      <table className="daterangepicker-popover__calendar">
         <thead>
           <tr>
             {calendar.headers.weekdays.map(({ key, value }) => (
@@ -114,8 +87,8 @@ function DateRangePickerContent({
           {calendar.body.value.map(({ key, value: days }) => (
             <tr key={key}>
               {days.map(({ key, value, isCurrentMonth }) => {
-                const inRange = isInRange(value);
-                const selected = isSelected(value);
+                const inRange = selection.isInRange(value);
+                const selected = selection.isRangeStart(value) || selection.isRangeEnd(value);
                 const today = isToday(value);
 
                 const buttonClassNames = [
@@ -134,16 +107,7 @@ function DateRangePickerContent({
                 return (
                   <td key={key} className={cellClassName}>
                     {isCurrentMonth ? (
-                      <button
-                        type="button"
-                        onClick={() => handleDateSelect(value)}
-                        onMouseEnter={() => {
-                          if (dateRange.start && !dateRange.end && !isSameDay(value, hoverDate || new Date(0))) {
-                            setHoverDate(value);
-                          }
-                        }}
-                        className={buttonClassNames}
-                      >
+                      <button type="button" onClick={() => selection.select(value)} className={buttonClassNames}>
                         {format(value, "d")}
                       </button>
                     ) : null}
