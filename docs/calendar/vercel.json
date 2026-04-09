@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/calendar",
+      "destination": "/calendar/en",
       "permanent": true
     }
   ]

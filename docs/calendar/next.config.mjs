@@ -3,6 +3,7 @@ import nextra from "nextra";
 const withNextra = nextra({
   defaultShowCopyCode: true,
   contentDirBasePath: "/",
+  unstable_shouldAddLocaleToLinks: true,
 });
 
 export default withNextra({
