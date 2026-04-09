@@ -5,9 +5,7 @@ const withNextra = nextra({
   contentDirBasePath: "/",
 });
 
-// Pass i18n to withNextra so Nextra sets NEXTRA_LOCALES/NEXTRA_DEFAULT_LOCALE env vars,
-// then remove i18n from the final config to prevent Vercel from triggering static export.
-const { i18n: _i18n, ...config } = withNextra({
+export default withNextra({
   reactStrictMode: true,
   basePath: "/calendar",
   i18n: {
@@ -18,5 +16,3 @@ const { i18n: _i18n, ...config } = withNextra({
     "*": [".next/cache/**", ".next/static/development/**", ".next/trace"],
   },
 });
-
-export default config;

@@ -1,4 +1,5 @@
 {
+  "buildCommand": "next build && echo '{\"version\":1,\"success\":true,\"outDirectory\":\"out\"}' > .next/export-detail.json",
   "redirects": [
     {
       "source": "/",
