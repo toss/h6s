@@ -21,7 +21,7 @@ const { headers } = useCalendar();
 <thead>
   <tr>
     {headers.weekdays.map(({ key, value }) => (
-      <th key={key}>{format(value, 'EEE')}</th>
+      <th key={key}>{value.toLocaleDateString('en', { weekday: 'short' })}</th>
     ))}
   </tr>
 </thead>

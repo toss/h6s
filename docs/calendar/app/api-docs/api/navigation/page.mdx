@@ -65,7 +65,7 @@ function Calendar() {
   return (
     <div>
       <button onClick={navigation.toPrev}>←</button>
-      <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+      <h2>{cursorDate.toLocaleDateString('en', { month: 'long', year: 'numeric' })}</h2>
       <button onClick={navigation.toNext}>→</button>
       <button onClick={navigation.setToday}>Today</button>
     </div>
@@ -96,7 +96,7 @@ function SelectableCalendar() {
           {days.map(({ key, value, isCurrentMonth }) => (
             <td key={key}>
               <button onClick={() => handleDateClick(value, isCurrentMonth)}>
-                {format(value, 'd')}
+                {value.getDate()}
               </button>
             </td>
           ))}
