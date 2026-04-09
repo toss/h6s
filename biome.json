@@ -24,6 +24,6 @@
     "lineWidth": 120
   },
 	"files": {
-    "ignore": [".pnp.cjs", ".pnp.loader.mjs", "**/.next", "dist", ".omc"]
+    "ignore": [".pnp.cjs", ".pnp.loader.mjs", ".next", "dist", ".omc"]
   }
 }
