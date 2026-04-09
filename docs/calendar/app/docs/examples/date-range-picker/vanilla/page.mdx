@@ -1,0 +1,55 @@
+import { Sandpack } from "@/components/Sandpack";
+import { loadExample } from "@/components/Sandpack/loadExample";
+
+export const filesPicker = loadExample('app/docs/examples/date-range-picker/vanilla/basic', [
+  'App.tsx',
+  'App.css',
+  'DateRangePicker.tsx',
+  'DateRangePicker.css',
+]);
+
+export const filesCalendarBasic = loadExample('app/docs/examples/date-range-picker/vanilla/calendar-basic', [
+  'App.tsx',
+  'App.css',
+  'DateRangeCalendar.tsx',
+  'DateRangeCalendar.css',
+]);
+
+export const filesCalendarDual = loadExample('app/docs/examples/date-range-picker/vanilla/calendar-dual', [
+  'App.tsx',
+  'App.css',
+  'DateRangeCalendarDual.tsx',
+  'DateRangeCalendarDual.css',
+]);
+
+# Vanilla CSS
+
+## Basic
+
+Input field with dual calendar popover for date range selection using plain CSS and BEM-style conventions.
+
+<Sandpack
+  files={filesPicker}
+  dependencies={{
+    "@radix-ui/react-popover": "^1.1.2",
+  }}
+  height={410}
+/>
+
+## Calendar Only
+
+Standalone calendar component for inline date range selection.
+
+<Sandpack
+  files={filesCalendarBasic}
+  height={420}
+/>
+
+## Dual Calendar
+
+Two calendars side by side showing consecutive months for better range selection UX.
+
+<Sandpack
+  files={filesCalendarDual}
+  height={410}
+/>
