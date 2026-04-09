@@ -34,7 +34,7 @@ function MyCalendar() {
                   disabled={isDisabled}
                   style={{ fontWeight: isSelected ? 'bold' : 'normal' }}
                 >
-                  {format(value, 'd')}
+                  {value.getDate()}
                 </button>
               </td>
             ))}
@@ -72,7 +72,7 @@ function MyRangeCalendar() {
                     isSelected && 'selected',
                   ].filter(Boolean).join(' ')}
                 >
-                  {format(value, 'd')}
+                  {value.getDate()}
                 </button>
               </td>
             ))}
@@ -216,7 +216,7 @@ useSelection({ mode: 'single', body, disabled: { dayOfWeek: [0, 6] } });
 useSelection({ mode: 'single', body, disabled: { before: new Date() } });
 
 // Disable specific dates
-useSelection({ mode: 'single', body, disabled: [new Date(2024, 11, 25), new Date(2024, 11, 31)] });
+useSelection({ mode: 'single', body, disabled: [new Date(2025, 11, 25), new Date(2025, 11, 31)] });
 
 // Combine multiple matchers
 useSelection({

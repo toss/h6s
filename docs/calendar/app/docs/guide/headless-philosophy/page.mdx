@@ -24,10 +24,10 @@ import Calendar from 'some-calendar-lib';
 ```
 
 **Problems:**
-- 🎨 **Design constraints** - Can't fully match your design system
-- 📦 **Bundle bloat** - Shipping CSS you don't use
-- 🔧 **Override hell** - Fighting with `!important` to customize
-- 🚫 **Framework lock-in** - Doesn't work with your CSS solution
+- **Design constraints** — Can't fully match your design system
+- **Bundle bloat** — Shipping CSS you don't use
+- **Override hell** — Fighting with `!important` to customize
+- **Framework lock-in** — Doesn't work with your CSS solution
 
 ## The Headless Approach
 
@@ -48,10 +48,10 @@ const { headers, body, navigation } = useCalendar();
 ```
 
 **Benefits:**
-- ✅ **Complete design freedom** - Match any design system perfectly
-- ✅ **Lightweight** - No CSS bundle, just logic
-- ✅ **Flexible** - Use any styling solution (Tailwind, CSS Modules, styled-components, etc.)
-- ✅ **Framework agnostic** - Works anywhere React works
+- **Complete design freedom** — Match any design system perfectly
+- **Lightweight** — No CSS bundle, just logic
+- **Flexible** — Use any styling solution (Tailwind, CSS Modules, styled-components, etc.)
+- **Framework agnostic** — Works anywhere React works
 
 ## Separation of Concerns
 
@@ -92,7 +92,7 @@ function TailwindCalendar() {
         <div className="flex gap-2">
           {week.value.map(day => (
             <button className="w-10 h-10 rounded-full hover:bg-blue-100">
-              {format(day.value, 'd')}
+              {day.value.getDate()}
             </button>
           ))}
         </div>
@@ -117,7 +117,7 @@ function CSSModulesCalendar() {
         <div className={styles.week}>
           {week.value.map(day => (
             <button className={styles.day}>
-              {format(day.value, 'd')}
+              {day.value.getDate()}
             </button>
           ))}
         </div>
@@ -164,27 +164,27 @@ function StyledCalendar() {
 
 The power of headless is that **the calendar logic never changes**, but you can create completely different visual experiences:
 
-- 📱 Mobile-first calendar
-- 🎨 Neumorphic design
-- 🌙 Dark mode friendly
-- ♿ Accessibility-focused
-- 🏢 Corporate design system
-- 🎮 Gaming UI theme
+- Mobile-first calendar
+- Neumorphic design
+- Dark mode friendly
+- Accessibility-focused
+- Corporate design system
+- Gaming UI theme
 
 All using the same `useCalendar()` hook.
 
 ## When to Use Headless?
 
 **Use headless when:**
-- ✅ You have a design system to match
-- ✅ You need full control over styling
-- ✅ You want to minimize bundle size
-- ✅ You're building a design system yourself
+- You have a design system to match
+- You need full control over styling
+- You want to minimize bundle size
+- You're building a design system yourself
 
 **Consider traditional components when:**
-- ❌ You need a quick prototype with default styles
-- ❌ You don't care about visual customization
-- ❌ You want an out-of-the-box solution
+- You need a quick prototype with default styles
+- You don't care about visual customization
+- You want an out-of-the-box solution
 
 ## Philosophy in Action
 

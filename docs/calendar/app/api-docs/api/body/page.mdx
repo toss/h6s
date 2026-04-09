@@ -36,12 +36,12 @@ const { body } = useCalendar();
       {days.map(({ key, value, isCurrentDate, isCurrentMonth }) => (
         <td
           key={key}
-          className={cn(
-            !isCurrentMonth && 'opacity-30',
-            isCurrentDate && 'font-bold'
-          )}
+          style={{
+            opacity: isCurrentMonth ? 1 : 0.3,
+            fontWeight: isCurrentDate ? 'bold' : 'normal',
+          }}
         >
-          {format(value, 'd')}
+          {value.getDate()}
         </td>
       ))}
     </tr>

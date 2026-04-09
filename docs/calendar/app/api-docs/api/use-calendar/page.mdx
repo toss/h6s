@@ -20,14 +20,14 @@ function MyCalendar() {
     <div>
       <div>
         <button onClick={navigation.toPrev}>←</button>
-        <h2>{format(cursorDate, 'MMMM yyyy')}</h2>
+        <h2>{cursorDate.toLocaleDateString('en', { month: 'long', year: 'numeric' })}</h2>
         <button onClick={navigation.toNext}>→</button>
       </div>
       <table>
         <thead>
           <tr>
             {headers.weekdays.map(({ key, value }) => (
-              <th key={key}>{format(value, 'EEE')}</th>
+              <th key={key}>{value.toLocaleDateString('en', { weekday: 'short' })}</th>
             ))}
           </tr>
         </thead>
@@ -35,7 +35,7 @@ function MyCalendar() {
           {body.value.map(({ key, value: days }) => (
             <tr key={key}>
               {days.map(({ key, value }) => (
-                <td key={key}>{format(value, 'd')}</td>
+                <td key={key}>{value.getDate()}</td>
               ))}
             </tr>
           ))}
@@ -103,7 +103,9 @@ The hook returns an object with the following structure:
   month: number;
   day: number;
   weekStartsOn: WeekDayType;
+  startWeekdayInMonth: number;
   weeksInMonth: number;
+  weekdays: Array<{ value: Date }>;
   today: { weekIndex: number; dateIndex: number };
   
   // Utilities
