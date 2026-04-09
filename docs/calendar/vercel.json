@@ -1,8 +1,9 @@
 {
+  "buildCommand": "next build && node -e \"require('fs').writeFileSync('.next/export-detail.json', JSON.stringify({version:1,success:true,outDirectory:require('path').resolve('out')}))\"",
   "redirects": [
     {
       "source": "/",
-      "destination": "/calendar",
+      "destination": "/calendar/en",
       "permanent": true
     }
   ]

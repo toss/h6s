@@ -8,7 +8,7 @@
  * includes the base CSS with @media (prefers-color-scheme: dark).
  */
 
-import { DateRangeCalendarDual as VanillaDateRangeCalendarDual } from "../../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
-import "../../app/docs/examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual.nextra.css";
+import { DateRangeCalendarDual as VanillaDateRangeCalendarDual } from "../../examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual";
+import "../../examples/date-range-picker/vanilla/calendar-dual/DateRangeCalendarDual.nextra.css";
 
 export { VanillaDateRangeCalendarDual as DateRangeCalendarDual };
