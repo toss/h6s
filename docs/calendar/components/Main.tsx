@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "nextra-theme-docs";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import BootstrapDateCalendar from "../app/docs/examples/date-picker/bootstrap/calendar/DateCalendar";
-import { DateCalendar as TailwindCalendar } from "../app/docs/examples/date-picker/tailwind/calendar/DateCalendar";
+import BootstrapDateCalendar from "../examples/date-picker/bootstrap/calendar/DateCalendar";
+import { DateCalendar as TailwindCalendar } from "../examples/date-picker/tailwind/calendar/DateCalendar";
 import { BootstrapPreview } from "./BootstrapPreview";
 import { DateRangeCalendarDual as MainRangeCalendarDual } from "./MainCalendar/DateRangeCalendarDual";
 
