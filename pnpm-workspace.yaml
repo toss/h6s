@@ -1,0 +1,30 @@
+packages:
+  - packages/*
+  - examples/*
+  - website
+  - docs/*
+
+overrides:
+  "@types/node": ^22.3.0
+  react: ^18.3.1
+  react-dom: ^18.3.1
+  react-test-renderer: ^18.3.1
+  "@types/react": ^18.3.3
+  typescript: ^5.5.4
+  "@testing-library/dom": ^10.4.0
+  "@testing-library/jest-dom": 6.4.8
+  "@testing-library/react": 16.0.0
+  "@testing-library/user-event": 14.5.2
+  jsdom: ^24.1.1
+  vite: ^5.4.6
+  vitest: ^2.0.5
+
+allowBuilds:
+  "@biomejs/biome": true
+  "@swc/core": true
+  core-js: false
+  core-js-pure: false
+  es5-ext: false
+  esbuild: true
+  playwright: true
+  sharp: true

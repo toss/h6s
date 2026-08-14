@@ -2,14 +2,14 @@
   "name": "@h6s/calendar-docs",
   "version": "0.1.2",
   "private": true,
-  "packageManager": "yarn@4.4.0",
+  "packageManager": "pnpm@10.34.0",
   "scripts": {
     "dev": "next dev",
-    "prebuild": "yarn workspaces foreach -ptR --no-private run build",
+    "prebuild": "pnpm --filter '@h6s/calendar' --filter '@h6s/table' --recursive run build",
     "build": "next build",
     "start": "next start",
-    "lint": "yarn run -T biome check .",
-    "lint:fix": "yarn lint --write",
+    "lint": "biome check .",
+    "lint:fix": "pnpm lint --write",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

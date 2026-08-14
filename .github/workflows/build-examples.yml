@@ -12,5 +12,5 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Build
-        run: yarn prebuild && yarn build
+        run: pnpm prebuild && pnpm build
         working-directory: ./examples/react

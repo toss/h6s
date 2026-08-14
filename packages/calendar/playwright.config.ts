@@ -55,7 +55,7 @@ const config: PlaywrightTestConfig = {
 
   /* TODO: Run local dev server before starting the tests */
   webServer: {
-    command: 'yarn storybook',
+    command: 'pnpm storybook',
     port: 6006,
     cwd: path.join(__dirname, '../../'),
   },

@@ -12,7 +12,7 @@ const apiDocsDir = path.resolve(ROOT, './docs/docs/API')
 async function buildApiDocs() {
   await new Promise((resolve, reject) =>
     exec(
-      `yarn build:type && yarn api-extractor run --local && yarn api-documenter markdown -i configs -o ${apiDocsDir}`,
+      `pnpm build:type && pnpm exec api-extractor run --local && pnpm exec api-documenter markdown -i configs -o ${apiDocsDir}`,
       (err, stdout, stderr) => {
         console.log(stdout)
         console.error(stderr)

@@ -3,7 +3,7 @@
   "javascript.format.enable": false,
   "files.autoSaveDelay": 500,
   "editor.inlayHints.enabled": "onUnlessPressed",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
@@ -23,9 +23,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
+    "**/node_modules": true
   },
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
