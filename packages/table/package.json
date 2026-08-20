@@ -31,14 +31,14 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "yarn build",
-    "build": "yarn run -T tsup",
-    "lint": "yarn run -T biome check src/",
-    "lint:fix": "yarn lint --write",
-    "typecheck": "yarn run -T tsc",
+    "prepack": "pnpm build",
+    "build": "tsup",
+    "lint": "biome check src/",
+    "lint:fix": "pnpm lint --write",
+    "typecheck": "tsc",
     "test": "vitest",
-    "test:cov": "yarn test --coverage",
-    "test:watch": "yarn test --watch"
+    "test:cov": "pnpm test --coverage",
+    "test:watch": "pnpm test --watch"
   },
   "devDependencies": {
     "@storybook/react": "7.6.6",

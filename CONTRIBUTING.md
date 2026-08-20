@@ -13,12 +13,12 @@ If you are here to suggest a feature, first create an issue `Suggestion` type if
 If you have been assigned to fix an issue or develop a new feature, please follow these steps to get started:
 
 - Fork this repository
-- Install dependencies by running `$ yarn`
+- Install dependencies by running `$ pnpm install`
 - Implement your changes and tests to files in the `packages/{package}` directory and corresponding test files
 - To run Storybook.
 - Document your changes in the appropriate doc page
 - Git stage your required changes and commit (see below commit guidelines)
-  - also need to run `yarn changeset`
+  - also need to run `pnpm changeset`
 - Submit PR for review
 
 ## Commit message conventions

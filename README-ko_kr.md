@@ -116,8 +116,8 @@ const { body: selectionBody, select, selected } = useSelection({
 
 ```bash
 git clone https://github.com/toss/h6s.git
-cd h6s && yarn
-yarn storybook
+cd h6s && pnpm install
+pnpm storybook
 ```
 
 ---

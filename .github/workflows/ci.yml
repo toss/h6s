@@ -17,10 +17,10 @@ jobs:
         with:
           node-version-matrix: ${{ matrix.node }}
       - name: Check Type
-        run: yarn typecheck
+        run: pnpm typecheck
       - name: Check Lint
-        run: yarn lint
+        run: pnpm lint
       - name: Run Test
-        run: yarn test
+        run: pnpm test
       - name: Run Build
-        run: yarn build
+        run: pnpm build

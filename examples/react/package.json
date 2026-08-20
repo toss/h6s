@@ -4,11 +4,11 @@
   "version": "1.0.7",
   "scripts": {
     "dev": "next",
-    "prebuild": "yarn workspaces foreach -ptR --no-private run build",
+    "prebuild": "pnpm --filter '@h6s/calendar' --filter '@h6s/table' --recursive run build",
     "build": "next build",
-    "build:static": "yarn prebuild && yarn build",
-    "lint": "yarn run -T biome check src/",
-    "lint:fix": "yarn lint --apply",
+    "build:static": "pnpm prebuild && pnpm build",
+    "lint": "biome check src/",
+    "lint:fix": "pnpm lint --apply",
     "start": "next start"
   },
   "engines": {
@@ -39,5 +39,5 @@
     "typescript": "5.3.3"
   },
   "license": "MIT",
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "pnpm@10.34.0"
 }

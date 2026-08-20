@@ -23,4 +23,4 @@ runs:
       run: corepack enable
     - name: Install dependencies
       shell: bash
-      run: yarn install --immutable
+      run: pnpm install --frozen-lockfile

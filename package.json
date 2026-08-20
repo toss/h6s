@@ -54,7 +54,6 @@
     "@testing-library/user-event": "14.5.2",
     "@types/node": "^22.5.2",
     "@types/react": "^18.3.5",
-    "@types/testing-library__jest-dom": "6.0.0",
     "acorn": "8.12.1",
     "all-contributors-cli": "6.26.1",
     "cz-conventional-changelog": "3.3.0",
@@ -73,38 +72,17 @@
     "vite": "^5.4.6",
     "vitest": "^2.0.5"
   },
-  "resolutions": {
-    "@types/node": "^22.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-test-renderer": "^18.3.1",
-    "@types/react": "^18.3.3",
-    "typescript": "^5.5.4",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "6.4.8",
-    "@testing-library/react": "16.0.0",
-    "@testing-library/user-event": "14.5.2",
-    "jsdom": "^24.1.1",
-    "vite": "^5.4.6",
-    "vitest": "^2.0.5"
-  },
-  "workspaces": [
-    "packages/*",
-    "examples/*",
-    "website",
-    "docs/*"
-  ],
   "scripts": {
-    "check": "yarn typecheck && yarn lint && yarn test",
-    "changeset:version": "yarn changeset version",
-    "changeset:publish": "yarn changeset publish",
-    "lint": "yarn workspaces foreach -ptR --from '@h6s/*' run lint",
-    "test": "yarn workspaces foreach -ptR --from '@h6s/*' run test",
-    "typecheck": "yarn workspaces foreach -ptR --from '@h6s/*' run typecheck",
-    "build": "yarn workspaces foreach -ptR --from '@h6s/*' run build",
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "lint": "pnpm --filter '@h6s/*' --recursive run lint",
+    "test": "pnpm --filter '@h6s/*' --recursive run test",
+    "typecheck": "pnpm --filter '@h6s/*' --recursive run typecheck",
+    "build": "pnpm --filter '@h6s/*' --recursive run build",
     "build:storybook": "storybook build",
     "storybook": "storybook dev -p 6006 --quiet",
     "postinstall": "husky install"
   },
-  "packageManager": "yarn@4.4.0"
+  "packageManager": "pnpm@10.34.0"
 }

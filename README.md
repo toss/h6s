@@ -113,8 +113,8 @@ We welcome contributions from everyone. Please read the [Contributing Guide](CON
 
 ```bash
 git clone https://github.com/toss/h6s.git
-cd h6s && yarn
-yarn storybook
+cd h6s && pnpm install
+pnpm storybook
 ```
 
 ---

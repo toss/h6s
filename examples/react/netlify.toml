@@ -1,7 +1,6 @@
 [build]
   base = "/examples/react/"
   publish = "./out"
-  command = "yarn build:static"
+  command = "pnpm build:static"
 [build.environment]
-  NETLIFY_USE_YARN = "true"
-  YARN_VERSION="4.0.2"
+  PNPM_VERSION = "10.34.0"
