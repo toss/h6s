@@ -24,7 +24,7 @@ function useDisabled(disabled: SingleSelectionOptions["disabled"]) {
 
 // ─── Single Selection ───────────────────────────────────
 
-export function useSingleSelection<C extends CalendarBodyCell>(
+function useSingleSelection<C extends CalendarBodyCell>(
   options: Omit<SingleSelectionOptions<C>, "mode">,
 ): SingleSelectionReturn<C> {
   const { disabled } = options;
@@ -72,7 +72,7 @@ export function useSingleSelection<C extends CalendarBodyCell>(
 
 // ─── Range Selection ────────────────────────────────────
 
-export function useRangeSelection<C extends CalendarBodyCell>(
+function useRangeSelection<C extends CalendarBodyCell>(
   options: Omit<RangeSelectionOptions<C>, "mode">,
 ): RangeSelectionReturn<C> {
   const { disabled } = options;
@@ -188,7 +188,7 @@ export function useRangeSelection<C extends CalendarBodyCell>(
 
 // ─── Multiple Selection ─────────────────────────────────
 
-export function useMultipleSelection<C extends CalendarBodyCell>(
+function useMultipleSelection<C extends CalendarBodyCell>(
   options: Omit<MultipleSelectionOptions<C>, "mode">,
 ): MultipleSelectionReturn<C> {
   const { disabled } = options;

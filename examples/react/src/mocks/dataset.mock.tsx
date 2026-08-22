@@ -21,7 +21,7 @@ export interface DatasetType {
   message: string;
 }
 
-export const DATASET: DatasetType[] = generateMockDataset();
+const DATASET: DatasetType[] = generateMockDataset();
 
 export const DATASET_WITH_SUMMARY = composeDataset(DATASET, {
   groupBy: "date",
@@ -201,7 +201,7 @@ export const TABLE_MODEL: TableModel<DatasetType> = [
   },
 ];
 
-export function sum(...arr: number[] | number[][]) {
+function sum(...arr: number[] | number[][]) {
   return arr.flat().reduce((a, b) => a + b, 0);
 }
 
