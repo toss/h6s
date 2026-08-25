@@ -73,7 +73,3 @@ export const DecemberFirstWeekData = {
     },
   ],
 };
-
-export const DecemberFirkData = {
-  value: [{ value: [{ value: new Date(2020, 10, 29) }] }],
-};

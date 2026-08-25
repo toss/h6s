@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["@storybook/react"]
+    },
+    "docs/calendar": {
+      "entry": [
+        "app/**/_meta.ts",
+        "mdx-components.tsx",
+        "app/docs/examples/**/*.{ts,tsx,css}"
+      ]
+    }
+  }
+}

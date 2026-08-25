@@ -3,6 +3,28 @@ name: CI
 on: [pull_request]
 
 jobs:
+  knip:
+    runs-on: ubuntu-latest
+    name: Knip
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Check unused code and dependencies
+        run: pnpm knip
+
+  storybook:
+    runs-on: ubuntu-latest
+    name: Storybook
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build Storybook
+        run: pnpm build:storybook
+
   integration:
     runs-on: ubuntu-latest
     strategy:

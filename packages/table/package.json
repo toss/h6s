@@ -41,16 +41,12 @@
     "test:watch": "pnpm test --watch"
   },
   "devDependencies": {
-    "@storybook/react": "7.6.6",
     "@testing-library/jest-dom": "*",
     "@types/node": "*",
     "@types/react": "*",
     "jsdom": "*",
     "react": "*",
-    "react-dom": "*",
-    "react-test-renderer": "*",
     "typescript": "*",
-    "vite": "*",
     "vitest": "*"
   },
   "peerDependencies": {
