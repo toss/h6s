@@ -1,5 +1,0 @@
-## Description
-
-> related issue: #
-
-### References

@@ -2,11 +2,11 @@
 
 ## Reporting Issues
 
-If you have found what you think is a bug, please [file an issue](https://github.com/toss/h6s/issues/new) `Bug_Report` type.
+If you have found what you think is a bug, please search the existing issues and use the [Bug report](https://github.com/toss/h6s/issues/new?template=bug_report.yml) form.
 
 ## Suggesting new features
 
-If you are here to suggest a feature, first create an issue `Suggestion` type if it does not already exist.
+If you are here to suggest a feature, search the existing issues and use the [Feature request](https://github.com/toss/h6s/issues/new?template=feature_request.yml) form if it does not already exist.
 
 ## Development
 
