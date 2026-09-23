@@ -1,0 +1,35 @@
+name: Documentation issue
+description: Report something wrong or missing in the documentation.
+labels: ['documentation']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can use AI to help you research the problem, but **issue descriptions from external contributors must be written by a human**.
+
+        Reporting behavior that does not match the docs? Use the bug report template instead.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Select the package whose documentation is affected.
+      options:
+        - '@h6s/calendar'
+        - '@h6s/table'
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Link to the relevant h6s documentation page.
+      placeholder: https://h6s.slash.page/calendar or https://h6s.dev
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Tell us what the page says now and what it should say instead.
+    validations:
+      required: true
