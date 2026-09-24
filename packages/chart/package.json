@@ -1,0 +1,55 @@
+{
+  "name": "@h6s/chart",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "main": "dist/index.cjs",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toss/h6s.git",
+    "directory": "packages/chart"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.cts",
+    "exports": {
+      ".": {
+        "require": {
+          "types": "./dist/index.d.cts",
+          "default": "./dist/index.cjs"
+        },
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/index.js"
+        }
+      }
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "prepack": "pnpm build",
+    "build": "tsup",
+    "lint": "biome check src/",
+    "lint:fix": "pnpm lint --write",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@types/react": "*",
+    "react": "*",
+    "typescript": "*"
+  },
+  "peerDependencies": {
+    "react": ">= 18"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  }
+}
