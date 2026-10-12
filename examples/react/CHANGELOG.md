@@ -1,5 +1,13 @@
 # @h6s-examples/react
 
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies [80ad99f]
+- Updated dependencies [20bd869]
+  - @h6s/table@2.0.5
+
 ## 1.0.7
 
 ### Patch Changes

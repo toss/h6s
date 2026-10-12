@@ -1,5 +1,12 @@
 # @h6s/table
 
+## 2.0.5
+
+### Patch Changes
+
+- 80ad99f: Lazily initialize the core instance in `useTable` to avoid constructing unused table models on subsequent renders. Existing source updates and column selection behavior are preserved.
+- 20bd869: Cache the maximum row span as merge groups are updated to avoid scanning every group for each row. This also avoids argument-limit errors with large datasets and returns a default row span of 1 when no merge rules apply.
+
 ## 2.0.4
 
 ### Patch Changes
