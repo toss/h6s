@@ -30,7 +30,7 @@ export default function createCalendarInfo(cursorDate: Date, { weekStartsOn }: {
     weekdays,
     today: {
       weekIndex: getCurrentWeekIndex(day, startWeekdayInMonth),
-      dateIndex: cursorDate.getDay(),
+      dateIndex: (cursorDate.getDay() - weekStartsOn + 7) % 7,
     },
     getDateCellByIndex,
   };

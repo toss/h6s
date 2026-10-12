@@ -102,6 +102,25 @@ describe("useCalendar hooks test", () => {
   });
 
   describe("result.body", () => {
+    it.each([
+      [new Date(2024, 0, 15), 0],
+      [new Date(2024, 0, 15), 1],
+      [new Date(2024, 0, 15), 2],
+      [new Date(2024, 0, 15), 3],
+      [new Date(2024, 0, 15), 4],
+      [new Date(2024, 0, 15), 5],
+      [new Date(2024, 0, 15), 6],
+      [new Date(2024, 0, 14), 1],
+      [new Date(2024, 0, 1), 6],
+      [new Date(2024, 1, 29), 1],
+    ] as const)("returns %s in day view with week start %i", (defaultDate, defaultWeekStart) => {
+      const { result } = renderHook(() =>
+        useCalendar({ defaultDate, defaultWeekStart, defaultViewType: CalendarViewType.Day }),
+      );
+
+      expect(result.current.body.value[0].value[0].value).toEqual(defaultDate);
+    });
+
     it("return pure month data / no plugins, Month viewType", () => {
       // Given
       const defaultDate = new Date(2020, 11, 27);
