@@ -1,7 +1,7 @@
 {
   "name": "@h6s-examples/react",
   "private": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "scripts": {
     "dev": "next",
     "prebuild": "pnpm --filter '@h6s/calendar' --filter '@h6s/table' --recursive run build",
